@@ -1,0 +1,11 @@
+{
+  "name": "internify-backend",
+  "version": "1.0.0",
+  "description": "This is the place where we will try to manage lots of data about internships, companies, and interns",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aqib Shoaib",
+  "license": "ISC"
+}
