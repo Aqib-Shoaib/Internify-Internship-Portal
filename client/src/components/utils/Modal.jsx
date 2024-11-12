@@ -61,7 +61,7 @@ function Modal({ isOpen, onClose, children, shouldAutoCloseOnResize = false }) {
         }
       };
 
-      const mediaQuery = window.matchMedia("(min-width: 768px)");
+      const mediaQuery = window.matchMedia("(min-width: 992px)");
       mediaQuery.addEventListener("change", handleResize);
 
       // Clean up the event listener on component unmount or modal close

@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import Nav from "./Nav";
+import Nav from "./nav/Nav";
 import { useState } from "react";
 
 const Logo = styled.img`
-  width: 30%;
+  width: fit-content;
+  height: fit-content;
 `;
 const StyledHeader = styled.header`
   background: var(--color-dark);
@@ -11,6 +12,7 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 3px 1rem;
+  height: 15vh;
 `;
 
 function Header() {
@@ -18,7 +20,7 @@ function Header() {
 
   return (
     <StyledHeader>
-      <Logo src="/logo.png" alt="Internify logo" />
+      <Logo src="/logo.svg" alt="Internify logo" />
       <Nav showNavModal={showNavModal} setShowNavModal={setShowNavModal} />
     </StyledHeader>
   );
