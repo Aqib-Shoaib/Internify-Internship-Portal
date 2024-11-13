@@ -2,14 +2,15 @@ import styled from "styled-components";
 
 const StyledHero = styled.div`
   padding: 2rem 1rem;
+  width: 100%;
+  margin-top: 110px; //the hieght of header
 
   p {
     letter-spacing: 1px;
     font-size: var(--fs-subheading);
   }
 
-  @media (min-width: 768px) {
-    height: 100vh;
+  @media (min-width: 992px) {
     display: grid;
     grid-template-columns: 45% 45%;
     place-items: center;
@@ -19,7 +20,7 @@ const StyledHero = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 5rem;
+  font-size: 4.5rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   margin: 0.5rem 0;
@@ -58,8 +59,8 @@ function Hero() {
     <StyledHero>
       <div>
         <Title>
-          Unlock Your Potential: <span>Top Internship </span>
-          Opportunities
+          Unlock Your Potential: <span>Top Internships </span>
+          Top Companies
         </Title>
         <p>
           Bridging the gap between academia and industry, we connect talented

@@ -10,7 +10,10 @@ const MenuIcon = styled.span`
   font-size: 5rem;
   color: var(--color-light);
   cursor: pointer;
-  padding: 1rem;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 
   @media (min-width: 992px) {
     display: none;
@@ -21,6 +24,10 @@ const StyledNav = styled.nav`
   display: none;
 
   @media (min-width: 992px) {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -56,7 +63,6 @@ const StyledNav = styled.nav`
     @media (min-width: 1280px) {
       font-size: var(--fs-heading);
       gap: 2rem;
-      margin-right: 3rem;
 
       a {
         letter-spacing: 2px;
@@ -70,7 +76,7 @@ function Nav({ showNavModal, setShowNavModal }) {
     setShowNavModal(false);
   }
   return (
-    <div>
+    <>
       {!showNavModal && (
         <MenuIcon onClick={() => setShowNavModal(true)}>
           <FontAwesomeIcon icon={faBars} beat />
@@ -89,7 +95,7 @@ function Nav({ showNavModal, setShowNavModal }) {
       <StyledNav>
         <Navigation />
       </StyledNav>
-    </div>
+    </>
   );
 }
 

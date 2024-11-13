@@ -6,13 +6,19 @@ import styled from "styled-components";
 const StyledItem = styled.div`
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
   border-radius: 30px;
-  padding: 15px;
-  width: 380px;
-  height: 420px;
   margin: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 10px;
+  width: 250px;
+  height: 370px;
+
+  @media (min-width: 430px) {
+    padding: 15px;
+    width: 380px;
+    height: 420px;
+  }
 `;
 
 const Main = styled.main`
@@ -22,6 +28,7 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 5px;
 `;
 
 const DateBox = styled.div`
@@ -30,9 +37,10 @@ const DateBox = styled.div`
   font-weight: var(--fw-medium);
   letter-spacing: 1px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 0.5rem;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
 
   span {
     background: #fff;
@@ -41,6 +49,13 @@ const DateBox = styled.div`
   }
   .icon {
     cursor: pointer;
+  }
+  @media (min-width: 430px) {
+    flex-direction: row;
+    align-items: center;
+
+    justify-content: space-between;
+    padding: 1rem 0.5rem;
   }
 `;
 
@@ -51,23 +66,34 @@ const Companylogo = styled.img`
 
 const Companybox = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 0.5rem;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+
+  @media (min-width: 430px) {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem 0.5rem;
+  }
 `;
 
 const PointsBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 1rem;
+  display: none;
 
-  span {
-    border: 0.5px solid var(--color-dark);
-    padding: 5px;
-    border-radius: 999px;
+  @media (min-width: 430px) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+
+    span {
+      border: 0.5px solid var(--color-dark);
+      padding: 5px;
+      border-radius: 999px;
+    }
   }
 `;
 

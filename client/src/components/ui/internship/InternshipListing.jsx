@@ -3,6 +3,7 @@ import InternshipItem from "../../utils/InternshipItem";
 
 const Flex = styled.div`
   display: flex;
+  flex-wrap: wrap;
 `;
 
 function InternshipListing() {

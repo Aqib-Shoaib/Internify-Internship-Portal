@@ -1,14 +1,20 @@
+import styled from "styled-components";
+import FeaturedInternships from "../components/ui/home/FeaturedInternships";
 import Hero from "../components/ui/home/Hero";
 import HowItWorks from "../components/ui/home/HowItWorks";
-import InternshipListing from "../components/ui/internship/InternshipListing";
+
+const StyledHome = styled.div`
+  width: 100%;
+  overflow: hidden;
+`;
 
 function HomePage() {
   return (
-    <div>
+    <StyledHome>
       <Hero />
       <HowItWorks />
-      <InternshipListing />
-    </div>
+      <FeaturedInternships />
+    </StyledHome>
   );
 }
 

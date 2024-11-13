@@ -13,19 +13,8 @@ import {
   faClipboardQuestion,
   faUniversalAccess,
 } from "@fortawesome/free-solid-svg-icons";
-
-const Title = styled.h3`
-  font-weight: var(--fw-bold);
-  font-size: 4rem;
-  text-align: center;
-  margin: 0.5rem 0;
-`;
-
-const Sub = styled.p`
-  text-align: center;
-  font-size: var(--fs-subheading);
-  margin: 0.5rem 0;
-`;
+import Title from "../../utils/Title";
+import Sub from "../../utils/Sub";
 
 const Box = styled.div`
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
@@ -49,9 +38,10 @@ const Box = styled.div`
 const StyledWorkSection = styled.section`
   background: whitesmoke;
   padding: 3rem;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 4rem;
   align-items: center;
   justify-content: center;
 `;
@@ -89,7 +79,6 @@ const Boxes = styled.section`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 5rem;
 
   @media (min-width: 1280px) {
     flex-direction: row;
@@ -114,7 +103,9 @@ function HowItWorks() {
                 </span>
                 <b>Create a Profile:</b>
               </div>
-              Showcase your skills, experience, and academic achievements.
+              <p>
+                Showcase your skills, experience, and academic achievements.
+              </p>
             </ListItem>
             <ListItem>
               <div>
@@ -123,7 +114,7 @@ function HowItWorks() {
                 </span>
                 <b>Explore Opportunities:</b>
               </div>
-              Browse through a variety of internships from top companies.
+              <p>Browse through a variety of internships from top companies.</p>
             </ListItem>
             <ListItem>
               <div>
@@ -132,8 +123,10 @@ function HowItWorks() {
                 </span>
                 <b>Apply to Internships:</b>
               </div>
-              Submit your application and highlight your relevant
-              qualifications.
+              <p>
+                Submit your application and highlight your relevant
+                qualifications.
+              </p>
             </ListItem>
             <ListItem>
               <div>
@@ -142,16 +135,16 @@ function HowItWorks() {
                 </span>
                 <b>Connect with Recruiters:</b>
               </div>
-              Network with hiring managers and industry professionals.
+              <p>Network with hiring managers and industry professionals.</p>
             </ListItem>
             <ListItem>
               <div>
                 <span>
                   <FontAwesomeIcon icon={faFaceSmileBeam} />{" "}
+                  <b>Ace the Interview:</b>
                 </span>
-                <b>Ace the Interview:</b> Prepare for interviews and receive
               </div>
-              valuable career advice.
+              <p>Prepare for interviews and receive valuable career advice.</p>
             </ListItem>
             <ListItem>
               <div>
@@ -160,7 +153,7 @@ function HowItWorks() {
                 </span>
                 <b>Land Your Dream Internship:</b>
               </div>
-              Secure a rewarding internship that aligns with your goals.
+              <p>Secure a rewarding internship that aligns with your goals.</p>
             </ListItem>
           </ul>
         </Box>
@@ -175,7 +168,7 @@ function HowItWorks() {
                 </span>
                 <b>Create a Company Profile:</b>
               </div>
-              Showcase your brand and attract top talent.
+              <p>Showcase your brand and attract top talent.</p>
             </ListItem>
             <ListItem>
               <div>
@@ -184,7 +177,9 @@ function HowItWorks() {
                 </span>
                 <b>Post Internship Opportunities:</b>
               </div>
-              Create engaging internship listings and set clear expectations.
+              <p>
+                Create engaging internship listings and set clear expectations.
+              </p>
             </ListItem>
             <ListItem>
               <div>
@@ -193,7 +188,7 @@ function HowItWorks() {
                 </span>
                 <b>Review Applications:</b>
               </div>
-              Screen applications and identify promising candidates.
+              <p>Screen applications and identify promising candidates.</p>
             </ListItem>
             <ListItem>
               <div>
@@ -202,8 +197,10 @@ function HowItWorks() {
                 </span>
                 <b>Conduct Interviews:</b>
               </div>
-              Assess candidates&apos; skills and cultural fit through
-              interviews.
+              <p>
+                Assess candidates&apos; skills and cultural fit through
+                interviews.
+              </p>
             </ListItem>
             <ListItem>
               <div>
@@ -212,8 +209,10 @@ function HowItWorks() {
                 </span>
                 <b>Hire Top Talent:</b>
               </div>
-              Extend offers to qualified interns and build a strong talent
-              pipeline.
+              <p>
+                Extend offers to qualified interns and build a strong talent
+                pipeline.
+              </p>
             </ListItem>
           </ul>
         </Box>

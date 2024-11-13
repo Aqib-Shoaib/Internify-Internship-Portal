@@ -5,14 +5,23 @@ import { useState } from "react";
 const Logo = styled.img`
   width: fit-content;
   height: fit-content;
+  position: absolute;
+  top: 5px;
+  left: 5px;
 `;
 const StyledHeader = styled.header`
   background: var(--color-dark);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 3px 1rem;
-  height: 15vh;
+  height: 110px;
+  width: 100%;
+  z-index: 999;
+  overflow: hidden;
+  position: fixed;
+
+  .header {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 function Header() {
@@ -20,8 +29,10 @@ function Header() {
 
   return (
     <StyledHeader>
-      <Logo src="/logo.svg" alt="Internify logo" />
-      <Nav showNavModal={showNavModal} setShowNavModal={setShowNavModal} />
+      <div className="header">
+        <Logo src="/logo.svg" alt="Internify logo" />
+        <Nav showNavModal={showNavModal} setShowNavModal={setShowNavModal} />
+      </div>
     </StyledHeader>
   );
 }
