@@ -7,7 +7,7 @@ import ModalNav from "./ModalNav";
 import Navigation from "./Navigation";
 
 const MenuIcon = styled.span`
-  font-size: 5rem;
+  font-size: var(--fs-heading);
   color: var(--color-light);
   cursor: pointer;
   position: absolute;
@@ -31,7 +31,7 @@ const StyledNav = styled.nav`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--fs-subheading);
+    font-size: var(--fs-body);
     font-weight: var(--fw-regular);
 
     a {
@@ -46,11 +46,11 @@ const StyledNav = styled.nav`
     }
     button {
       background: var(--button-primary-bg);
-      font-size: var(--fs-heading);
+      font-size: var(--fs-body);
       padding: 1rem;
       border-radius: 10px;
       color: #fff;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       transition: all 0.3s linear;
 
       &:hover {
@@ -61,11 +61,11 @@ const StyledNav = styled.nav`
     }
 
     @media (min-width: 1280px) {
-      font-size: var(--fs-heading);
-      gap: 2rem;
+      font-size: var(--fs-body);
+      gap: 1.5rem;
 
       a {
-        letter-spacing: 2px;
+        letter-spacing: 1px;
       }
     }
   }

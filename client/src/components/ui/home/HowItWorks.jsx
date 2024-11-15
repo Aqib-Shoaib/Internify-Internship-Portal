@@ -22,7 +22,7 @@ const Box = styled.div`
   padding: 5px;
   background: #fff;
   h4 {
-    font-size: 2.75rem;
+    font-size: var(--fs-subheading);
     font-weight: 300;
     text-transform: capitalize;
     color: var(--color-dark);
@@ -36,7 +36,7 @@ const Box = styled.div`
 `;
 
 const StyledWorkSection = styled.section`
-  background: whitesmoke;
+  background: linear-gradient(to bottom, var(--color-light), #f0f8ff 85%);
   padding: 3rem;
   width: 100%;
   display: flex;
@@ -47,7 +47,7 @@ const StyledWorkSection = styled.section`
 `;
 
 const ListItem = styled.li`
-  font-size: var(--fs-body);
+  font-size: var(--fs-small);
   letter-spacing: 1px;
   margin: 1rem 0.5rem;
   display: flex;
@@ -57,6 +57,9 @@ const ListItem = styled.li`
   flex-wrap: wrap;
   b {
     text-transform: capitalize;
+  }
+  p {
+    font-size: var(--fs-small);
   }
 
   div {
@@ -93,7 +96,7 @@ function HowItWorks() {
         <Sub>Whether You&apos;re Seeking or Offering, We Connect the Dots.</Sub>
       </div>
       <Boxes>
-        <Box>
+        <Box data-aos="zoom-in">
           <h4>If you want an Internship: </h4>
           <ul>
             <ListItem>
@@ -141,8 +144,8 @@ function HowItWorks() {
               <div>
                 <span>
                   <FontAwesomeIcon icon={faFaceSmileBeam} />{" "}
-                  <b>Ace the Interview:</b>
                 </span>
+                <b>Ace the Interview:</b>
               </div>
               <p>Prepare for interviews and receive valuable career advice.</p>
             </ListItem>
@@ -158,7 +161,7 @@ function HowItWorks() {
           </ul>
         </Box>
 
-        <Box>
+        <Box data-aos="zoom-in">
           <h4>If you are looking for an Intern: </h4>
           <ul>
             <ListItem>

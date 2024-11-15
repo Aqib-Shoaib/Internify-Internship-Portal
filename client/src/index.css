@@ -15,11 +15,12 @@ html {
 :root {
   /* colors */
   /* --main */
-  --color-dark: #352f44; /* Dark Purple */
-  --color-medium-dark: #5c5470; /* Muted Purple */
+  /* --color-contrast: #00bfff; */
+  --color-contrast: #7f66c0;
+  --color-dark: #352f44;
+  --color-medium-dark: #5c5470;
   --color-medium-light: #b9b4c7; /* Light Grayish Purple */
   --color-light: #faf0e6;
-  --color-contrast: #00bfff;
 
   /* --extras */
   --color-accent: #b9b4c7;
@@ -35,6 +36,7 @@ html {
   --button-primary-bg: #5c5470; /* Muted Purple */
   --button-primary-text: #faf0e6; /* Text on buttons */
   --button-primary-hover: #726987;
+
   /* Shadows (optional for depth) */
   --shadow-color: rgba(53, 47, 68, 0.3); /* Light shadow for depth */
 
@@ -50,9 +52,9 @@ html {
   --font-decorative: "Montaga", serif;
   /* --Font Sizes */
   --fs-small: 1.4rem; /* 14px */
-  --fs-body: 2rem; /* 20px */
+  --fs-body: 1.8rem; /* 18px */
   --fs-heading: 3.2rem; /* 32px */
-  --fs-subheading: 2.4rem; /* 24px */
+  --fs-subheading: 2.2rem; /* 22px */
   /* --Font Weights */
   --fw-light: 300;
   --fw-regular: 400;
@@ -78,6 +80,7 @@ h6 {
   font-weight: var(--fw-bold);
   color: var(--text-primary);
 }
+
 p,
 li {
   font-family: var(--font-primary);

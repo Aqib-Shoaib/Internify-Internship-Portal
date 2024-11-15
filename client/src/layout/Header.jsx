@@ -4,18 +4,21 @@ import { useState } from "react";
 
 const Logo = styled.img`
   width: fit-content;
-  height: fit-content;
+  height: 70%;
   position: absolute;
-  top: 5px;
+  top: 50%;
   left: 5px;
+  transform: translateY(-50%);
 `;
 const StyledHeader = styled.header`
   background: var(--color-dark);
-  height: 110px;
+  /* background: linear-gradient(to bottom, var(--color-dark) 80%, #f1f1f1); */
+  /* background: #332a48; */
+
+  height: 90px;
   width: 100%;
   z-index: 999;
   overflow: hidden;
-  position: fixed;
 
   .header {
     position: relative;
@@ -29,7 +32,7 @@ function Header() {
 
   return (
     <StyledHeader>
-      <div className="header">
+      <div className="header" data-aos="fade-down">
         <Logo src="/logo.svg" alt="Internify logo" />
         <Nav showNavModal={showNavModal} setShowNavModal={setShowNavModal} />
       </div>

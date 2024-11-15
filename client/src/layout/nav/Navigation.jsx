@@ -5,7 +5,7 @@ function Navigation() {
     <>
       <NavLink to="/">Home</NavLink>
       <NavLink>About Us</NavLink>
-      <NavLink>Internships</NavLink>
+      <NavLink to="/internship">Internships</NavLink>
       <NavLink>Contact Us</NavLink>
       <button>Login</button>
     </>

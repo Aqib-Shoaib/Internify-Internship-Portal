@@ -6,8 +6,15 @@ import Slider from "react-slick";
 
 const Internships = styled.div`
   width: 90%;
+
   .slider {
     border-radius: 50px;
+  }
+  .slick-arrow::before,
+  .slick-prev::before,
+  .slick-next::before {
+    font-size: var(--fs-heading);
+    color: var(--color-contrast);
   }
 `;
 
@@ -21,6 +28,7 @@ const StyledSection = styled.section`
   width: 100%;
   background-color: var(--color-light);
   background-color: #f0f8ff;
+  padding-bottom: 5rem;
 `;
 
 function FeaturedInternships() {
@@ -92,6 +100,7 @@ function FeaturedInternships() {
       salary: "$260/month",
       location: "remote",
       bgColor: "#D4F6ED",
+      // bgColor: "#aad8cc",
       keyPoints: [
         "Part Time",
         "Full Day",

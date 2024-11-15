@@ -4,47 +4,57 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const StyledItem = styled.div`
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 30px;
+  border-radius: 2.5rem;
   margin: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 10px;
-  width: 250px;
-  height: 370px;
+  padding: 0.7rem;
+  width: 28rem;
+  height: 38rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s linear;
 
   @media (min-width: 430px) {
-    padding: 15px;
-    width: 380px;
-    height: 420px;
+    width: 32rem;
+    height: 43rem;
+  }
+
+  @media (min-width: 992px) {
+    width: 31rem;
+    height: 34rem;
+  }
+
+  &:hover {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
   }
 `;
 
 const Main = styled.main`
   background: ${($props) => $props.bg || "#bcf505"};
-  border-radius: 25px;
+  border-radius: 2.5rem;
   height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 5px;
+  padding: 0.5rem;
 `;
 
 const DateBox = styled.div`
   font-family: var(--font-decorative);
-  font-size: var(--fs-body);
-  font-weight: var(--fw-medium);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-regular);
   letter-spacing: 1px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1rem;
   align-items: flex-start;
   justify-content: flex-start;
 
   span {
     background: #fff;
-    padding: 10px;
+    padding: 1rem;
     border-radius: 999px;
   }
   .icon {
@@ -60,21 +70,22 @@ const DateBox = styled.div`
 `;
 
 const Companylogo = styled.img`
-  width: 50px;
+  width: 5rem;
   border-radius: 50%;
+  margin: 0.5rem;
 `;
 
 const Companybox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 10px;
+  gap: 1rem;
+  font-size: var(--fs-body);
 
   @media (min-width: 430px) {
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
-    padding: 1rem 0.5rem;
   }
 `;
 
@@ -84,15 +95,17 @@ const PointsBox = styled.div`
   @media (min-width: 430px) {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.5rem;
     align-items: center;
     justify-content: flex-start;
-    padding: 1rem;
+    padding: 0.5rem;
 
     span {
-      border: 0.5px solid var(--color-dark);
+      /* border: 0.5px solid var(--color-dark); */
       padding: 5px;
+      font-size: var(--fs-small);
       border-radius: 999px;
+      box-shadow: 0 0 8px rgb(0, 0, 0, 0.3);
     }
   }
 `;
@@ -104,11 +117,16 @@ const DetailsBox = styled.div`
 
   .location {
     font-weight: var(--fw-bold);
+    font-size: var(--fs-body);
+  }
+  .salary {
+    font-size: var(--fs-body);
   }
 
   button {
     background: var(--button-primary-bg);
     color: var(--button-primary-text);
+    font-size: var(--fs-body);
     padding: 10px;
     border-radius: 999px;
     text-transform: capitalize;
