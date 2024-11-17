@@ -12,13 +12,12 @@ const StyledInput = styled.input`
   outline: none;
   font-size: var(--fs-body);
   font-weight: var(--fw-medium);
-  width: 6rem;
-  height: 4rem;
+  width: 5rem;
   text-align: center;
   border: none;
 `;
 
-function RangeSelector({ min = 0, max = 100, light = false }) {
+function RangeSelector({ min = 0, max = 100, light = false, cname = "" }) {
   // Constants to represent absolute limits
   const MIN = min;
   const MAX = max;
@@ -45,7 +44,7 @@ function RangeSelector({ min = 0, max = 100, light = false }) {
   }
 
   return (
-    <div>
+    <div className={cname}>
       <StyledInput
         light={light}
         type="number"

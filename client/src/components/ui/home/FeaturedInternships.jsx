@@ -24,11 +24,18 @@ const StyledSection = styled.section`
   align-items: center;
   justify-content: center;
   gap: 4rem;
-  padding: 2rem 0.5rem;
+  padding: 3rem;
   width: 100%;
   background-color: var(--color-light);
   background-color: #f0f8ff;
   padding-bottom: 5rem;
+`;
+
+const TitleDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 function FeaturedInternships() {
@@ -40,7 +47,7 @@ function FeaturedInternships() {
     speed: 700,
     slidesToScroll: 1,
     centerMode: true,
-    centerPadding: "50px",
+    centerPadding: "0px",
     className: "slider",
     pauseOnDotsHover: true,
     slidesToShow: 3, // Default for larger screens
@@ -50,42 +57,36 @@ function FeaturedInternships() {
         breakpoint: 1600, // Extra-large screens
         settings: {
           slidesToShow: 3,
-          centerPadding: "50px",
         },
       },
       {
         breakpoint: 1300, // Laptops and larger tablets
         settings: {
           slidesToShow: 2,
-          centerPadding: "50px",
         },
       },
       {
         breakpoint: 992, // Tablets
         settings: {
           slidesToShow: 2,
-          centerPadding: "30px",
         },
       },
       {
         breakpoint: 768, // Smaller tablets and large phones
         settings: {
           slidesToShow: 1,
-          centerPadding: "60px",
         },
       },
       {
         breakpoint: 576, // Mobile devices
         settings: {
           slidesToShow: 1,
-          centerPadding: "30px",
         },
       },
       {
         breakpoint: 420, // Very small mobile devices
         settings: {
           slidesToShow: 1,
-          centerPadding: "10px",
         },
       },
     ],
@@ -168,10 +169,10 @@ function FeaturedInternships() {
   ];
   return (
     <StyledSection>
-      <div>
+      <TitleDiv>
         <Title>Featured Internships</Title>
         <Sub>Discover Your Next Big Step towards Success</Sub>
-      </div>
+      </TitleDiv>
       <Internships>
         <Slider {...settings}>
           {FAKE_DATA.map((item, ind) => (

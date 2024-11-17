@@ -6,6 +6,7 @@ const Title = styled.h3`
   text-align: center;
   margin: 0.5rem 0;
   position: relative;
+  width: fit-content;
   &::before {
     content: "";
     position: absolute;
@@ -15,7 +16,7 @@ const Title = styled.h3`
     top: -10%;
     background: var(--color-medium-dark);
     transform: translate(-50%);
-    width: 70%;
+    width: 60%;
   }
 `;
 

@@ -88,13 +88,20 @@ const Boxes = styled.section`
   }
 `;
 
+const TitleDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
 function HowItWorks() {
   return (
     <StyledWorkSection>
-      <div>
+      <TitleDiv>
         <Title>How It Works</Title>
         <Sub>Whether You&apos;re Seeking or Offering, We Connect the Dots.</Sub>
-      </div>
+      </TitleDiv>
       <Boxes>
         <Box data-aos="zoom-in">
           <h4>If you want an Internship: </h4>
