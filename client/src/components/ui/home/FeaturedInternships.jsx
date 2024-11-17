@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import InternshipItem from "../../utils/InternshipItem";
+import InternshipItem from "../internship/InternshipItem";
 import Sub from "../../utils/Sub";
 import Title from "../../utils/Title";
 import Slider from "react-slick";
@@ -35,7 +35,7 @@ function FeaturedInternships() {
   const settings = {
     dots: true,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 4000,
     infinite: true,
     speed: 700,
     slidesToScroll: 1,

@@ -1,9 +1,9 @@
-import RangeSlider from "../components/utils/RangeSlider";
+import RangeSelector from "../components/utils/RangeSelector";
 
 function InternshipsListingPage() {
   return (
     <div>
-      <RangeSlider />
+      <RangeSelector min={10} max={35} />
     </div>
   );
 }

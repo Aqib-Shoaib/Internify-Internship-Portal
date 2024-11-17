@@ -3,8 +3,14 @@ import styled from "styled-components";
 const StyledFooter = styled.footer`
   background: var(--color-medium-dark);
   display: flex;
+  flex-direction: column;
   gap: 5rem;
   padding: 4rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 `;
 
 const LogoBox = styled.div`

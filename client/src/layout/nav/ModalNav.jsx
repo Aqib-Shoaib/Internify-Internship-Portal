@@ -10,7 +10,7 @@ const StyledNav = styled.div`
 
   a {
     color: var(--color-accent);
-    font-size: 2.5rem;
+    font-size: var(--fs-body);
     font-weight: var(--fw-medium);
     padding: 5px;
     border-radius: 5px;
@@ -26,6 +26,7 @@ const StyledNav = styled.div`
     background: var(--button-primary-bg);
     color: var(--button-primary-text);
     padding: 10px;
+    font-size: var(--fs-body);
     font-size: 2rem;
     border-radius: 10px;
 
