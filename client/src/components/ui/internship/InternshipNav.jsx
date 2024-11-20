@@ -48,6 +48,16 @@ const StyledNav = styled.div`
     display: none;
     color: var(--color-light);
   }
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+
+    .vertical {
+      display: inline-block;
+    }
+  }
 `;
 
 function InternshipNav() {

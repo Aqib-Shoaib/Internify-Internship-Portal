@@ -89,7 +89,7 @@ function Nav({ showNavModal, setShowNavModal }) {
         onClose={closeModal}
         shouldAutoCloseOnResize={true}
       >
-        <ModalNav />
+        <ModalNav onClose={closeModal} />
       </Modal>
 
       <StyledNav>

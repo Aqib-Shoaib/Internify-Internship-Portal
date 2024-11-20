@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import Navigation from "./Navigation";
 
@@ -36,9 +37,9 @@ const StyledNav = styled.div`
   }
 `;
 
-function ModalNav() {
+function ModalNav({ onClose }) {
   return (
-    <StyledNav>
+    <StyledNav onClick={onClose}>
       <Navigation />
     </StyledNav>
   );

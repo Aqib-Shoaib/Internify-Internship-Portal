@@ -26,6 +26,15 @@ const Listing = styled.div`
   grid-template-columns: auto;
   gap: 5rem;
   place-items: center;
+
+  @media (min-width: 768px) {
+    grid-template-columns: auto auto;
+    gap: 3rem;
+  }
+  @media (min-width: 1366px) {
+    grid-template-columns: auto auto auto;
+    gap: 1.5rem;
+  }
 `;
 
 const FAKE_DATA = [
