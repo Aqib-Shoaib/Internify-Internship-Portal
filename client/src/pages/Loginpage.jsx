@@ -1,5 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Googlebtn from "../components/utils/Googlebtn";
 
 const StyledLogin = styled.div`
   display: flex;
@@ -36,6 +37,18 @@ const Main = styled.main`
     var(--color-medium-light),
     var(--color-light)
   );
+`;
+
+const SignupLink = styled.span`
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  padding: 0.5rem;
+  color: var(--color-medium-dark);
+  letter-spacing: 1px;
+  .link {
+    color: var(--color-medium-dark);
+    text-decoration: underline;
+  }
 `;
 const Break = styled.div`
   display: flex;
@@ -86,35 +99,6 @@ const Form = styled.form`
   }
 `;
 
-const GoogleBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-size: var(--fs-small);
-  padding: 0.7rem 1.25rem;
-  border: none;
-  border-radius: 999px;
-  background: #fff;
-  border: 2px solid var(--color-medium-dark);
-  text-transform: capitalize;
-  letter-spacing: 1px;
-  color: var(--color-medium-dark);
-  transition: all 0.3s ease;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-
-  .googleIcon {
-    width: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &:hover {
-    transform: scaleX(1.03);
-  }
-`;
-
 const ImageDiv = styled.div`
   width: 50%;
 
@@ -141,18 +125,18 @@ function Loginpage() {
 
   return (
     <StyledLogin>
-      <Greeting>
+      <Greeting data-aos='fade-right'>
         <ImageDiv>
-          <img src="/logo.svg" alt="internify logo" />
+          <img src='/logo.svg' alt='internify logo' />
         </ImageDiv>
         <p>
           We Help You to Connect with companies in a bit more efficient and
           hurdle less way
         </p>
       </Greeting>
-      <Main>
+      <Main data-aos='fade-left'>
         <ImageDiv>
-          <img src="/logo.svg" alt="internify logo" />
+          <img src='/logo.svg' alt='internify logo' />
         </ImageDiv>
 
         <div>
@@ -160,9 +144,9 @@ function Loginpage() {
         </div>
 
         <Form>
-          <input type="email" className="input" placeholder="Your Email..." />
-          <input type="password" className="input" placeholder="Password" />
-          <button className="btn" onClick={() => navigate("/")}>
+          <input type='email' className='input' placeholder='Your Email...' />
+          <input type='password' className='input' placeholder='Password' />
+          <button className='btn' onClick={() => navigate("/")}>
             Login
           </button>
         </Form>
@@ -174,13 +158,15 @@ function Loginpage() {
         </Break>
 
         <div>
-          <GoogleBtn onClick={() => navigate("/")}>
-            <span className="googleIcon">
-              <img src="/google.png" alt="google logo" />
-            </span>
-            login with google
-          </GoogleBtn>
+          <Googlebtn text='Login With Google' />
         </div>
+
+        <SignupLink>
+          Don&apos;t have an account yet?{" "}
+          <Link to='/signup' className='link'>
+            Signup
+          </Link>
+        </SignupLink>
       </Main>
     </StyledLogin>
   );

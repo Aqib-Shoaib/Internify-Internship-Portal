@@ -9,6 +9,7 @@ import HomePage from "./pages/HomePage";
 import { useEffect } from "react";
 import InternshipsListingPage from "./pages/InternshipsListingPage";
 import Loginpage from "./pages/Loginpage";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
   useEffect(() => {
@@ -24,10 +25,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Loginpage />} />
-        <Route path="/" element={<AppLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/internship" element={<InternshipsListingPage />} />
+        <Route path='/login' element={<Loginpage />} />
+        <Route path='/signup' element={<SignupPage />} />
+        <Route path='/' element={<AppLayout />}>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/internship' element={<InternshipsListingPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

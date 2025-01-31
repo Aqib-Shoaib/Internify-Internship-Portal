@@ -24,6 +24,7 @@ html {
 
   /* --extras */
   --color-accent: #b9b4c7;
+  --color-warning: #ff6347;
   /* Text Colors */
   --text-primary: #352f44; /* Dark Purple for main text */
   --text-secondary: #5c5470; /* Muted Purple for secondary text */
