@@ -12,6 +12,11 @@ const StyledSignupPage = styled.div`
   justify-content: center;
   height: 100vh;
   width: 100vw;
+  background: linear-gradient(
+    35deg,
+    var(--color-medium-light),
+    var(--color-light)
+  );
   .main {
     padding: var(--space-md);
     display: flex;
@@ -20,6 +25,12 @@ const StyledSignupPage = styled.div`
     justify-content: center;
     flex-direction: column;
     width: 100%;
+
+    background: linear-gradient(
+      225deg,
+      var(--color-medium-light),
+      var(--color-light)
+    );
 
     @media (min-width: 768px) {
       border: 1px solid var(--color-medium-light);
