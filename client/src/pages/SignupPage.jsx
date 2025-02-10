@@ -48,6 +48,15 @@ const StyledSignupPage = styled.div`
   .login {
     text-align: center;
     margin: 5px 0;
+    font-size: var(--fs-small);
+    text-transform: uppercase;
+    padding: 0.5rem;
+    color: var(--color-medium-dark);
+    letter-spacing: 1px;
+    .link {
+      color: var(--color-medium-dark);
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -83,7 +92,10 @@ function SignupPage() {
         )}
         <div className='login'>
           <p>
-            Already have an account? <Link to='/login'>Login</Link>{" "}
+            Already have an account?{" "}
+            <Link className='link' to='/login'>
+              Login
+            </Link>{" "}
           </p>
         </div>
       </div>

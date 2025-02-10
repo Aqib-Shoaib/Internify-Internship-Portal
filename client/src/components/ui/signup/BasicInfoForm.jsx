@@ -62,6 +62,7 @@ function BasicInfoForm({ role, incrementFormNumber }) {
             type='text'
             placeholder={role === "COMPANY" ? "Company Name" : "Full Name"}
             className='input'
+            required
           />
         </InputBox>
         <InputBox>
@@ -70,6 +71,7 @@ function BasicInfoForm({ role, incrementFormNumber }) {
             type='email'
             placeholder='example@gmail.com'
             className='input'
+            required
           />
         </InputBox>
         <InputBox>
@@ -79,15 +81,16 @@ function BasicInfoForm({ role, incrementFormNumber }) {
             value={value}
             onChange={setValue}
             defaultCountry='PK'
+            required
           />
         </InputBox>
         <InputBox>
           <label className='label'>Password</label>
-          <input type='password' className='input' />
+          <input type='password' className='input' required />
         </InputBox>
         <InputBox>
           <label className='label'>Password Confirm</label>
-          <input type='password' className='input' />
+          <input type='password' className='input' required />
         </InputBox>
 
         <InputBox>

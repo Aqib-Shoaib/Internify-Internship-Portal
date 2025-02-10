@@ -24,16 +24,20 @@ const StyledForm = styled.div`
 `;
 
 function CompanyDetailForm() {
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
   return (
     <StyledForm>
       <h2 className='h2'>Company Details</h2>
-      <form className='form'>
+      <form className='form' onSubmit={handleSubmit}>
         <InputBox>
           <label className='label'>Industry / Sector</label>
           <input
             type='text'
             className='input'
             placeholder='Tech, Healthcare, Finance etc.'
+            required
           />
         </InputBox>
         <InputBox>
@@ -42,6 +46,7 @@ function CompanyDetailForm() {
             type='text'
             className='input'
             placeholder='ABC CITY, ROAD XYZ'
+            required
           />
         </InputBox>
         <InputBox className='textarea'>

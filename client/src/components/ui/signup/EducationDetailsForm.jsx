@@ -42,10 +42,14 @@ function EducationDetailsForm() {
   console.log(skills);
   console.log(interest);
   console.log(locationPreference);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
   return (
     <StyledForm>
       <h2 className='h2'>Educational Details</h2>
-      <form className='form'>
+      <form className='form' onSubmit={handleSubmit}>
         <InputBox>
           <label className='label'>College / Univeristy</label>
           <input type='text' className='input' placeholder='UET Taxila' />
@@ -91,12 +95,14 @@ function EducationDetailsForm() {
           <label className='label'>Location Preference</label>
           <KeywordsInput
             onKeywordsChange={handleLocationKeywordsChange}
-            placeholder='React Nodejs Photoshop etc.'
+            placeholder='Remote/onSite or some city you prefer...'
           />
         </InputBox>
 
         <Button>
-          <button className='button'>Signup</button>
+          <button className='button' type='submit'>
+            Signup
+          </button>
         </Button>
       </form>
     </StyledForm>

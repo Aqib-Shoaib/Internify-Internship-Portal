@@ -82,7 +82,7 @@ function Role({ role, setUserRole }) {
     <StyledRole>
       <div className='label'>
         <label>Choose Your Role</label>
-        <span className='precaution'>This can&apos; be changed later!</span>
+        <span className='precaution'>This can&apos;t be changed later!</span>
       </div>
       <div className='roles'>
         <div
