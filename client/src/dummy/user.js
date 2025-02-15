@@ -94,7 +94,7 @@ export const INTERN_USER = {
       date: "2023-09-10",
     },
   ],
-  jobPreferences: ["Remote", "Hybrid"],
+  internshipPreferences: ["Remote", "Islamabad"],
 };
 
 export const HR_USER = {

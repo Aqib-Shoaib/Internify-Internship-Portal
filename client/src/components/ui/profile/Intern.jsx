@@ -8,9 +8,11 @@ import {
   faClock,
   faPaperPlane,
   faPlus,
+  faStar,
   faThumbsDown,
   faUserCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 const ProfilePic = styled.div`
   width: 20rem;
@@ -52,6 +54,30 @@ const MainInfo = styled.div`
     transition: all 0.3s ease;
     &:hover {
       text-decoration: underline;
+    }
+  }
+  .preferences {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    grid-column: 1/-1;
+    span {
+      font-size: var(--fs-body);
+      font-weight: var(--fw-medium);
+      color: var(--color-dark);
+    }
+    .items {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+
+      .item {
+        background: var(--color-medium-light);
+        color: var(--color-dark);
+        padding: 0.5rem;
+        border-radius: 99px;
+        font-size: var(--fs-small);
+      }
     }
   }
 `;
@@ -182,14 +208,73 @@ const Internships = styled.div`
   }
 `;
 
-// const Reviews = styled.div`
-//   display: flex;
-//   gap: 1rem;
-//   flex-wrap: wrap;
-//   align-items: end;
-//   justify-content: start;
+const Reviews = styled.div`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  flex-direction: column;
 
-// `;
+  .review {
+    display: grid;
+    grid-template-columns: 25% 1fr;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0.5rem;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+  .reviewer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+    .name {
+      font-size: var(--fs-body);
+      font-weight: var(--fw-bold);
+      letter-spacing: 1px;
+    }
+  }
+  .small {
+    font-size: var(--fs-small);
+    font-weight: var(--fw-regular);
+    color: var(--color-medium-dark);
+    letter-spacing: 1px;
+  }
+  .reviewContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    .rating {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+`;
+
+const TabBtns = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--color-medium-light);
+
+  .btn {
+    background: transparent;
+    border: none;
+    padding-bottom: 1rem;
+    color: var(--color-medium-dark);
+    transition: all 0.3 ease;
+
+    &:hover {
+      border-bottom: 2px solid var(--color-medium-dark);
+      color: var(--color-dark);
+    }
+  }
+  .active {
+    border-bottom: 2px solid var(--color-medium-dark);
+    color: var(--color-dark);
+  }
+`;
 
 const StyledInternPage = styled.section`
   padding: 2rem;
@@ -225,6 +310,7 @@ const StyledInternPage = styled.section`
 `;
 
 function Intern({ user }) {
+  const [tab, setTab] = useState("experience");
   const {
     profilePic,
     fullName,
@@ -244,7 +330,7 @@ function Intern({ user }) {
     certificates,
     internships,
     reviews,
-    jobPreferences,
+    internshipPreferences,
   } = user;
   return (
     <StyledInternPage>
@@ -275,6 +361,16 @@ function Intern({ user }) {
               {portfolioUrl}
             </a>
           </div>
+          <div className='preferences'>
+            <span>Internship preferences</span>
+            <div className='items'>
+              {internshipPreferences.map((internshipPreference, index) => (
+                <p key={index} className='item'>
+                  {internshipPreference}
+                </p>
+              ))}
+            </div>
+          </div>
         </MainInfo>
       </MainBox>
 
@@ -282,95 +378,155 @@ function Intern({ user }) {
       <Arraybox list={interests} title='Internship Interest' />
       <Arraybox list={location} title='Internship Location preferences' />
 
-      <div>
-        <h2 className='h2'>Previous Experience</h2>
-        <Experience>
-          {workExp.map((exp, index) => (
-            <div className='exp' key={index}>
-              <div className='flex'>
-                <p className='expInfo role'> {exp.role}</p>
-                <p className='expInfo time'> {exp.time}</p>
-              </div>
-              <div className='flex'>
-                <p className='expInfo company'> {exp.company}</p>
-                <p className='expInfo location'> {exp.location}</p>
-              </div>
-              <p className='expInfo'> {exp.description}</p>
-            </div>
-          ))}
-          <button type='button' className='addBtn'>
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
-        </Experience>
-      </div>
+      <TabBtns>
+        <button
+          className={`btn ${tab === "experience" && "active"}`}
+          type='button'
+          onClick={() => setTab("experience")}
+        >
+          Experience
+        </button>
+        <button
+          className={`btn ${tab === "internships" && "active"}`}
+          type='button'
+          onClick={() => setTab("internships")}
+        >
+          Internships Track
+        </button>
+        <button
+          className={`btn ${tab === "certificates" && "active"}`}
+          type='button'
+          onClick={() => setTab("certificates")}
+        >
+          Certificates
+        </button>
+        <button
+          className={`btn ${tab === "reviews" && "active"}`}
+          type='button'
+          onClick={() => setTab("reviews")}
+        >
+          Reviews
+        </button>
+      </TabBtns>
 
-      <div>
-        <h2 className='h2'>Certificates</h2>
-        <Certificates>
-          {certificates.map((certificate, index) => (
-            <div key={index} className='certificates'>
-              <div className='image-container'>
-                <img
-                  className='img'
-                  src={certificate.image}
-                  alt='Certificates image'
-                />
+      {tab === "experience" && (
+        <div>
+          <h2 className='h2'>Previous Experience</h2>
+          <Experience>
+            {workExp.map((exp, index) => (
+              <div className='exp' key={index}>
+                <div className='flex'>
+                  <p className='expInfo role'> {exp.role}</p>
+                  <p className='expInfo time'> {exp.time}</p>
+                </div>
+                <div className='flex'>
+                  <p className='expInfo company'> {exp.company}</p>
+                  <p className='expInfo location'> {exp.location}</p>
+                </div>
+                <p className='expInfo'> {exp.description}</p>
               </div>
-              <p className='date'>{certificate.issueDate}</p>
-              <p className='title'>{certificate.title}</p>
-              <p className='org'>{certificate.issuingOrganization}</p>
-            </div>
-          ))}
-          <button type='button' className='addBtn'>
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
-        </Certificates>
-      </div>
-
-      <div>
-        <h2 className='h2'>Internship Track</h2>
-        <Internships>
-          {internships.map((internship, index) => (
-            <div className='internship' key={index}>
-              <p className='heading'>{internship.name}</p>
-              <p>{internship.company}</p>
-
-              <div className='flex'>
-                <p className='status'>{internship.status.toUpperCase()}</p>
-
-                {/* icon */}
-                {internship.status.toLowerCase().replace(" ", "") ===
-                "applied" ? (
-                  <FontAwesomeIcon className='icon' icon={faPaperPlane} />
-                ) : internship.status.toLowerCase().replace(" ", "") ===
-                  "inProgress" ? (
-                  <FontAwesomeIcon className='icon' icon={faClock} />
-                ) : internship.status.toLowerCase().replace(" ", "") ===
-                  "viewed" ? (
-                  <FontAwesomeIcon className='icon' icon={faUserCheck} />
-                ) : internship.status.toLowerCase().replace(" ", "") ===
-                  "completed" ? (
-                  <FontAwesomeIcon className='icon' icon={faCheckDouble} />
-                ) : internship.status.toLowerCase().replace(" ", "") ===
-                  "rejected" ? (
-                  <FontAwesomeIcon className='icon' icon={faThumbsDown} />
-                ) : (
-                  <FontAwesomeIcon className='icon' icon={faPaperPlane} />
-                )}
+            ))}
+            <button type='button' className='addBtn'>
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+          </Experience>
+        </div>
+      )}
+      {tab === "certificates" && (
+        <div>
+          <h2 className='h2'>Certificates</h2>
+          <Certificates>
+            {certificates.map((certificate, index) => (
+              <div key={index} className='certificates'>
+                <div className='image-container'>
+                  <img
+                    className='img'
+                    src={certificate.image}
+                    alt='Certificates image'
+                  />
+                </div>
+                <p className='date'>{certificate.issueDate}</p>
+                <p className='title'>{certificate.title}</p>
+                <p className='org'>{certificate.issuingOrganization}</p>
               </div>
-            </div>
-          ))}
-          <button type='button' className='addBtn2'>
-            <FontAwesomeIcon icon={faPlus} /> <span>Apply for more</span>
-          </button>
-        </Internships>
-      </div>
-      {jobPreferences.map((jobPreference, index) => (
-        <p key={index}>internships: {jobPreference}</p>
-      ))}
-      {reviews.map((review, index) => (
-        <p key={index}>internships: {review.rating}</p>
-      ))}
+            ))}
+            <button type='button' className='addBtn'>
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+          </Certificates>
+        </div>
+      )}
+
+      {tab === "internships" && (
+        <div>
+          <h2 className='h2'>Internship Track</h2>
+          <Internships>
+            {internships.map((internship, index) => (
+              <div className='internship' key={index}>
+                <p className='heading'>{internship.name}</p>
+                <p>{internship.company}</p>
+
+                <div className='flex'>
+                  <p className='status'>{internship.status.toUpperCase()}</p>
+
+                  {/* icon */}
+                  {internship.status.toLowerCase().replace(" ", "") ===
+                  "applied" ? (
+                    <FontAwesomeIcon className='icon' icon={faPaperPlane} />
+                  ) : internship.status.toLowerCase().replace(" ", "") ===
+                    "inProgress" ? (
+                    <FontAwesomeIcon className='icon' icon={faClock} />
+                  ) : internship.status.toLowerCase().replace(" ", "") ===
+                    "viewed" ? (
+                    <FontAwesomeIcon className='icon' icon={faUserCheck} />
+                  ) : internship.status.toLowerCase().replace(" ", "") ===
+                    "completed" ? (
+                    <FontAwesomeIcon className='icon' icon={faCheckDouble} />
+                  ) : internship.status.toLowerCase().replace(" ", "") ===
+                    "rejected" ? (
+                    <FontAwesomeIcon className='icon' icon={faThumbsDown} />
+                  ) : (
+                    <FontAwesomeIcon className='icon' icon={faPaperPlane} />
+                  )}
+                </div>
+              </div>
+            ))}
+            <button type='button' className='addBtn2'>
+              <FontAwesomeIcon icon={faPlus} /> <span>Apply for more</span>
+            </button>
+          </Internships>
+        </div>
+      )}
+      {tab === "reviews" && (
+        <div>
+          <h2 className='h2'>Reviews & Feedbacks</h2>
+          <Reviews>
+            {reviews.map((review, index) => (
+              <div key={index} className='review'>
+                <div>
+                  <p className='reviewer'>
+                    <span className='name'>{review.reviewerName}</span>
+                    <span className='small'>{review.reviewerJobTitle}</span>
+                  </p>
+
+                  <p className='small'>{review.date}</p>
+                </div>
+                <div className='reviewContent'>
+                  <p className='rating'>
+                    <span>{review.rating}</span>
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      size='sm'
+                      style={{ color: "#FFD43B" }}
+                    />
+                  </p>
+                  <p>{review.review}</p>
+                </div>
+              </div>
+            ))}
+          </Reviews>
+        </div>
+      )}
     </StyledInternPage>
   );
 }

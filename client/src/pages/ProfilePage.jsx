@@ -13,8 +13,8 @@ const StyledPage = styled.div`
 `;
 
 function ProfilePage() {
-  // const user = HR_USER;
-  const user = INTERN_USER;
+  const user = HR_USER;
+  // const user = INTERN_USER;
 
   return (
     <StyledPage>
