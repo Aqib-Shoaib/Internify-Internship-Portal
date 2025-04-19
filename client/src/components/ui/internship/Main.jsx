@@ -26,10 +26,11 @@ const Listing = styled.div`
   grid-template-columns: auto;
   gap: 5rem;
   place-items: center;
+  padding: 0 1.5rem;
 
   @media (min-width: 768px) {
     grid-template-columns: auto auto;
-    gap: 3rem;
+    gap: 1.5rem;
   }
   @media (min-width: 1366px) {
     grid-template-columns: auto auto auto;
@@ -116,10 +117,10 @@ const FAKE_DATA = [
 function Main() {
   return (
     <StyledMain>
-      <div className="head">
-        <div className="div">
+      <div className='head'>
+        <div className='div'>
           <h3>Recommended Jobs</h3>
-          <span className="span">{FAKE_DATA.length}</span>
+          <span className='span'>{FAKE_DATA.length}</span>
         </div>
         <CustomDropdown />
       </div>

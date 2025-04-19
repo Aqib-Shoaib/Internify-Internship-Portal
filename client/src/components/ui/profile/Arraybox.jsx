@@ -8,8 +8,15 @@ const StyledArrayBox = styled.div`
   flex-direction: column;
   width: fit-content;
   gap: 0.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-contrast);
+  margin-bottom: 1rem;
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.11);
+
+  .h2 {
+    font-size: var(--fs-body);
+  }
 
   .array {
     display: flex;
@@ -18,11 +25,10 @@ const StyledArrayBox = styled.div`
   }
   .array-item {
     background: var(--color-contrast);
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 10px;
-    color: var(--color-accent);
-    font-size: var(--fs-body);
-    font-weight: var(--fw-light);
+    color: var(--color-light);
+    font-size: var(--fs-small);
   }
 
   .add-more-btn {

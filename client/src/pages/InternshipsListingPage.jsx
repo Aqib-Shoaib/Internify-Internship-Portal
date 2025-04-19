@@ -7,9 +7,9 @@ import Main from "../components/ui/internship/Main";
 const StyledPage = styled.div`
   @media (min-width: 992px) {
     .layout {
-      padding: 2rem;
+      padding: 1.5rem;
       display: grid;
-      grid-template-columns: 20vw 80vw;
+      grid-template-columns: 15vw 85vw;
     }
   }
 `;
@@ -19,7 +19,7 @@ function InternshipsListingPage() {
     <StyledPage>
       <InternshipNav />
 
-      <div className="layout">
+      <div className='layout'>
         <FilterSidebar />
         <Main />
       </div>

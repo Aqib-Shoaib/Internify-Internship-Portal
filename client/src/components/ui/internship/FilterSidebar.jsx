@@ -6,7 +6,7 @@ import Modal from "../../utils/Modal";
 import Filter from "./Filter";
 
 const StyledSidebar = styled.div`
-  padding: 2rem;
+  padding: 1.5rem;
   border-right: 1px solid var(--color-dark);
   position: relative;
 `;

@@ -72,9 +72,9 @@ const MainInfo = styled.div`
       flex-wrap: wrap;
 
       .item {
-        background: var(--color-medium-light);
-        color: var(--color-dark);
-        padding: 0.5rem;
+        background: var(--color-medium-dark);
+        color: var(--color-light);
+        padding: 0.5rem 1.5rem;
         border-radius: 99px;
         font-size: var(--fs-small);
       }
@@ -88,7 +88,11 @@ const MainBox = styled.main`
   gap: var(--space-lg);
   align-items: end;
   justify-content: left;
-  margin: 2rem 0;
+  background: #fff;
+  margin-bottom: 1rem;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.11);
 `;
 
 const Experience = styled.div`
@@ -97,14 +101,19 @@ const Experience = styled.div`
   flex-wrap: wrap;
   align-items: end;
   justify-content: start;
+  background: #f7f7f7;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.11);
 
   .exp {
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 10px;
     width: 40rem;
-    background: var(--color-medium-dark);
+    background: #fff;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.11);
     .expInfo {
-      color: var(--color-light);
+      color: var(--color-dark);
     }
   }
   .flex {
@@ -121,10 +130,11 @@ const Experience = styled.div`
   }
   .role,
   .time {
-    background: var(--color-medium-light);
-    color: var(--color-dark);
-    padding: 0.5rem;
+    background: var(--color-medium-dark);
+    color: var(--color-light) !important;
+    padding: 0.5rem 0.75rem;
     border-radius: 99px;
+    font-size: var(--fs-small);
     width: fit-content;
   }
 `;
@@ -135,17 +145,20 @@ const Certificates = styled.div`
   flex-wrap: wrap;
   align-items: end;
   justify-content: start;
+  background: #f7f7f7;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.11);
 
   .certificates {
-    width: 35rem;
+    background: #fff;
     padding: 0.5rem;
-    border: 1px solid var(--color-medium-light);
     border-radius: 5px;
     position: relative;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.11);
   }
   .image-container {
     width: 100%;
-    height: 20rem;
     margin-bottom: 1rem;
 
     .img {
@@ -180,20 +193,67 @@ const Internships = styled.div`
   flex-wrap: wrap;
   align-items: end;
   justify-content: start;
+  background: #f7f7f7;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.11);
 
   .internship {
-    width: 33vw;
     padding: 0.5rem;
     border: 1px solid var(--color-medium-light);
-    border-radius: 5px;
+    border-radius: 10px;
   }
   .flex {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
+    border-radius: 999px;
+    padding: 0.25rem 1rem;
+    width: fit-content;
+    margin-top: 0.5rem;
   }
   .status {
     font-size: var(--fs-small);
+  }
+  .applied {
+    background: #a594d840;
+    border: 1px solid #a594d8;
+    p,
+    .icon {
+      color: #a594d8;
+    }
+  }
+  .inProgress {
+    background: #7f66c040;
+    border: 1px solid #7f66c0;
+    p,
+    .icon {
+      color: #7f66c0;
+    }
+  }
+  .rejected {
+    background: #ff231140;
+    border: 1px solid #ff2311;
+    p,
+    .icon {
+      color: #ff2311;
+    }
+  }
+  .completed {
+    border: 1px solid #34c759;
+    background: #34c75940;
+    p,
+    .icon {
+      color: #34c759;
+    }
+  }
+  .viewed {
+    border: 1px solid #87ceeb;
+    background: #87ceeb40;
+    p,
+    .icon {
+      color: #87ceeb;
+    }
   }
   .icon {
     font-size: var(--fs-small);
@@ -213,15 +273,20 @@ const Reviews = styled.div`
   gap: 1rem;
   flex-wrap: wrap;
   flex-direction: column;
+  background: #f7f7f7;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.11);
 
   .review {
     display: grid;
     grid-template-columns: 25% 1fr;
     align-items: center;
+    background: #fff;
     justify-content: space-between;
-    padding: 1rem 0.5rem;
+    padding: 1rem;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+    border-radius: 16px;
   }
   .reviewer {
     display: flex;
@@ -246,6 +311,7 @@ const Reviews = styled.div`
     .rating {
       display: flex;
       gap: 0.5rem;
+      align-items: center;
     }
   }
 `;
@@ -254,7 +320,7 @@ const TabBtns = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
-  padding: 2rem;
+  padding: 1.5rem;
   padding-bottom: 0;
   border-bottom: 1px solid var(--color-medium-light);
 
@@ -264,6 +330,7 @@ const TabBtns = styled.div`
     padding-bottom: 1rem;
     color: var(--color-medium-dark);
     transition: all 0.3 ease;
+    font-size: var(--fs-body);
 
     &:hover {
       border-bottom: 2px solid var(--color-medium-dark);
@@ -283,28 +350,34 @@ const StyledInternPage = styled.section`
     margin: 1rem 0;
     text-transform: capitalize;
   }
+  .tabheading {
+    margin: 1rem 0;
+    text-transform: capitalize;
+    font-size: var(--fs-large);
+  }
   .addBtn {
-    border: 1px solid var(--color-medium-dark);
-    padding: 2rem;
-    border-radius: 10px;
+    padding: 1rem;
+    border-radius: 999px;
     background: var(--color-medium-dark);
     transition: all 0.3s ease;
+    color: var(--color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
-      background: var(--color-medium-light);
+      background: var(--color-dark);
     }
   }
   .addBtn2 {
-    border: 1px solid var(--color-medium-dark);
-    padding: 1rem;
-    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
     background: var(--color-medium-dark);
     transition: all 0.3s ease;
-    color: var(--color-medium-light);
+    color: var(--color-light);
 
     &:hover {
-      color: var(--color-dark);
-      background: var(--color-medium-light);
+      background: var(--color-dark);
     }
   }
 `;
@@ -358,7 +431,7 @@ function Intern({ user }) {
             <p>{shortbio}</p>
 
             <a className='link' href={portfolioUrl}>
-              {portfolioUrl}
+              Check out my Portfolio
             </a>
           </div>
           <div className='preferences'>
@@ -411,7 +484,7 @@ function Intern({ user }) {
 
       {tab === "experience" && (
         <div>
-          <h2 className='h2'>Previous Experience</h2>
+          <h2 className='tabheading'>Previous Experience</h2>
           <Experience>
             {workExp.map((exp, index) => (
               <div className='exp' key={index}>
@@ -434,7 +507,7 @@ function Intern({ user }) {
       )}
       {tab === "certificates" && (
         <div>
-          <h2 className='h2'>Certificates</h2>
+          <h2 className='tabheading'>Certificates</h2>
           <Certificates>
             {certificates.map((certificate, index) => (
               <div key={index} className='certificates'>
@@ -459,14 +532,33 @@ function Intern({ user }) {
 
       {tab === "internships" && (
         <div>
-          <h2 className='h2'>Internship Track</h2>
+          <h2 className='tabheading'>Internship Track</h2>
           <Internships>
             {internships.map((internship, index) => (
               <div className='internship' key={index}>
                 <p className='heading'>{internship.name}</p>
                 <p>{internship.company}</p>
 
-                <div className='flex'>
+                <div
+                  className={`flex  ${
+                    internship.status.toLowerCase().replace(" ", "") ===
+                    "applied"
+                      ? "applied"
+                      : internship.status.toLowerCase().replace(" ", "") ===
+                        "completed"
+                      ? "completed"
+                      : internship.status.toLowerCase().replace(" ", "") ===
+                        "inProgress"
+                      ? "inProgress"
+                      : internship.status.toLowerCase().replace(" ", "") ===
+                        "viewed"
+                      ? "viewed"
+                      : internship.status.toLowerCase().replace(" ", "") ===
+                        "rejected"
+                      ? "rejected"
+                      : ""
+                  } `}
+                >
                   <p className='status'>{internship.status.toUpperCase()}</p>
 
                   {/* icon */}
@@ -499,7 +591,7 @@ function Intern({ user }) {
       )}
       {tab === "reviews" && (
         <div>
-          <h2 className='h2'>Reviews & Feedbacks</h2>
+          <h2 className='tabheading'>Reviews & Feedbacks</h2>
           <Reviews>
             {reviews.map((review, index) => (
               <div key={index} className='review'>

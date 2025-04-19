@@ -114,7 +114,7 @@ export const HR_USER = {
   recruiterJobTitle: "HR Manager",
   mission:
     "To empower businesses with cutting-edge software solutions while fostering a culture of innovation and growth.",
-  logo: "apple.png",
+  logo: "/apple.png",
   internshipsPosted: [
     {
       name: "Graphic Designer",
@@ -141,7 +141,7 @@ export const HR_USER = {
       applications: 32,
     },
   ],
-  internsCount: 12,
+  internCount: 12,
   reviews: [
     {
       intern: "Aqib Shoaib",

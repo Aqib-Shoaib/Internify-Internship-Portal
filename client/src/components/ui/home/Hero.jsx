@@ -66,7 +66,7 @@ const Image = styled.div`
 function Hero() {
   return (
     <StyledHero>
-      <div data-aos="fade-right">
+      <div data-aos='fade-right'>
         <Title>
           Unlock Your Potential: <span>Top Internships </span>
           Top Companies
@@ -78,10 +78,11 @@ function Hero() {
         <Btn>Get Started</Btn>
       </div>
 
-      <Image data-aos="fade-left">
+      <Image data-aos='fade-left'>
         <img
-          src="/internship-illustration.png"
-          alt="vector illustration image for internship"
+          src='/internship-illustration.png'
+          alt='vector illustration image for internship'
+          loading='lazy'
         />
       </Image>
     </StyledHero>
