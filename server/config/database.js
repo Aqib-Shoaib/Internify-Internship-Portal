@@ -5,6 +5,7 @@ const connectToMongodb = async () => {
     "<DB_PASSWORD>",
     process.env.DB_PASSWORD
   );
+  console.log("Connecting to MongoDB Atlas...");
 
   return mongoose.connect(DB_URL, {
     useNewUrlParser: true,

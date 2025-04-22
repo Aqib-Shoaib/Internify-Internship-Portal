@@ -16,7 +16,7 @@ app.use("/api", apiRoutes);
 
 // Basic route
 app.get("/", (req, res) => {
-  res.send("Welcome to the Node.js Backend!");
+  res.send("Are you sure you belong here!!?");
 });
 
 // Connect to MongoDB Atlas and start server
