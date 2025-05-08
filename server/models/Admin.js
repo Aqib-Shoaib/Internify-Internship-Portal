@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 // Admin Schema
 const AdminSchema = new Schema({
@@ -9,7 +10,7 @@ const AdminSchema = new Schema({
     required: true,
     unique: true,
   },
-  role: { type: String, required: true },
+  role: { type: String, required: true }, //role has been added for scalability purposes
 });
 const Admin = mongoose.model("Admin", AdminSchema);
 module.exports = Admin;

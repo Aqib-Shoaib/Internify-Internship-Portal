@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 // Internship Application Schema
 const InternshipApplicationSchema = new Schema({
@@ -19,7 +20,7 @@ const InternshipApplicationSchema = new Schema({
 });
 const InternshipApplication = mongoose.model(
   "InternshipApplication",
-  InternshipApplicationSchema
+  InternshipApplicationSchema,
 );
 
 module.exports = InternshipApplication;

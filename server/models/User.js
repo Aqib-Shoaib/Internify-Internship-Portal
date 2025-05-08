@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+
+const { Schema } = mongoose;
 
 // User Schema
 const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
+  passwordHash: { type: String, required: true, select: false },
   userType: {
     type: String,
     enum: ["INTERN", "COMPANY", "ADMIN"],

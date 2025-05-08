@@ -1,6 +1,9 @@
 require("dotenv").config();
 const express = require("express");
+const morgan = require("morgan");
 const connectToMongodb = require("./config/database");
+const apiRoutes = require("./routes/api");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -8,18 +11,17 @@ const PORT = process.env.PORT || 3000;
 if (process.env.NODE_ENV !== "production") {
   app.use(morgan("dev"));
 }
+
 app.use(express.json());
 
 // Routes
-const apiRoutes = require("./routes/api");
 app.use("/api", apiRoutes);
-
-// Basic route
 app.get("/", (req, res) => {
   res.send("Are you sure you belong here!!?");
 });
 
 // Connect to MongoDB Atlas and start server
+let server;
 connectToMongodb()
   .then(() => {
     server = app.listen(process.env.PORT || 8000, () => {
