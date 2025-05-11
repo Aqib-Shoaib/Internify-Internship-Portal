@@ -1,156 +1,178 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+const User = require('../models/User');
+const { createSendToken } = require('../utils/jwtHelpers');
+const {
+  sendWelcome,
+  sendForgotPasswordEmail,
+  sendOtpEmail,
+} = require('../utils/emails');
+const { generateOTP } = require('../utils/general');
 
-const User = require("../models/User");
-const Admin = require("../models/Admin");
-const Intern = require("../models/Intern");
-const Company = require("../models/Company");
-const { createSendToken } = require("../utils/jwtHelpers");
-
-//controller for auth related functions
-
-const createAdmin = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
+const register = async (req, res) => {
+  const { name, email, password, role } = req.body;
+  const otp = generateOTP();
+  const otpExpires = Date.now() + 5 * 60 * 1000;
   try {
-    const { email, password, role } = req.body;
+    if (!name || !email || !password || !role)
+      throw new Error('Please provide all required fields.');
 
-    // Check if email exists
-    const existingUser = await User.findOne({ email }).session(session);
-    if (existingUser) throw new Error("Email already in use");
-
-    // Create User
-    const user = new User({
+    if (role !== 'INTERN' && role !== 'COMPANY')
+      throw new Error('Role must be either INTERN or COMPANY.');
+    const userObj = {
+      name,
       email,
-      passwordHash: await bcrypt.hash(password, 10),
-      userType: "ADMIN",
-    });
-    await user.save({ session });
-
-    // Create Admin profile
-    const admin = new Admin({
-      userId: user._id,
+      password,
       role,
+      otp,
+      otpExpires,
+    };
+    if (role === 'INTERN') {
+      userObj.skills = req.body.skills || [];
+      userObj.education = req.body.education || [];
+      userObj.resume = req.body.resume || '';
+    } else if (role === 'COMPANY') {
+      userObj.website = req.body.website || '';
+      userObj.industry = req.body.industry || '';
+      userObj.location = req.body.location || '';
+    }
+
+    const newUser = await User.create(userObj);
+
+    await sendOtpEmail(email, otp);
+
+    res.status(201).json({
+      status: 'success',
+      message: 'OTP sent to email. Please verify to complete signup.',
+      userEmail: newUser.email,
     });
-    await admin.save({ session });
-
-    await session.commitTransaction();
-    res.status(201).json({ message: "Admin created", user });
-  } catch (error) {
-    await session.abortTransaction();
-    res.status(400).json({ error: error.message });
-  } finally {
-    session.endSession();
-  }
-};
-
-const createUser = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
-  try {
-    const { email, password, userType, profile } = req.body;
-
-    // Validate userType
-    if (!["INTERN", "COMPANY"].includes(userType)) {
-      throw new Error("Invalid user type. Only INTERN or COMPANY allowed.");
-    }
-
-    // Check if email exists
-    const existingUser = await User.findOne({ email }).session(session);
-    if (existingUser) {
-      throw new Error("Email already in use.");
-    }
-
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    // Create User
-    const user = new User({
-      email,
-      passwordHash,
-      userType,
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
     });
-    await user.save({ session });
-
-    // Create type-specific profile
-    if (userType === "INTERN") {
-      const intern = new Intern({
-        userId: user._id,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        resumeUrl: profile.resumeUrl,
-        skills: profile.skills || [],
-        education: profile.education,
-      });
-      await intern.save({ session });
-    } else if (userType === "COMPANY") {
-      const company = new Company({
-        userId: user._id,
-        companyName: profile.companyName,
-        industry: profile.industry,
-        location: profile.location,
-        website: profile.website,
-      });
-      await company.save({ session });
-    }
-
-    await session.commitTransaction();
-    createSendToken(user, 200, res);
-  } catch (error) {
-    await session.abortTransaction();
-    res.status(400).json({ error: error.message });
-  } finally {
-    session.endSession();
-  }
-};
-
-const updatePassword = async (req, res) => {
-  try {
-    const { oldPassword, newPassword } = req.body;
-    if (!oldPassword || !newPassword) {
-      return res
-        .status(400)
-        .json({ error: "Old and new passwords are required" });
-    }
-
-    const user = await User.findById(req.user.id).select("+passwordHash");
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    const isMatch = await bcrypt.compare(oldPassword, user.passwordHash);
-    if (!isMatch)
-      return res.status(401).json({ error: "Incorrect old password" });
-
-    user.passwordHash = await bcrypt.hash(newPassword, 10);
-    user.updatedAt = Date.now();
-    await user.save();
-
-    createSendToken(user, 200, res);
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
   }
 };
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email or Password missing" });
-    }
+    if (!email || !password)
+      return res
+        .status(400)
+        .json({ message: 'Please provide email and password.' });
 
-    //checking if email exists
-    const user = await User.findOne({ email }).select("+passwordHash");
+    const user = await User.findOne({ email }).select('+password');
+    if (!user || !(await bcrypt.compare(password, user.password)))
+      return res.status(401).json({ message: 'Incorrect email or password.' });
 
-    //checking if there is a user with provided email and password
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
-      return res.status(400).json({ error: "Invalid Email or Password" });
-    }
-    //sending the response if all guard clauses are passed
     createSendToken(user, 200, res);
-  } catch (error) {
-    res.status(500).json({ error: "Server Error" });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
-module.exports = { createAdmin, createUser, updatePassword, login };
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  try {
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: 'No user found with that email.' });
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+
+    user.passwordResetToken = hashedToken;
+    user.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 mins
+    await user.save({ validateBeforeSave: false });
+
+    await sendForgotPasswordEmail(email, resetToken);
+
+    res
+      .status(200)
+      .json({ status: 'success', message: 'Token sent to email!' });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordTokenExpiresAt = undefined;
+    await user.save({ validateBeforeSave: false });
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { password, token } = req.body;
+  try {
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
+
+    if (!user)
+      return res
+        .status(400)
+        .json({ message: 'Token is invalid or has expired.' });
+
+    user.password = password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Password has been reset, please log in again',
+    });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('+password');
+
+    if (!(await bcrypt.compare(req.body.currentPassword, user.password)))
+      return res
+        .status(401)
+        .json({ message: 'Your current password is incorrect.' });
+
+    user.password = req.body.newPassword;
+    await user.save();
+
+    createSendToken(user, 200, res);
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!user || user.otp !== otp || user.otpExpires < Date.now()) {
+    await User.deleteOne({ _id: user._id });
+    throw new Error('Invalid or expired OTP');
+  }
+
+  user.allowLogin = true;
+  user.otp = undefined;
+  user.otpExpires = undefined;
+  await user.save();
+  await sendWelcome(user.name, email);
+  createSendToken(user, 200, res);
+};
+
+module.exports = {
+  register,
+  login,
+  forgotPassword,
+  resetPassword,
+  updatePassword,
+  verifyOtp,
+};

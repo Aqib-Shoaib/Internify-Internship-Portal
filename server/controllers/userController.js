@@ -1,290 +1,172 @@
-const mongoose = require('mongoose');
-
 const User = require('../models/User');
-const Intern = require('../models/Intern');
-const Company = require('../models/Company');
-const Admin = require('../models/Admin');
 
-//controller for user related functions, excluding auth related functions
-
-const getUser = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
-    let profile;
-    if (req.user.userType === 'INTERN') {
-      profile = await Intern.findOne({ userId: req.user._id });
-    } else if (req.user.userType === 'COMPANY') {
-      profile = await Company.findOne({ userId: req.user._id });
-    } else if (req.user.userType === 'ADMIN') {
-      profile = await Admin.findOne({ userId: req.user._id });
-    }
-
-    res.json({
-      user: {
-        email: req.user.email,
-        userType: req.user.userType,
-        createdAt: req.user.createdAt,
-      },
-      profile,
+    const users = await User.find();
+    res.status(200).json({
+      status: 'success',
+      results: users.length,
+      data: users,
     });
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
-const deleteUser = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
+const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).session(session);
-    if (!user) throw new Error('User not found');
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found.' });
 
-    // Delete type-specific profile
-    if (user.userType === 'INTERN') {
-      await Intern.deleteOne({ userId: user._id }).session(session);
-      // Delete related applications
-      // await InternshipApplication.deleteMany({ internId: user._id }).session(
-      //   session,
-      // );
-      // Delete related reviews
-      // await Review.deleteMany({
-      //   $or: [{ reviewerId: user._id }, { reviewedUserId: user._id }],
-      // }).session(session);
-    } else if (user.userType === 'COMPANY') {
-      await Company.deleteOne({ userId: user._id }).session(session);
-      // Delete related internships and their applications
-      // const internships = await Internship.find({
-      //   companyId: user._id,
-      // }).session(session);
-      // const internshipIds = internships.map((internship) => internship._id);
-      // await InternshipApplication.deleteMany({
-      //   internshipId: { $in: internshipIds },
-      // }).session(session);
-      // await Internship.deleteMany({ companyId: user._id }).session(session);
-      // // Delete related reviews
-      // await Review.deleteMany({
-      //   $or: [{ reviewerId: user._id }, { reviewedUserId: user._id }],
-      // }).session(session);
-    } else if (user.userType === 'ADMIN') {
-      await Admin.deleteOne({ userId: user._id }).session(session);
-    }
+    res.status(200).json({ status: 'success', data: user });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
 
-    // Delete user
-    await user.deleteOne({ session });
+const deleteMe = async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { isActive: false },
+      { new: true },
+    );
 
-    await session.commitTransaction();
-    res.json({ message: 'User deleted' });
-  } catch (error) {
-    await session.abortTransaction();
-    res.status(400).json({ error: error.message });
-  } finally {
-    session.endSession();
+    if (!deletedUser)
+      return res.status(404).json({ message: 'User not found.' });
+
+    res.status(204).json({ status: 'success', data: null });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
 const updateUser = async (req, res) => {
-  const session = await mongoose.startSession();
-  let updatedProfile = null;
-  session.startTransaction();
-
   try {
-    const { profile } = req.body;
+    const fieldsToUpdate = { ...req.body };
+    delete fieldsToUpdate.password;
+    delete fieldsToUpdate.role;
 
-    if (!profile && typeof profile !== 'object')
-      throw new Error('Profile data is required and must be an object');
-    const user = await User.findById(req.user.id).session(session);
-    if (!user) throw new Error('User not found');
-
-    // Only update updatedAt timestamp
-    user.updatedAt = Date.now();
-    await user.save({ session });
-
-    // Update type-specific profile
-    if (user.userType === 'INTERN') {
-      const intern = await Intern.findOne({ userId: user._id }).session(
-        session,
-      );
-      if (!intern) throw new Error('Intern profile not found');
-      Object.assign(intern, profile);
-      await intern.save({ session });
-      updatedProfile = intern;
-    } else if (user.userType === 'COMPANY') {
-      const company = await Company.findOne({ userId: user._id }).session(
-        session,
-      );
-      if (!company) throw new Error('Company profile not found');
-      Object.assign(company, profile);
-      await company.save({ session });
-      updatedProfile = company;
-    }
-
-    await session.commitTransaction();
-    res
-      .status(200)
-      .json({ message: 'User updated', updatedUser: { user, updatedProfile } });
-  } catch (error) {
-    await session.abortTransaction();
-    res.status(400).json({ error: error.message });
-  } finally {
-    session.endSession();
-  }
-};
-
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.status(200).json(users);
-  } catch (error) {
-    res.status(500).json({ error: 'Server Error' });
-  }
-};
-
-const getAllInterns = async (req, res) => {
-  try {
-    const interns = await Intern.find({}).populate({
-      path: 'userId', // The field to populate
-      select: 'email', // Fields to return from the populated doc
-    });
-    res.status(200).json(interns);
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
-};
-const getAllCompanies = async (req, res) => {
-  try {
-    const companies = await Company.find({}).populate({
-      path: 'userId', // The field to populate
-      select: 'email', // Fields to return from the populated doc
-    });
-    res.status(200).json(companies);
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
-};
-const getAllAdmins = async (req, res) => {
-  try {
-    const admins = await Admin.find({}).populate({
-      path: 'userId', // The field to populate
-      select: 'email', // Fields to return from the populated doc
-    });
-    res.status(200).json(admins);
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
-  }
-};
-
-const updateUserProfile = async (req, res) => {
-  const userId = req.params.id;
-  const { profile } = req.body;
-
-  const user = await User.findById(userId);
-  if (!user) {
-    return res.status(404).json({ error: 'User not found' });
-  }
-  user.updatedAt = Date.now();
-  await user.save();
-  let updatedProfile = null;
-
-  if (user.userType === 'INTERN') {
-    const intern = await Intern.findOne({ userId: user._id });
-    if (!intern) {
-      return res.status(404).json({ error: 'Intern Profile not found' });
-    }
-    Object.assign(intern, profile);
-    await intern.save();
-    updatedProfile = intern;
-  } else if (user.userType === 'COMPANY') {
-    const company = await Company.findOne({ userId: user._id });
-    if (!company) {
-      return res.status(404).json({ error: 'Company Profile not found' });
-    }
-    Object.assign(company, profile);
-    await company.save();
-    updatedProfile = company;
-  } else if (user.userType === 'ADMIN') {
-    const admin = await Admin.findOne({ userId: user._id });
-    if (!admin) {
-      return res.status(404).json({ error: 'Admin Profile not found' });
-    }
-    Object.assign(admin, profile);
-    await admin.save();
-    updatedProfile = admin;
-  }
-
-  res
-    .status(200)
-    .json({
-      message: 'User updated by admin',
-      updatedUser: { user, updatedProfile },
-    });
-};
-
-const getUserProfile = async (req, res) => {
-  const userId = req.params.id;
-  const user = await User.findById(userId);
-  try {
-    let profile;
-    if (user.userType === 'INTERN') {
-      profile = await Intern.findOne({ userId: user._id });
-    } else if (user.userType === 'COMPANY') {
-      profile = await Company.findOne({ userId: user._id });
-    } else if (user.userType === 'ADMIN') {
-      profile = await Admin.findOne({ userId: user._id });
-    }
-
-    res.json({
-      user: {
-        email: user.email,
-        userType: user.userType,
-        createdAt: user.createdAt,
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      fieldsToUpdate,
+      {
+        new: true,
+        runValidators: true,
       },
-      profile,
+    );
+
+    if (!updatedUser)
+      return res.status(404).json({ message: 'User not found.' });
+
+    res.status(200).json({
+      status: 'success',
+      data: updatedUser,
     });
-  } catch (error) {
-    res.status(500).json({ error: 'Server error' });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
-const deleteUserProfile = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-  const userId = req.params.id;
-
+const deleteUser = async (req, res) => {
   try {
-    const user = await User.findById(userId).session(session);
+    const deletedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { isActive: false },
+      { new: true },
+    );
+
+    if (!deletedUser)
+      return res.status(404).json({ message: 'User not found.' });
+
+    res.status(204).json({ status: 'success', data: null });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
+const verifyCompany = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user || user.role !== 'COMPANY')
+      return res.status(404).json({ message: 'Company not found.' });
+
+    user.company.isVerified = true;
+    await user.save();
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Company verified successfully.',
+      data: user,
+    });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
+
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
     if (!user) throw new Error('User not found');
+    if (user.isActive === false) throw new Error('User is not active');
+    res.status(200).json({ status: 'success', data: user });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
 
-    // Delete type-specific profile
-    if (user.userType === 'INTERN') {
-      await Intern.deleteOne({ userId: user._id }).session(session);
-    } else if (user.userType === 'COMPANY') {
-      await Company.deleteOne({ userId: user._id }).session(session);
-    } else if (user.userType === 'ADMIN') {
-      await Admin.deleteOne({ userId: user._id }).session(session);
-    }
+const updateMe = async (req, res) => {
+  try {
+    const fieldsToUpdate = { ...req.body };
+    delete fieldsToUpdate.password;
+    delete fieldsToUpdate.role;
 
-    // Delete user
-    await user.deleteOne({ session });
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      fieldsToUpdate,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
-    await session.commitTransaction();
-    res.json({ message: 'User deleted by admin' });
-  } catch (error) {
-    await session.abortTransaction();
-    res.status(400).json({ error: error.message });
-  } finally {
-    session.endSession();
+    res.status(200).json({
+      status: 'success',
+      data: updatedUser,
+    });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
+
+const createAdmin = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const newUser = await User.create({
+      name,
+      email,
+      password,
+      role: 'ADMIN',
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: newUser,
+    });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
   }
 };
 
 module.exports = {
-  getUser,
-  deleteUser,
-  updateUser,
   getAllUsers,
-  getAllInterns,
-  getAllCompanies,
-  getAllAdmins,
-  updateUserProfile,
-  getUserProfile,
-  deleteUserProfile,
+  getUser,
+  updateUser,
+  deleteUser,
+  verifyCompany,
+  getMe,
+  updateMe,
+  deleteMe,
+  createAdmin,
 };

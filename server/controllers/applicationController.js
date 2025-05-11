@@ -14,7 +14,7 @@ const createApplication = async (req, res) => {
   try {
     const { internship, coverLetter, resumeLink } = req.body;
     const exists = await Application.findOne({
-      intern: req.user._id,
+      //   intern: req.user._id,
       internship,
     });
     if (exists) return res.status(400).json({ message: 'Already applied' });
@@ -27,7 +27,7 @@ const createApplication = async (req, res) => {
     });
     res.status(201).json({ status: 'success', data: application });
   } catch (err) {
-    res.status(400).json({ status: 'fail', message: 'Server Error' });
+    res.status(500).json({ status: 'fail', message: 'Server Error' });
   }
 };
 
@@ -41,7 +41,14 @@ const getMyApplications = async (req, res) => {
     const skip = (page - 1) * limit;
 
     const applications = await Application.find(filter)
-      .populate('internship', 'title company')
+      .populate({
+        path: 'internship',
+        select: 'title company', // Select fields from Internship
+        populate: {
+          path: 'company', // Populate the company field in Internship
+          select: 'companyName', // Select fields from User (or Company)
+        },
+      })
       .skip(skip)
       .limit(limit);
 
@@ -70,8 +77,8 @@ const getApplication = async (req, res) => {
 const getInternshipApplications = async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.internshipId);
-    if (!internship || !internship.company.equals(req.user.companyId))
-      return res.status(403).json({ message: 'Unauthorized' });
+    // if (!internship || !internship.company.equals(req.user.companyId))
+    //   return res.status(403).json({ message: 'Unauthorized' });
 
     const filter = buildFilter(req.query);
     filter.internship = req.params.internshipId;

@@ -27,7 +27,7 @@ applicationRouter.get(
   getInternshipApplications,
 );
 applicationRouter.patch(
-  '/company/:id/status',
+  '/company/status/:id',
   roleMiddleware(['COMPANY']),
   updateApplicationStatus,
 );
