@@ -18,7 +18,11 @@ const {
   updateMe,
   deleteMe,
   createAdmin,
+  uploadProfileImage,
+  uploadResumeFile,
 } = require('../controllers/userController');
+const upload = require('../utils/multer');
+const { uploadResume } = require('../utils/pdfMulter');
 
 const userRouter = express.Router();
 
@@ -33,6 +37,16 @@ userRouter.use(authMiddleware);
 userRouter.get('/me', getMe);
 userRouter.delete('/me', deleteMe); //self delete for now
 userRouter.patch('/password', updatePassword);
+userRouter.patch(
+  '/uploadResume',
+  uploadResume.single('resume'), // input name must be 'resume'
+  uploadResumeFile,
+);
+userRouter.patch(
+  '/uploadProfile',
+  upload.single('profileImage'),
+  uploadProfileImage,
+);
 userRouter.patch(
   '/me',
   roleMiddleware(['INTERN', 'COMPANY']), //admin can not update his/her profile as there is not much other than role yet
