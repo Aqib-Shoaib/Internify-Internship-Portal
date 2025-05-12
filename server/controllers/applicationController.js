@@ -46,7 +46,7 @@ const getMyApplications = async (req, res) => {
         select: 'title company', // Select fields from Internship
         populate: {
           path: 'company', // Populate the company field in Internship
-          select: 'companyName', // Select fields from User (or Company)
+          select: 'name', // Select fields from User (or Company)
         },
       })
       .skip(skip)
@@ -77,8 +77,8 @@ const getApplication = async (req, res) => {
 const getInternshipApplications = async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.internshipId);
-    // if (!internship || !internship.company.equals(req.user.companyId))
-    //   return res.status(403).json({ message: 'Unauthorized' });
+    if (!internship || !internship.company.equals(req.user.id))
+      return res.status(403).json({ message: 'Unauthorized' });
 
     const filter = buildFilter(req.query);
     filter.internship = req.params.internshipId;

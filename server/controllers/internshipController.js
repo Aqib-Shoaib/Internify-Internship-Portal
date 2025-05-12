@@ -27,7 +27,7 @@ const getInternships = async (req, res) => {
     if (maxSalary) filter.salary = { $lte: maxSalary };
 
     const internships = await Internship.find(filter)
-      .populate('company', 'companyName') // populating company name only
+      .populate('company', 'name') // populating company name only
       .sort({ [sort]: -1 }) // sort by provided field, default to descending order
       .skip((page - 1) * limit)
       .limit(parseInt(limit, 10));
@@ -70,7 +70,7 @@ const searchInternships = async (req, res) => {
       //   verified: true,
       expiryDate: { $gt: new Date() },
     })
-      .populate('company', 'companyName')
+      .populate('company', 'name')
       .limit(10); // Limit to 10 results
 
     res.status(200).json({ internships });
@@ -87,7 +87,7 @@ const sponsoredInternships = async (req, res) => {
       live: true,
       verified: true,
       expiryDate: { $gt: new Date() },
-    }).populate('company', 'companyName');
+    }).populate('company', 'name');
 
     res.status(200).json({ internships });
   } catch (err) {
@@ -102,7 +102,7 @@ const createInternship = async (req, res) => {
     const internship = await Internship.create({
       title,
       slug: slugify(title, { lower: true }),
-      // company: req.user.id,
+      company: req.user.id,
       live: false,
       verified: false,
       ...rest,
@@ -247,8 +247,8 @@ const getAllInternshipsForAdmin = async (req, res) => {
     if (queryObj.title) {
       queryObj.title = { $regex: queryObj.title, $options: 'i' };
     }
-    if (queryObj.companyName) {
-      queryObj.companyName = { $regex: queryObj.companyName, $options: 'i' };
+    if (queryObj.name) {
+      queryObj.name = { $regex: queryObj.name, $options: 'i' };
     }
 
     const sortBy = req.query.sort
