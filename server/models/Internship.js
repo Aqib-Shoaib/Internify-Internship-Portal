@@ -14,7 +14,8 @@ const internshipSchema = new Schema(
     live: { type: Boolean, default: true },
     expiryDate: { type: Date, required: true },
     sponsored: { type: Boolean, default: false },
-    verified: { type: Boolean, default: false }, // Admin verification
+    verified: { type: Boolean, default: false },
+    term: { type: String, enum: ['PART-TIME', 'FULL-TIME'] },
     duration: { type: Number, required: true }, // Duration in months
   },
   {

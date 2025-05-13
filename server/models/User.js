@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema(
     profileImage: { type: String }, // Can be used as profile image or company logo
     bio: { type: String },
     headline: { type: String },
+    website: { type: String },
+    phoneNumber: { type: String },
 
     // Intern-specific fields
     skills: [String],
@@ -30,7 +32,6 @@ const userSchema = new mongoose.Schema(
     resume: { type: String }, // Link or filename of uploaded/created PDF
 
     // Company-specific fields
-    website: { type: String },
     industry: { type: String },
     location: { type: String },
     verified: { type: Boolean, default: false },

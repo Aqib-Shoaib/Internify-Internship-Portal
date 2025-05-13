@@ -10,7 +10,7 @@ const {
 const { generateOTP } = require('../utils/general');
 
 const register = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, email, password, role, website, phoneNumber } = req.body;
   const otp = generateOTP();
   const otpExpires = Date.now() + 5 * 60 * 1000;
   try {
@@ -26,13 +26,14 @@ const register = async (req, res) => {
       role,
       otp,
       otpExpires,
+      website,
+      phoneNumber,
     };
     if (role === 'INTERN') {
       userObj.skills = req.body.skills || [];
       userObj.education = req.body.education || [];
       userObj.resume = req.body.resume || '';
     } else if (role === 'COMPANY') {
-      userObj.website = req.body.website || '';
       userObj.industry = req.body.industry || '';
       userObj.location = req.body.location || '';
     }

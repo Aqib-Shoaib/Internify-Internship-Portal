@@ -1,174 +1,90 @@
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import Googlebtn from "../components/utils/Googlebtn";
-
-const StyledLogin = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5rem;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(
-    35deg,
-    var(--color-medium-light),
-    var(--color-light)
-  );
-
-  @media (min-width: 992px) {
-    flex-direction: row;
-  }
-`;
-
-const Main = styled.main`
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2);
-  padding: 4rem 5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  gap: 1.25rem;
-  flex-direction: column;
-  border-radius: 10px;
-  width: fit-content;
-  height: fit-content;
-
-  background: linear-gradient(
-    225deg,
-    var(--color-medium-light),
-    var(--color-light)
-  );
-`;
-
-const SignupLink = styled.span`
-  font-size: var(--fs-small);
-  text-transform: uppercase;
-  padding: 0.5rem;
-  color: var(--color-medium-dark);
-  letter-spacing: 1px;
-  .link {
-    color: var(--color-medium-dark);
-    text-decoration: underline;
-  }
-`;
-const Break = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  width: 100%;
-  hr {
-    width: 100%;
-    background: var(--color-dark);
-    height: 3px;
-    border-radius: 5px;
-  }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  .input {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    border: none;
-    outline: none;
-    font-size: var(--fs-body);
-    letter-spacing: 1px;
-  }
-
-  .btn {
-    background: linear-gradient(
-      to top left,
-      var(--color-dark),
-      var(--color-medium-dark)
-    );
-    box-shadow: 0px 4px 4px var(--color-medium-dark);
-    border: none;
-    border-radius: 999px;
-    letter-spacing: 1px;
-    padding: 1rem 2rem;
-    color: var(--color-light);
-
-    &:hover {
-      filter: brightness(1.8);
-      letter-spacing: 1.25px;
-    }
-  }
-`;
-
-const ImageDiv = styled.div`
-  width: 50%;
-
-  img {
-    width: 100%;
-    object-fit: cover;
-  }
-`;
-
-const Greeting = styled.div`
-  display: none;
-
-  @media (min-width: 992px) {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 1rem;
-    width: 50%;
-  }
-`;
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Googlebtn from "../components/custom/utils/Googlebtn";
 
 function Loginpage() {
   const navigate = useNavigate();
 
   return (
-    <StyledLogin>
-      <Greeting data-aos='fade-right'>
-        <ImageDiv>
-          <img src='/logo.svg' alt='internify logo' />
-        </ImageDiv>
-        <p>
+    <div className='flex items-center justify-center gap-20 w-full h-screen bg-gradient-to-r from-medium-light to-light'>
+      {/* Greeting Section */}
+      <div
+        className='hidden lg:flex flex-col gap-4 p-4 w-1/2'
+        data-aos='fade-right'
+      >
+        <div className='w-full'>
+          <img
+            src='/logo.svg'
+            alt='internify logo'
+            className='w-full object-cover'
+          />
+        </div>
+        <p className='text-lg text-gray-800'>
           We Help You to Connect with companies in a bit more efficient and
           hurdle less way
         </p>
-      </Greeting>
-      <Main data-aos='fade-left'>
-        <ImageDiv>
-          <img src='/logo.svg' alt='internify logo' />
-        </ImageDiv>
+      </div>
 
-        <div>
-          <h1>Welcome Back!</h1>
+      {/* Main Section */}
+      <div
+        className='flex flex-col items-center justify-center gap-6 p-8 bg-gradient-to-tl from-medium-light to-light shadow-lg rounded-lg'
+        data-aos='fade-left'
+      >
+        {/* Logo */}
+        <div className='w-full text-center'>
+          <img src='/logo.svg' alt='internify logo' className='w-1/2 mx-auto' />
         </div>
 
-        <Form>
-          <input type='email' className='input' placeholder='Your Email...' />
-          <input type='password' className='input' placeholder='Password' />
-          <button className='btn' onClick={() => navigate("/")}>
+        <h1 className='text-3xl font-semibold text-gray-800'>Welcome Back!</h1>
+
+        {/* Form */}
+        <form className='flex flex-col gap-4 items-center justify-center w-full'>
+          <Input
+            type='email'
+            className='w-80'
+            placeholder='Your Email...'
+            variant='outline'
+            size='lg'
+            label='Email'
+          />
+          <Input
+            type='password'
+            className='w-80'
+            placeholder='Password'
+            variant='outline'
+            size='lg'
+            label='Password'
+          />
+          <Button
+            onClick={() => navigate("/")}
+            className='btn bg-gradient-to-tl from-dark to-medium-dark text-white rounded-full py-3 px-6 text-xl mt-4 transition-transform hover:scale-105'
+          >
             Login
-          </button>
-        </Form>
+          </Button>
+        </form>
 
-        <Break>
-          <hr />
-          <span>OR</span>
-          <hr />
-        </Break>
+        {/* Break Section */}
+        <div className='flex items-center justify-center gap-2 w-full mt-6'>
+          <hr className='w-full bg-dark h-1 rounded-lg' />
+          <span className='text-lg text-gray-600'>OR</span>
+          <hr className='w-full bg-dark h-1 rounded-lg' />
+        </div>
 
-        <div>
+        {/* Google Login Button */}
+        <div className='mt-6'>
           <Googlebtn text='Login With Google' />
         </div>
 
-        <SignupLink>
+        {/* Signup Link */}
+        <div className='text-sm text-gray-700 mt-4'>
           Don&apos;t have an account yet?{" "}
-          <Link to='/signup' className='link'>
+          <Link to='/signup' className='text-primary-600 underline'>
             Signup
           </Link>
-        </SignupLink>
-      </Main>
-    </StyledLogin>
+        </div>
+      </div>
+    </div>
   );
 }
 

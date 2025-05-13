@@ -1,64 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import BasicInfoForm from "../components/ui/signup/BasicInfoForm";
-import Role from "../components/ui/signup/Role";
-import styled from "styled-components";
-import CompanyDetailForm from "../components/ui/signup/CompanyDetailForm";
-import EducationDetailsForm from "../components/ui/signup/EducationDetailsForm";
-
-const StyledSignupPage = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  background: linear-gradient(
-    35deg,
-    var(--color-medium-light),
-    var(--color-light)
-  );
-  .main {
-    padding: var(--space-md);
-    display: flex;
-    align-items: center;
-    border-radius: 20px;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%;
-
-    background: linear-gradient(
-      225deg,
-      var(--color-medium-light),
-      var(--color-light)
-    );
-
-    @media (min-width: 768px) {
-      border: 1px solid var(--color-medium-light);
-      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-      max-width: 80%;
-    }
-
-    @media (min-width: 992px) {
-      max-width: 60%;
-    }
-  }
-  .h2 {
-    margin: 5px 0;
-  }
-  .login {
-    text-align: center;
-    margin: 5px 0;
-    font-size: var(--fs-small);
-    text-transform: uppercase;
-    padding: 0.5rem;
-    color: var(--color-medium-dark);
-    letter-spacing: 1px;
-    .link {
-      color: var(--color-medium-dark);
-      text-decoration: underline;
-    }
-  }
-`;
+import BasicInfoForm from "../components/custom/page/signup/BasicInfoForm";
+import Role from "../components/custom/page/signup/Role";
+import CompanyDetailForm from "../components/custom/page/signup/CompanyDetailForm";
+import EducationDetailsForm from "../components/custom/page/signup/EducationDetailsForm";
 
 // form numbers
 const MIN_FORM_NUMBER = 1;
@@ -69,9 +14,12 @@ function SignupPage() {
   const [formNumber, setFormNumber] = useState(MIN_FORM_NUMBER);
 
   return (
-    <StyledSignupPage>
-      <div className='main' data-aos='zoom-in'>
-        <h2 className='h2'>Sign up now!</h2>
+    <div className='flex items-center justify-center h-dvh w-dvw'>
+      <div
+        className='p-5 flex items-center rounded-3xl justify-center flex-col w-full max-w-full md:max-w-3/5'
+        data-aos='zoom-in'
+      >
+        <h2 className='m-1'>Sign up now!</h2>
         {formNumber === MIN_FORM_NUMBER && (
           <>
             <Role setUserRole={(v) => setRole(v)} role={role} />
@@ -90,16 +38,16 @@ function SignupPage() {
             )}
           </>
         )}
-        <div className='login'>
+        <div className='text-center my-1 text-sm uppercase p-2'>
           <p>
             Already have an account?{" "}
-            <Link className='link' to='/login'>
+            <Link className='underline' to='/login'>
               Login
             </Link>{" "}
           </p>
         </div>
       </div>
-    </StyledSignupPage>
+    </div>
   );
 }
 

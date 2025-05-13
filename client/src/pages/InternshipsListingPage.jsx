@@ -1,29 +1,17 @@
-import styled from "styled-components";
-
-import InternshipNav from "../components/ui/internship/InternshipNav";
-import FilterSidebar from "../components/ui/internship/FilterSidebar";
-import Main from "../components/ui/internship/Main";
-
-const StyledPage = styled.div`
-  @media (min-width: 992px) {
-    .layout {
-      padding: 1.5rem;
-      display: grid;
-      grid-template-columns: 15vw 85vw;
-    }
-  }
-`;
+import InternshipNav from "../components/custom/page/internship/InternshipNav";
+import FilterSidebar from "../components/custom/page/internship/FilterSidebar";
+import Main from "../components/custom/page/internship/Main";
 
 function InternshipsListingPage() {
   return (
-    <StyledPage>
+    <div className='md:p-3.5 grid grid-cols-[15vw_85vw]'>
       <InternshipNav />
 
       <div className='layout'>
         <FilterSidebar />
         <Main />
       </div>
-    </StyledPage>
+    </div>
   );
 }
 

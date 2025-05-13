@@ -1,110 +1,77 @@
-/* poppins, Montaga, Montserrat */
-@import url("https://fonts.googleapis.com/css2?family=Montaga&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import "tailwindcss";
+@import "tw-animate-css";
 
-* {
+@custom-variant dark (&:is(.dark *));
+
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 html {
-  font-size: 62.5%;
   scroll-behavior: smooth;
 }
-
 :root {
-  /* colors */
-  /* --main */
-  /* --color-contrast: #00bfff; */
-  --color-contrast: #7f66c0;
-  --color-dark: #352f44;
-  --color-medium-dark: #5c5470;
-  --color-medium-light: #b9b4c7; /* Light Grayish Purple */
-  --color-light: #faf0e6;
+  --radius: 0.625rem;
 
-  /* --extras */
-  --color-accent: #b9b4c7;
-  --color-warning: #ff6347;
-  /* Text Colors */
-  --text-primary: #352f44; /* Dark Purple for main text */
-  --text-secondary: #5c5470; /* Muted Purple for secondary text */
+  /* Core background / foreground */
+  --foreground: #22223b;
+  --background: #f2e9e4;
 
-  /* Background Colors */
-  --background-primary: #faf0e6; /* Light Background */
-  --background-secondary: #b9b4c7; /* Accent Background */
+  /* Card and popover UI elements */
+  --card: #c9ada7;
+  --card-foreground: #22223b;
 
-  /* Button and Interactive Elements */
-  --button-primary-bg: #5c5470; /* Muted Purple */
-  --button-primary-text: #faf0e6; /* Text on buttons */
-  --button-primary-hover: #726987;
+  --popover: #c9ada7;
+  --popover-foreground: #22223b;
 
-  /* Shadows (optional for depth) */
-  --shadow-color: rgba(53, 47, 68, 0.3); /* Light shadow for depth */
+  /* Primary actions */
+  --primary: #22223b;
+  --primary-foreground: #f2e9e4;
 
-  /* spacing */
-  --space-xs: 4px;
-  --space-sm: 8px;
-  --space-md: 16px;
-  --space-lg: 32px;
+  /* Secondary actions */
+  --secondary: #4a4e69;
+  --secondary-foreground: #f2e9e4;
 
-  /* font settings */
-  --font-primary: "Montserrat", sans-serif;
-  --font-secondary: "Poppins", sans-serif;
-  --font-decorative: "Montaga", serif;
-  /* --Font Sizes */
-  --fs-small: 1.4rem; /* 14px */
-  --fs-body: 1.8rem; /* 18px */
-  --fs-large: 2.5rem /* 25px */;
-  --fs-heading: 3.2rem; /* 32px */
-  --fs-subheading: 2.2rem; /* 22px */
-  /* --Font Weights */
-  --fw-light: 300;
-  --fw-regular: 400;
-  --fw-medium: 500;
-  --fw-bold: 700;
-}
+  /* Muted / less important text or UI */
+  --muted: #9a8c98;
+  --muted-foreground: #22223b;
 
-body {
-  font-family: var(--font-primary);
-  line-height: 1.25;
-  font-weight: var(--fw-regular);
-  color: var(--text-primary);
-  font-size: var(--fs-body);
-}
+  /* Accent buttons, hover states, etc. */
+  --accent: #4a4e69;
+  --accent-foreground: #f2e9e4;
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-secondary);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
-}
+  /* Destructive actions (red) – no direct match, pick something neutral */
+  --destructive: #9a8c98;
+  --destructive-foreground: #22223b;
 
-p,
-li {
-  font-family: var(--font-primary);
-  font-weight: var(--fw-regular);
-  font-size: var(--fs-body);
-  color: var(--text-secondary);
-}
+  /* Borders, input outlines */
+  --border: #9a8c98;
+  --input: #9a8c98;
+  --ring: #4a4e69;
 
-a {
-  text-decoration: none;
-  color: var(--color-accent);
-}
+  /* Charts – optional, just reusing same colors */
+  --chart-1: #22223b;
+  --chart-2: #4a4e69;
+  --chart-3: #9a8c98;
+  --chart-4: #c9ada7;
+  --chart-5: #f2e9e4;
 
-button {
-  border: none;
-  font-family: var(--font-secondary);
-  font-weight: var(--fw-medium);
-  font-size: var(--fs-body);
-  cursor: pointer;
-}
-img {
-  max-width: 100%;
+  /* Sidebar layout */
+  --sidebar: #22223b;
+  --sidebar-foreground: #f2e9e4;
+
+  --sidebar-primary: #4a4e69;
+  --sidebar-primary-foreground: #f2e9e4;
+
+  --sidebar-accent: #9a8c98;
+  --sidebar-accent-foreground: #22223b;
+
+  --sidebar-border: #c9ada7;
+  --sidebar-ring: #f2e9e4;
 }
 
 /* Custom Scrollbar */
@@ -118,12 +85,105 @@ img {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--color-light);
+  background: var(--background);
   border-radius: 10px;
   transition: all 0.3s ease-in-out;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
+  background: var(--accent);
   width: 14px;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+.dark {
+  --background: #22223b;
+  --foreground: #f2e9e4;
+
+  --card: #2c2c47;
+  --card-foreground: #f2e9e4;
+
+  --popover: #2c2c47;
+  --popover-foreground: #f2e9e4;
+
+  --primary: #c9ada7;
+  --primary-foreground: #2c2c47;
+
+  --secondary: #4a4e69;
+  --secondary-foreground: #f2e9e4;
+
+  --muted: #4a4e69;
+  --muted-foreground: #b8b2bd;
+
+  --accent: #4a4e69;
+  --accent-foreground: #f2e9e4;
+
+  --destructive: #ff6b6b; /* Red tone added for contrast */
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #888;
+
+  --chart-1: #7a4eb7;
+  --chart-2: #d59750;
+  --chart-3: #f2c94c;
+  --chart-4: #a45ee5;
+  --chart-5: #e0a96d;
+
+  --sidebar: #2c2c47;
+  --sidebar-foreground: #f2e9e4;
+
+  --sidebar-primary: #7a4eb7;
+  --sidebar-primary-foreground: #f2e9e4;
+
+  --sidebar-accent: #4a4e69;
+  --sidebar-accent-foreground: #f2e9e4;
+
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #888;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

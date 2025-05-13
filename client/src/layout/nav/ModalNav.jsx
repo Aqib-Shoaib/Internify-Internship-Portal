@@ -1,47 +1,24 @@
 /* eslint-disable react/prop-types */
-import styled from "styled-components";
+import { Button } from "@/components/ui/button";
 import Navigation from "./Navigation";
-
-const StyledNav = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-
-  a {
-    color: var(--color-accent);
-    font-size: var(--fs-body);
-    font-weight: var(--fw-medium);
-    padding: 5px;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background: var(--color-medium-dark);
-      color: #fff;
-    }
-  }
-
-  button {
-    background: var(--button-primary-bg);
-    color: var(--button-primary-text);
-    padding: 10px;
-    font-size: var(--fs-body);
-    font-size: 2rem;
-    border-radius: 10px;
-
-    &:hover {
-      background: var(--color-dark);
-    }
-  }
-`;
 
 function ModalNav({ onClose }) {
   return (
-    <StyledNav onClick={onClose}>
+    <div
+      onClick={onClose}
+      className='flex flex-col items-center justify-center gap-4 p-6 bg-gray-800 rounded-lg'
+    >
+      {/* Navigation Links */}
       <Navigation />
-    </StyledNav>
+
+      {/* Close Button */}
+      <Button
+        onClick={onClose}
+        className='bg-primary-600 text-white px-6 py-2 text-lg rounded-lg transition-all hover:bg-primary-700'
+      >
+        Close
+      </Button>
+    </div>
   );
 }
 
