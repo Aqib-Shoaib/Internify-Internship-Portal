@@ -3,10 +3,8 @@ import {
   Dialog,
   DialogTrigger,
   DialogContent,
-  DialogTitle,
   DialogDescription,
-} from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
+} from "@/components/ui/dialog";
 import { useEffect } from "react";
 
 function Modal({ isOpen, onClose, children, shouldAutoCloseOnResize = false }) {
@@ -44,11 +42,6 @@ function Modal({ isOpen, onClose, children, shouldAutoCloseOnResize = false }) {
         <span />
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>
-          <button onClick={onClose}>
-            <X />
-          </button>
-        </DialogTitle>
         <DialogDescription>{children}</DialogDescription>
       </DialogContent>
     </Dialog>

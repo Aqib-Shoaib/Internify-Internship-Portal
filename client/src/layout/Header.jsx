@@ -5,13 +5,12 @@ function Header() {
   const [showNavModal, setShowNavModal] = useState(false);
 
   return (
-    <header className='bg-[var(--color-dark)] w-full h-[90px] z-[999] overflow-hidden'>
-      <div className='relative w-full h-full' data-aos='fade-down'>
-        <img
-          src='/logo.svg'
-          alt='Internify logo'
-          className='h-[70%] absolute top-1/2 left-[5px] -translate-y-1/2'
-        />
+    <header className='bg-background w-full h-[90px] z-[999] overflow-hidden fixed'>
+      <div
+        className='flex items-center justify-between h-full !p-5 w-full relative'
+        // data-aos='fade-down'
+      >
+        <img src='/logoipsum-342.svg' alt='Internify logo' />
         <Nav showNavModal={showNavModal} setShowNavModal={setShowNavModal} />
       </div>
     </header>

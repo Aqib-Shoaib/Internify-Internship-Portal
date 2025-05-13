@@ -31,7 +31,7 @@ function Nav({ showNavModal, setShowNavModal }) {
       </Modal>
 
       {/* Navigation for larger screens */}
-      <nav className='hidden md:flex absolute right-4 top-1/2 transform -translate-y-1/2 items-center justify-center text-base font-normal space-x-4'>
+      <nav className='hidden md:flex items-center justify-center text-base font-normal space-x-4'>
         <Navigation />
       </nav>
     </>

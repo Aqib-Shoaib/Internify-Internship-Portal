@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
+// import { ThemeToggle } from "@/components/custom/utils/ThemeToggle";
 
 function AppLayout() {
   return (
@@ -10,6 +11,7 @@ function AppLayout() {
         <Outlet />
       </main>
       <Footer />
+      {/* <ThemeToggle /> */}
     </div>
   );
 }

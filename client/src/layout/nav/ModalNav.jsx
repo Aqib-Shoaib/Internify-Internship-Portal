@@ -6,7 +6,7 @@ function ModalNav({ onClose }) {
   return (
     <div
       onClick={onClose}
-      className='flex flex-col items-center justify-center gap-4 p-6 bg-gray-800 rounded-lg'
+      className='flex flex-col items-center justify-center gap-4 p-6 bg-foreground rounded-lg'
     >
       {/* Navigation Links */}
       <Navigation />

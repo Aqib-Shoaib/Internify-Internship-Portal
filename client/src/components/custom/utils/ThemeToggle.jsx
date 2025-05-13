@@ -7,18 +7,18 @@ import { Moon, SunMedium } from "lucide-react";
 export function ThemeToggle({ className, ...props }) {
   const [isDark, setIsDark] = useState(false);
 
-  useEffect(() => {
-    // Check system preference on mount---commneting it out for dev purposes
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    setIsDark(prefersDark);
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Check system preference on mount---commneting it out for dev purposes
+  //   const prefersDark = window.matchMedia(
+  //     "(prefers-color-scheme: dark)"
+  //   ).matches;
+  //   setIsDark(prefersDark);
+  //   if (prefersDark) {
+  //     document.documentElement.classList.add("dark");
+  //   } else {
+  //     document.documentElement.classList.remove("dark");
+  //   }
+  // }, []);
 
   const toggleTheme = () => {
     const newDark = !isDark;
@@ -35,11 +35,20 @@ export function ThemeToggle({ className, ...props }) {
       variant='outline'
       size='icon'
       onClick={toggleTheme}
-      className={cn("transition-all", className)}
+      className={cn(
+        "transition-all fixed bottom-3 right-3 bg-secondary p-2 rounded-full border",
+        className
+      )}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
       {...props}
     >
-      <span>{isDark ? <SunMedium /> : <Moon />}</span>
+      <span>
+        {isDark ? (
+          <SunMedium className='text-secondary-foreground' />
+        ) : (
+          <Moon className='text-secondary-foreground' />
+        )}
+      </span>
     </Button>
   );
 }

@@ -3,16 +3,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
-*,
-*::after,
-*::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 html {
   scroll-behavior: smooth;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 :root {
   --radius: 0.625rem;
@@ -45,8 +42,8 @@ html {
   --accent-foreground: #f2e9e4;
 
   /* Destructive actions (red) – no direct match, pick something neutral */
-  --destructive: #9a8c98;
-  --destructive-foreground: #22223b;
+  --destructive: #ce1313;
+  --destructive-foreground: #ce7676;
 
   /* Borders, input outlines */
   --border: #9a8c98;
