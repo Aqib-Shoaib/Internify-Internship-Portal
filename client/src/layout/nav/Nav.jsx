@@ -15,7 +15,7 @@ function Nav({ showNavModal, setShowNavModal }) {
       {!showNavModal && (
         <span
           onClick={() => setShowNavModal(true)}
-          className='text-white text-xl cursor-pointer absolute right-4 top-1/2 transform -translate-y-1/2 md:hidden'
+          className='text-sidebar-foreground text-xl cursor-pointer absolute right-4 top-1/2 transform -translate-y-1/2 md:hidden'
         >
           <MenuIcon />
         </span>

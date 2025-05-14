@@ -17,8 +17,8 @@ import Sub from "../../utils/Sub";
 
 function HowItWorks() {
   return (
-    <section className='bg-gradient-to-b from-gray-100 to-blue-50 py-12 w-full flex flex-col gap-16 items-center justify-center px-4'>
-      <div className='flex flex-col items-center justify-center text-center'>
+    <section className='py-12 w-full flex flex-col gap-16 items-center justify-center px-4'>
+      <div className='flex flex-col items-center justify-center text-center gap-1.5'>
         <Title>How It Works</Title>
         <Sub>Whether You&apos;re Seeking or Offering, We Connect the Dots.</Sub>
       </div>
@@ -26,10 +26,10 @@ function HowItWorks() {
       <div className='flex flex-col xl:flex-row gap-8 max-w-7xl w-full'>
         {/* Internship Seekers */}
         <div
-          className='bg-white shadow rounded-lg p-6 flex-1'
+          className='bg-background shadow rounded-lg p-6 flex-1'
           data-aos='zoom-in'
         >
-          <h4 className='text-lg font-light border-b border-gray-800 inline-block mb-4'>
+          <h4 className='text-lg font-normal border-b border-border inline-block mb-4'>
             If you want an Internship:
           </h4>
           <ul>
@@ -65,12 +65,12 @@ function HowItWorks() {
                 desc: "Secure a rewarding internship that aligns with your goals.",
               },
             ].map(({ icon, title, desc }) => (
-              <li key={title} className='my-4 text-sm space-y-1'>
-                <div className='flex items-center gap-2 font-semibold'>
-                  <span className='text-gray-600'>{icon}</span>
+              <li key={title} className='my-4 text-secondary flex gap-1.5'>
+                <span className='mt-1'>{icon}</span>
+                <div className='flex flex-col gap-0.5 font-semibold'>
                   <b className='capitalize'>{title}:</b>
+                  <p className='text-secondary/80'>{desc}</p>
                 </div>
-                <p className='pl-7 text-gray-700'>{desc}</p>
               </li>
             ))}
           </ul>
@@ -78,10 +78,10 @@ function HowItWorks() {
 
         {/* Internship Providers */}
         <div
-          className='bg-white shadow rounded-lg p-6 flex-1'
+          className='bg-background shadow rounded-lg p-6 flex-1'
           data-aos='zoom-in'
         >
-          <h4 className='text-lg font-light border-b border-gray-800 inline-block mb-4'>
+          <h4 className='text-lg font-light border-b border-border inline-block mb-4'>
             If you are looking for an Intern:
           </h4>
           <ul>
@@ -112,12 +112,12 @@ function HowItWorks() {
                 desc: "Extend offers to qualified interns and build a strong talent pipeline.",
               },
             ].map(({ icon, title, desc }) => (
-              <li key={title} className='my-4 text-sm space-y-1'>
-                <div className='flex items-center gap-2 font-semibold'>
-                  <span className='text-gray-600'>{icon}</span>
+              <li key={title} className='my-4 text-secondary flex gap-1.5'>
+                <span className='mt-1'>{icon}</span>
+                <div className='flex flex-col gap-0.5 font-semibold'>
                   <b className='capitalize'>{title}:</b>
+                  <p className='text-secondary/80'>{desc}</p>
                 </div>
-                <p className='pl-7 text-gray-700'>{desc}</p>
               </li>
             ))}
           </ul>

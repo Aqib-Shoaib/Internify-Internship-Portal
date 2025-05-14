@@ -2,6 +2,7 @@ import Slider from "react-slick";
 import InternshipItem from "../internship/InternshipItem";
 import Sub from "../../utils/Sub";
 import Title from "../../utils/Title";
+import { FAKE_DATA } from "@/dummy/Internships";
 
 function FeaturedInternships() {
   const settings = {
@@ -26,82 +27,6 @@ function FeaturedInternships() {
       { breakpoint: 420, settings: { slidesToShow: 1 } },
     ],
   };
-
-  const FAKE_DATA = [
-    {
-      date: "May 29,2024",
-      company: "Amazon",
-      image: "/amazon.png",
-      title: "Senior Data Analyst",
-      salary: "$260/month",
-      location: "remote",
-      bgColor: "#D4F6ED",
-      keyPoints: [
-        "Part Time",
-        "Full Day",
-        "Project Based",
-        "Senior Level",
-        "Flexible Schedule",
-      ],
-    },
-    {
-      date: "April 5, 2023",
-      company: "Google",
-      image: "/google.png",
-      title: "Junior UI/UX Designer",
-      salary: "$190/month",
-      location: "California, CA",
-      bgColor: "#E3DBFA",
-      keyPoints: ["Part Time", "Project Based", "Junior Level"],
-    },
-    {
-      date: "June 23, 2023",
-      company: "Apple",
-      image: "/apple.png",
-      title: "Graphic Designer",
-      salary: "$100/month",
-      location: "San Francisco, CA",
-      bgColor: "#FFE1CC",
-      keyPoints: ["Part Time", "Practice Tasks"],
-    },
-    // Duplicated items for carousel length
-    {
-      date: "May 29,2024",
-      company: "Amazon",
-      image: "/amazon.png",
-      title: "Senior Data Analyst",
-      salary: "$260/month",
-      location: "remote",
-      bgColor: "#D4F6ED",
-      keyPoints: [
-        "Part Time",
-        "Full Day",
-        "Project Based",
-        "Senior Level",
-        "Flexible Schedule",
-      ],
-    },
-    {
-      date: "April 5, 2023",
-      company: "Google",
-      image: "/google.png",
-      title: "Junior UI/UX Designer",
-      salary: "$190/month",
-      location: "California, CA",
-      bgColor: "#E3DBFA",
-      keyPoints: ["Part Time", "Project Based", "Junior Level"],
-    },
-    {
-      date: "June 23, 2023",
-      company: "Apple",
-      image: "/apple.png",
-      title: "Graphic Designer",
-      salary: "$100/month",
-      location: "San Francisco, CA",
-      bgColor: "#FFE1CC",
-      keyPoints: ["Part Time", "Practice Tasks"],
-    },
-  ];
 
   return (
     <section className='w-full flex flex-col items-center justify-center gap-16 bg-[#f0f8ff] px-4 py-12 md:px-8'>

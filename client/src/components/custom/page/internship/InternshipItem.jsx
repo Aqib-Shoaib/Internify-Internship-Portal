@@ -1,23 +1,22 @@
 import { useState } from "react";
-import { Heart, CheckCircle } from "lucide-react"; // Lucide React Icons
-import { Button } from "@/components/ui/button"; // Shadcn Button
+import { Heart, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
   CardContent,
   CardFooter,
-} from "@/components/ui/card"; // Shadcn Card Components
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"; // Shadcn Avatar
+} from "@/components/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 /* eslint-disable react/prop-types */
 function InternshipItem({ data }) {
   const [liked, setLiked] = useState(false);
-
   return (
-    <Card className='rounded-xl shadow-md w-[28rem] h-[38rem] hover:shadow-lg transition-all duration-300 relative mb-4 sm:w-[32rem] sm:h-[43rem] md:w-[31rem] md:h-[34rem]'>
+    <Card className='rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative mb-4 max-h-[20rem] md:max-h-[22rem] max-w-[25rem] min-h-[20rem] md:min-h-[22rem] min-w-[25rem]'>
       {/* Card Header with Date and Like Button */}
-      <CardHeader className='flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center'>
-        <span className='bg-white p-4 rounded-full font-decorative text-xs'>
+      <CardHeader className='flex justify-between items-center'>
+        <span className='bg-white px-4 py-2.5 rounded-full font-decorative text-sm font-medium md:text-base'>
           {data.date}
         </span>
         <div className='cursor-pointer' onClick={() => setLiked(!liked)}>
@@ -30,12 +29,14 @@ function InternshipItem({ data }) {
       </CardHeader>
 
       {/* Card Content with Company and Title */}
-      <CardContent className='flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mt-4'>
+      <CardContent className='flex justify-between sm:items-center mt-4'>
         <div>
-          <span className='font-semibold'>{data.company}</span>
-          <h3 className='text-lg'>{data.title}</h3>
+          <span className='font-semibold text-sm md:text-base'>
+            {data.company}
+          </span>
+          <h3 className='text-base md:text-lg font-medium'>{data.title}</h3>
         </div>
-        <Avatar className='w-20 h-20'>
+        <Avatar className='w-10 md:w-16 h-10 md:h-16'>
           <AvatarImage
             src={data.image}
             alt='company logo'
@@ -48,11 +49,11 @@ function InternshipItem({ data }) {
       </CardContent>
 
       {/* Key Points */}
-      <div className='hidden sm:flex flex-wrap gap-2 mt-4'>
+      <div className='flex flex-wrap gap-2 mt-4'>
         {data.keyPoints.map((point, i) => (
           <span
             key={i}
-            className='text-sm py-2 px-4 rounded-full shadow-sm bg-gray-100 border border-gray-300'
+            className='text-sm font-medium py-2 px-4 rounded-full shadow-sm bg-gray-100 border border-gray-300'
           >
             {point}
           </span>
@@ -63,9 +64,9 @@ function InternshipItem({ data }) {
       <CardFooter className='flex justify-between items-center mt-6'>
         <div>
           <p className='text-base font-semibold'>{data.salary}</p>
-          <p className='text-sm'>{data.location}</p>
+          <p className='text-sm capitalize'>{data.location}</p>
         </div>
-        <Button variant='default' className='px-6 py-2 rounded-full text-sm'>
+        <Button variant='ghost' className='px-6 py-2 rounded-full text-sm'>
           Details
         </Button>
       </CardFooter>

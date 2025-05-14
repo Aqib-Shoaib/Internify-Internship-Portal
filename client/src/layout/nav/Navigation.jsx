@@ -7,31 +7,25 @@ function Navigation() {
   const navigate = useNavigate();
 
   // const user = HR_USER;
-  // const user = INTERN_USER;
-  const user = undefined;
+  const user = INTERN_USER;
+  // const user = undefined;
 
   const userObject = {
     photo: "",
     displayName: "",
     url: "",
   };
-  // userObject.photo = user.user_type === "INTERN" ? user.profilePic : user.logo;
-  // userObject.displayName =
-  //   user.user_type === "INTERN" ? user.fullName : user.companyName;
+  userObject.photo = user.user_type === "INTERN" ? user.profilePic : user.logo;
+  userObject.displayName =
+    user.user_type === "INTERN" ? user.fullName : user.companyName;
 
   return (
-    <nav className='flex flex-col md:flex-row items-center gap-6 text-lg tracking-wide font-medium text-foreground'>
+    <nav className='flex flex-col md:flex-row justify-start md:justify-center items-start md:items-center gap-6 text-lg tracking-wide font-medium text-sidebar-foreground'>
       <NavLink
         to='/'
         className='transition-colors duration-200 hover:text-background hover:bg-foreground p-2 rounded-md'
       >
         Home
-      </NavLink>
-      <NavLink
-        to='#'
-        className='transition-colors duration-200 hover:text-background hover:bg-foreground p-2 rounded-md'
-      >
-        About Us
       </NavLink>
       <NavLink
         to='/internship'
@@ -40,7 +34,7 @@ function Navigation() {
         Internships
       </NavLink>
       <NavLink
-        to='#'
+        to='/contact'
         className='transition-colors duration-200 hover:text-background hover:bg-foreground p-2 rounded-md'
       >
         Contact Us
@@ -50,7 +44,7 @@ function Navigation() {
         <ProfileBtn userObject={userObject} />
       ) : (
         <Button
-          variant='secondary'
+          variant='outline'
           onClick={() => navigate("/login")}
           className='ml-4 text-gray-900 border-white hover:bg-gray-200 transition-all duration-200'
         >

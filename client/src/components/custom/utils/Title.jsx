@@ -1,7 +1,11 @@
 /* eslint-disable react/prop-types */
-function Title({ children }) {
+function Title({ children, align = "center" }) {
   return (
-    <h2 className='text-3xl md:text-4xl font-bold tracking-tight text-gray-900 text-center'>
+    <h2
+      className={`text-3xl md:text-7xl font-bold tracking-tight text-primary-foreground ${
+        align === "left" ? "text-left" : "text-center"
+      }`}
+    >
       {children}
     </h2>
   );

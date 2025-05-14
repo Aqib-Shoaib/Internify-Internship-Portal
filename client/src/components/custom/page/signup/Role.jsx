@@ -6,8 +6,8 @@ const COMPANY = "COMPANY";
 
 function Role({ role, setUserRole }) {
   return (
-    <div className='flex flex-col xl:flex-row justify-between w-full border border-border rounded-xl p-2'>
-      <div className='flex flex-col items-center justify-center my-2'>
+    <div className='flex flex-col xl:flex-row justify-between w-full border border-border/75 rounded-xl p-2 mb-3'>
+      <div className='flex flex-col justify-center'>
         <label className='text-base font-medium'>Choose Your Role</label>
         <span className='text-sm text-destructive font-light mt-1'>
           This can&apos;t be changed later!

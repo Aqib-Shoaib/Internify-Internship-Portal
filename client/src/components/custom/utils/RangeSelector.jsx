@@ -39,7 +39,7 @@ function RangeSelector({ min = 0, max = 100, light = false, cname = "" }) {
           light ? "text-color-muted-foreground" : "text-color-foreground"
         } ${
           light ? "bg-color-light" : "bg-color-dark"
-        } py-2 px-4 rounded-lg text-center text-sm font-medium border-none outline-none`}
+        } p-2 rounded-lg text-center text-base font-medium border-border min-w-20 outline-none`}
       />
       <Input
         type='number'
@@ -50,7 +50,7 @@ function RangeSelector({ min = 0, max = 100, light = false, cname = "" }) {
           light ? "text-color-muted-foreground" : "text-color-foreground"
         } ${
           light ? "bg-color-light" : "bg-color-dark"
-        } py-2 px-4 rounded-lg text-center text-sm font-medium border-none outline-none`}
+        } p-2 rounded-lg text-center text-base font-medium border-border min-w-20 outline-none`}
       />
     </div>
   );

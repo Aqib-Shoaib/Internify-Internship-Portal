@@ -7,10 +7,10 @@ function Loginpage() {
   const navigate = useNavigate();
 
   return (
-    <div className='flex items-center justify-center gap-20 w-full h-screen bg-gradient-to-r from-medium-light to-light'>
+    <div className='flex items-center justify-center gap-20 w-full h-screen'>
       {/* Greeting Section */}
       <div
-        className='hidden lg:flex flex-col gap-4 p-4 w-1/2'
+        className='hidden lg:flex flex-col gap-4 p-4 w-1/2 items-center justify-center'
         data-aos='fade-right'
       >
         <div className='w-full'>
@@ -28,7 +28,7 @@ function Loginpage() {
 
       {/* Main Section */}
       <div
-        className='flex flex-col items-center justify-center gap-6 p-8 bg-gradient-to-tl from-medium-light to-light shadow-lg rounded-lg'
+        className='flex flex-col items-center justify-center h-full md:h-fit gap-6 p-8 shadow-lg rounded-lg'
         data-aos='fade-left'
       >
         {/* Logo */}

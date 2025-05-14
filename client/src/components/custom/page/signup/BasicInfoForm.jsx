@@ -18,10 +18,10 @@ function BasicInfoForm({ role, incrementFormNumber }) {
   }
 
   return (
-    <div className='w-full p-4'>
+    <div className='w-full'>
       <form
         onSubmit={handleSubmit}
-        className='grid grid-cols-1 md:grid-cols-2 gap-4'
+        className='grid grid-cols-1 md:grid-cols-2 gap-2'
       >
         {/* Full Name / Company Name */}
         <div className='flex flex-col gap-1'>
@@ -48,7 +48,7 @@ function BasicInfoForm({ role, incrementFormNumber }) {
             onChange={setValue}
             defaultCountry='PK'
             required
-            className='border border-input bg-background rounded-md p-2 text-sm'
+            className='border border-border bg-background rounded-md p-2 text-sm'
           />
         </div>
 

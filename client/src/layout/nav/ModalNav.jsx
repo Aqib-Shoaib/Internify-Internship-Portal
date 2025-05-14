@@ -6,7 +6,7 @@ function ModalNav({ onClose }) {
   return (
     <div
       onClick={onClose}
-      className='flex flex-col items-center justify-center gap-4 p-6 bg-foreground rounded-lg'
+      className='flex flex-col items-center justify-center gap-4 p-6 rounded-lg bg-sidebar'
     >
       {/* Navigation Links */}
       <Navigation />
@@ -14,7 +14,7 @@ function ModalNav({ onClose }) {
       {/* Close Button */}
       <Button
         onClick={onClose}
-        className='bg-primary-600 text-white px-6 py-2 text-lg rounded-lg transition-all hover:bg-primary-700'
+        className='bg-primary text-white px-6 py-2 text-lg rounded-lg transition-all'
       >
         Close
       </Button>

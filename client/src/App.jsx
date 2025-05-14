@@ -11,6 +11,7 @@ import InternshipsListingPage from "./pages/InternshipsListingPage";
 import Loginpage from "./pages/Loginpage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
+import ContactUs from "./pages/ContactUs";
 
 function App() {
   useEffect(() => {
@@ -32,6 +33,7 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/internship' element={<InternshipsListingPage />} />
           <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/contact' element={<ContactUs />} />
         </Route>
       </Routes>
     </BrowserRouter>
