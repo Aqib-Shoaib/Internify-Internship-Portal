@@ -10,7 +10,7 @@ function Header() {
         className='flex items-center justify-between h-full !p-5 w-full relative'
         data-aos='fade-down'
       >
-        <img src='/logoipsum-342.svg' alt='Internify logo' />
+        <img src='/logo.svg' alt='Internify logo' className='h-[70px] w-fit' />
         <Nav showNavModal={showNavModal} setShowNavModal={setShowNavModal} />
       </div>
     </header>

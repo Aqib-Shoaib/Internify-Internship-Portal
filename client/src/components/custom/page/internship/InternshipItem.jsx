@@ -13,7 +13,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 function InternshipItem({ data }) {
   const [liked, setLiked] = useState(false);
   return (
-    <Card className='rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative mb-4 max-h-[20rem] md:max-h-[22rem] max-w-[25rem] min-h-[20rem] md:min-h-[22rem] min-w-[25rem]'>
+    <Card className='rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative mb-4 max-h-[20rem] md:max-h-[22rem] max-w-[20rem] min-h-[20rem] md:min-h-[22rem] min-w-[20rem]'>
       {/* Card Header with Date and Like Button */}
       <CardHeader className='flex justify-between items-center'>
         <span className='bg-white px-4 py-2.5 rounded-full font-decorative text-sm font-medium md:text-base'>

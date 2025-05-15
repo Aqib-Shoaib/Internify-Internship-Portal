@@ -12,6 +12,7 @@ import Loginpage from "./pages/Loginpage";
 import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import ContactUs from "./pages/ContactUs";
+import ProtectedLayout from "./layout/ProtectedLayout";
 
 function App() {
   useEffect(() => {
@@ -32,8 +33,10 @@ function App() {
         <Route path='/' element={<AppLayout />}>
           <Route path='/' element={<HomePage />} />
           <Route path='/internship' element={<InternshipsListingPage />} />
-          <Route path='/profile' element={<ProfilePage />} />
           <Route path='/contact' element={<ContactUs />} />
+        </Route>
+        <Route path='/dashboard' element={<ProtectedLayout />}>
+          <Route path='profile' element={<ProfilePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

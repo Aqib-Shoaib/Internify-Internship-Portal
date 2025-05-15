@@ -8,7 +8,7 @@ function ProfileBtn({ userObject }) {
 
   return (
     <div
-      onClick={() => navigate("/profile")}
+      onClick={() => navigate("/dashboard/profile")}
       className='cursor-pointer flex items-center gap-2 border border-muted p-2 rounded-xl transition-all duration-300 hover:-translate-x-4'
     >
       <div className='w-8 h-8 rounded-full overflow-hidden'>
