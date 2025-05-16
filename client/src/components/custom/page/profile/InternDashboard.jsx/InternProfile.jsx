@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { user } from "@/dummy/user";
+import { Label } from "@/components/ui/label";
 
 // const user = {
 //   name: "Aqib Shoaib",
@@ -115,45 +116,47 @@ const InternProfile = () => {
           <DrawerHeader>
             <DrawerTitle>Edit Profile</DrawerTitle>
           </DrawerHeader>
-          <div className='p-6 space-y-4'>
+          <div className='p-6 space-y-4 overflow-y-auto max-h-[80vh]'>
             <div>
-              <label className='text-sm font-medium'>Name</label>
+              <Label className='text-sm font-medium'>Name</Label>
               <Input defaultValue={user.name} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Headline</label>
+              <Label className='text-sm font-medium'>Headline</Label>
               <Input defaultValue={user.headline} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Bio</label>
+              <Label className='text-sm font-medium'>Bio</Label>
               <Textarea defaultValue={user.bio} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Phone Number</label>
+              <Label className='text-sm font-medium'>Phone Number</Label>
               <Input defaultValue={user.phoneNumber} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Website</label>
+              <Label className='text-sm font-medium'>Website</Label>
               <Input defaultValue={user.website} />
             </div>
             <div>
-              <label className='text-sm font-medium'>
+              <Label className='text-sm font-medium'>
                 Skills (comma-separated)
-              </label>
+              </Label>
               <Input defaultValue={user.skills.join(", ")} />
             </div>
             <div>
-              <label className='text-sm font-medium'>Education</label>
+              <Label className='text-sm font-medium'>Education</Label>
               <p className='text-sm text-muted-foreground'>
                 Education editing not supported in this view.
               </p>
             </div>
           </div>
           <DrawerFooter>
-            <Button variant='outline' onClick={() => setIsDrawerOpen(false)}>
-              Cancel
-            </Button>
-            <Button>Save</Button>
+            <div className='flex items-center gap-2 justify-end'>
+              <Button variant='outline' onClick={() => setIsDrawerOpen(false)}>
+                Cancel
+              </Button>
+              <Button>Save</Button>
+            </div>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
