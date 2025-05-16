@@ -2,7 +2,7 @@
 import { useNavigate } from "react-router-dom";
 
 function ProfileBtn({ userObject }) {
-  const splitArray = userObject.displayName.split(" ");
+  const splitArray = userObject.name.split(" ");
   const finalName = splitArray[0] + " " + splitArray[1][0] + ".";
   const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ function ProfileBtn({ userObject }) {
     >
       <div className='w-8 h-8 rounded-full overflow-hidden'>
         <img
-          src={userObject.photo}
+          src={userObject.profileImage}
           alt='user photo or logo'
           className='w-full h-full object-cover'
         />

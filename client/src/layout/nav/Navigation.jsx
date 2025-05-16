@@ -1,23 +1,10 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { HR_USER, INTERN_USER } from "../../dummy/user";
+import { user } from "../../dummy/user";
 import ProfileBtn from "../../components/custom/page/profile/ProfileBtn";
 import { Button } from "@/components/ui/button";
 
 function Navigation() {
   const navigate = useNavigate();
-
-  // const user = HR_USER;
-  const user = INTERN_USER;
-  // const user = undefined;
-
-  const userObject = {
-    photo: "",
-    displayName: "",
-    url: "",
-  };
-  userObject.photo = user.user_type === "INTERN" ? user.profilePic : user.logo;
-  userObject.displayName =
-    user.user_type === "INTERN" ? user.fullName : user.companyName;
 
   return (
     <nav className='flex flex-col md:flex-row justify-start md:justify-center items-start md:items-center gap-6 text-lg tracking-wide font-medium text-sidebar-foreground'>
@@ -41,7 +28,7 @@ function Navigation() {
       </NavLink>
 
       {user ? (
-        <ProfileBtn userObject={userObject} />
+        <ProfileBtn userObject={user} />
       ) : (
         <Button
           variant='outline'
