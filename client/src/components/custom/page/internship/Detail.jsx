@@ -10,7 +10,7 @@ const internshipData = {
   title: "Software Engineer Intern",
   slug: "software-engineer-intern",
   description:
-    "Join our team to build scalable web applications using React and Node.js. Work on cutting-edge projects and collaborate with experienced developers.",
+    "Join our team to build scalable web applications using React and Node.js...",
   company: {
     _id: "company_123",
     name: "Tech Corp",
@@ -24,7 +24,21 @@ const internshipData = {
   term: "FULL-TIME",
   duration: 6,
   createdAt: "2025-05-01T09:00:00.000Z",
-  isLoggedIn: true, // Toggle to false to test logged-out state
+  isLoggedIn: true,
+  user: {
+    resumes: [
+      {
+        title: "My Tech Resume",
+        link: "/resumes/intern_123_tech_resume.pdf",
+        createdAt: "2025-05-01T09:00:00.000Z",
+      },
+      {
+        title: "AI Internship Resume",
+        link: "/resumes/intern_123_ai_resume.pdf",
+        createdAt: "2025-05-10T12:00:00.000Z",
+      },
+    ],
+  },
 };
 
 function Detail() {
@@ -122,7 +136,7 @@ function Detail() {
       <InternshipApplication
         isDrawerOpen={isDrawerOpen}
         setIsDrawerOpen={setIsDrawerOpen}
-        title={internshipData.title}
+        internshipData={internshipData}
       />
     </div>
   );
