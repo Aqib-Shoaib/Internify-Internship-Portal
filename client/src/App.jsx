@@ -13,6 +13,7 @@ import SignupPage from "./pages/SignupPage";
 import ProfilePage from "./pages/ProfilePage";
 import ContactUs from "./pages/ContactUs";
 import ProtectedLayout from "./layout/ProtectedLayout";
+import InternshipDetail from "./pages/InternshipDetailPage";
 
 function App() {
   useEffect(() => {
@@ -34,6 +35,10 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/internship' element={<InternshipsListingPage />} />
           <Route path='/contact' element={<ContactUs />} />
+          <Route
+            path='/internships/:internship'
+            element={<InternshipDetail />}
+          />
         </Route>
         <Route path='/dashboard' element={<ProtectedLayout />}>
           <Route path='profile' element={<ProfilePage />} />

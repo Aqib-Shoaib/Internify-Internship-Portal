@@ -2,7 +2,7 @@ function Footer() {
   return (
     <footer className='bg-sidebar flex flex-col md:flex-row md:flex-wrap gap-20 p-16'>
       <div className='flex-1'>
-        <img src='logo.svg' alt='footer logo' className='h-[70%]' />
+        <img src='/logo.svg' alt='footer logo' className='h-[70%]' />
       </div>
 
       <div className='flex-2 flex flex-col gap-6'>
