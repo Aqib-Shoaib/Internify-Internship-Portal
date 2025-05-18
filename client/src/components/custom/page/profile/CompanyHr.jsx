@@ -1,4 +1,4 @@
-import Candidates from "./CompanyDashboard/Candidates";
+import CompanyCandidatesTab from "./CompanyDashboard/Candidates";
 import CompanyProfile from "./CompanyDashboard/CompanyProfile";
 import Dashboard from "./CompanyDashboard/Dashboard";
 import CompanyInternshipsTab from "./CompanyDashboard/Internships";
@@ -10,7 +10,7 @@ function CompanyHr({ selectedTab }) {
       {selectedTab === "Dashboard" && <Dashboard />}
       {selectedTab === "Profile" && <CompanyProfile />}
       {selectedTab === "Internships" && <CompanyInternshipsTab />}
-      {selectedTab === "Candidates" && <Candidates />}
+      {selectedTab === "Candidates" && <CompanyCandidatesTab />}
     </div>
   );
 }
