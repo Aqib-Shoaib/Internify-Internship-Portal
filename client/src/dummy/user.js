@@ -19,7 +19,7 @@ export const user = {
   resume: "/resume.pdf",
   industry: "Tech",
   location: "Islamabad",
-  verified: false,
+  verified: true,
   passwordResetToken: null,
   passwordResetExpires: null,
   otp: null,

@@ -1,7 +1,7 @@
 import Candidates from "./CompanyDashboard/Candidates";
 import CompanyProfile from "./CompanyDashboard/CompanyProfile";
 import Dashboard from "./CompanyDashboard/Dashboard";
-import Internships from "./CompanyDashboard/Internships";
+import CompanyInternshipsTab from "./CompanyDashboard/Internships";
 
 /* eslint-disable react/prop-types */
 function CompanyHr({ selectedTab }) {
@@ -9,7 +9,7 @@ function CompanyHr({ selectedTab }) {
     <div>
       {selectedTab === "Dashboard" && <Dashboard />}
       {selectedTab === "Profile" && <CompanyProfile />}
-      {selectedTab === "Internships" && <Internships />}
+      {selectedTab === "Internships" && <CompanyInternshipsTab />}
       {selectedTab === "Candidates" && <Candidates />}
     </div>
   );
