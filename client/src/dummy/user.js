@@ -2,7 +2,7 @@ export const user = {
   name: "Aqib Shoaib",
   email: "example@gmail.com",
   password: "test1234",
-  role: "COMPANY",
+  role: "ADMIN",
   profileImage: "/user.png",
   bio: "Aspiring Software Engineer with a passion for building scalable and efficient web applications.",
   headline: "Software Engineering Intern",
