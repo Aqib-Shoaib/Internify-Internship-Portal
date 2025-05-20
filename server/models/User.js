@@ -49,13 +49,13 @@ const userSchema = new Schema(
     industry: { type: String },
     location: { type: String },
     verified: { type: Boolean, default: false },
+    // Common control fields
     passwordResetToken: String,
     passwordResetExpires: Date,
     otp: String,
     otpExpires: Date,
     allowLogin: { type: Boolean, default: false }, // prevent login before verification
 
-    // Common control fields
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true },

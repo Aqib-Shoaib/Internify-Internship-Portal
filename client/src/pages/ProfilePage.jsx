@@ -9,6 +9,7 @@ import {
   BriefcaseBusinessIcon,
   FileUser,
   LucideHome,
+  SaveIcon,
   User2Icon,
   Users2,
   UserSearch,
@@ -22,54 +23,71 @@ const SIDEBAR_NAV = {
     {
       name: "Dashboard",
       icon: <LucideHome />,
+      label: "Dashboard",
     },
     {
       name: "Profile",
+      label: "Profile",
       icon: <User2Icon />,
     },
     {
       name: "Applications",
+      laebl: "Applications",
       icon: <BriefcaseBusinessIcon />,
     },
     {
       name: "Resumes",
+      label: "Resumes",
       icon: <FileUser />,
+    },
+    {
+      name: "SavedInternship",
+      label: "Saved Internship",
+      icon: <SaveIcon />,
     },
   ],
 
   COMPANY: [
     {
       name: "Dashboard",
+      label: "Dashboard",
       icon: <LucideHome />,
     },
     {
       name: "Profile",
+      label: "Profile",
       icon: <User2Icon />,
     },
     {
       name: "Internships",
+      label: "Internships",
       icon: <BriefcaseBusinessIcon />,
     },
     {
       name: "Candidates",
+      label: "Candidates",
       icon: <Users2 />,
     },
   ],
   ADMIN: [
     {
       name: "Dashboard",
+      label: "Dashboard",
       icon: <LucideHome />,
     },
     {
       name: "Users",
+      label: "Users",
       icon: <UserSearch />,
     },
     {
       name: "InternshipsVerified",
+      label: "Internships Verified",
       icon: <VerifiedIcon />,
     },
     {
       name: "CompaniesVerified",
+      label: "Companies Verified",
       icon: <Verified />,
     },
   ],

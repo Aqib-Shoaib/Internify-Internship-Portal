@@ -12,7 +12,7 @@ function SidebarNavigation({ navItems, selectedTab, setSelectedTab }) {
           }`}
         >
           {item.icon}
-          {item.name}
+          {item.label}
         </button>
       ))}
     </aside>
