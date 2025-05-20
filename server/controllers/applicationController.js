@@ -12,21 +12,44 @@ const buildFilter = (query) => {
 
 const createApplication = async (req, res) => {
   try {
-    const { internship, coverLetter, resumeLink } = req.body;
-    const exists = await Application.findOne({
-      //   intern: req.user._id,
-      internship,
-    });
-    if (exists) return res.status(400).json({ message: 'Already applied' });
+    const { internship: internshipId, coverLetter, resumeLink } = req.body;
 
+    // 1. Check if internship exists and fetch its status
+    const internship = await Internship.findById(internshipId);
+    if (!internship) {
+      return res.status(404).json({ message: 'Internship not found' });
+    }
+
+    const { verified, live, expiryDate } = internship;
+
+    // 2. Block if internship shouldn't accept applications
+    if (!verified || !live || expiryDate < Date.now()) {
+      return res.status(400).json({
+        message: 'Internship is not accepting applications at this time',
+      });
+    }
+
+    // 3. Prevent duplicate applications
+    const exists = await Application.findOne({
+      intern: req.user._id,
+      internship: internshipId,
+    });
+
+    if (exists) {
+      return res.status(400).json({ message: 'Already applied' });
+    }
+
+    // 4. Create application
     const application = await Application.create({
       intern: req.user._id,
-      internship,
+      internship: internshipId,
       coverLetter,
       resumeLink,
     });
+
     res.status(201).json({ status: 'success', data: application });
   } catch (err) {
+    console.error('Application Error:', err);
     res.status(500).json({ status: 'fail', message: 'Server Error' });
   }
 };

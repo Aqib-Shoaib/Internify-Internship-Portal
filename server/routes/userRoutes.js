@@ -20,6 +20,8 @@ const {
   createAdmin,
   uploadProfileImage,
   uploadResumeFile,
+  toggleSavedInternship,
+  getSavedInternships,
 } = require('../controllers/userController');
 const upload = require('../utils/multer');
 const { uploadResume } = require('../utils/pdfMulter');
@@ -39,6 +41,7 @@ userRouter.delete('/me', deleteMe); //self delete for now
 userRouter.patch('/password', updatePassword);
 userRouter.patch(
   '/uploadResume',
+  roleMiddleware(['INTERN']),
   uploadResume.single('resume'), // input name must be 'resume'
   uploadResumeFile,
 );
@@ -46,6 +49,16 @@ userRouter.patch(
   '/uploadProfile',
   upload.single('profileImage'),
   uploadProfileImage,
+);
+userRouter.patch(
+  '/saveInternships/:internshipId',
+  roleMiddleware(['INTERN']),
+  toggleSavedInternship,
+);
+userRouter.get(
+  '/savedInternships',
+  roleMiddleware(['INTERN']),
+  getSavedInternships,
 );
 userRouter.patch(
   '/me',

@@ -140,6 +140,14 @@ const updateInternship = async (req, res) => {
     if (!internship)
       return res.status(404).json({ message: 'Internship not found' });
 
+    console.log(internship);
+    const { verified, live, expiryDate } = internship;
+    if (!verified || live || expiryDate < Date.now()) {
+      return res
+        .status(404)
+        .json({ message: 'Internship can not be updated right now' });
+    }
+
     if (req.body.title) {
       internship.title = req.body.title;
       internship.slug = slugify(req.body.title, { lower: true });

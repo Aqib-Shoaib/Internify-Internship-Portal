@@ -1,4 +1,3 @@
-const path = require('path');
 const User = require('../models/User');
 
 const getAllUsers = async (req, res) => {
@@ -173,12 +172,12 @@ const uploadProfileImage = async (req, res) => {
     const folder = req.user.role === 'COMPANY' ? 'companies' : 'users';
 
     // Step 4: Format path for frontend (exclude 'public')
-    const imageRelativePath = path.join('img', folder, req.file.filename); // e.g., img/users/image-123.png
+    const imageUrl = `/img/${folder}/${req.file.filename}`;
 
     // Step 5: Update user in DB
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { image: imageRelativePath },
+      { profileImage: imageUrl },
       { new: true, runValidators: false },
     );
 
@@ -194,7 +193,6 @@ const uploadProfileImage = async (req, res) => {
       status: 'success',
       message: 'Image uploaded successfully',
       data: {
-        imageUrl: `/${imageRelativePath}`, // this assumes static files served from /public
         user: updatedUser,
       },
     });
@@ -215,12 +213,15 @@ const uploadResumeFile = async (req, res) => {
         .json({ status: 'fail', message: 'No PDF uploaded' });
     }
 
-    const resumePath = req.file.path;
-
-    // Optional: Update user model with resume path
-    await User.findByIdAndUpdate(
+    const resumeUrl = `/docs/resumes/${req.file.filename}`;
+    const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { resume: resumePath },
+      {
+        resume: {
+          title: req.body.title,
+          link: resumeUrl,
+        },
+      },
       {
         new: true,
       },
@@ -230,11 +231,79 @@ const uploadResumeFile = async (req, res) => {
       status: 'success',
       message: 'Resume uploaded successfully',
       data: {
-        resumeUrl: resumePath,
+        updatedUser,
       },
     });
   } catch (err) {
     res.status(500).json({ status: 'error', message: err.message });
+  }
+};
+
+// Save or Unsave Internship
+const toggleSavedInternship = async (req, res) => {
+  try {
+    const { internshipId } = req.params;
+    const { save } = req.body; // expects { save: true } or { save: false }
+
+    if (typeof save !== 'boolean') {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Missing or invalid "save" flag in request body',
+      });
+    }
+
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: 'fail', message: 'User not found' });
+    }
+
+    const alreadySaved = user.savedInternships.includes(internshipId);
+
+    if (save) {
+      if (!alreadySaved) {
+        user.savedInternships.push(internshipId);
+      }
+    } else {
+      user.savedInternships.pull(internshipId); // removes from array
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      status: 'success',
+      message: save ? 'Internship saved' : 'Internship removed from saved list',
+    });
+  } catch (err) {
+    console.error('Toggle Save Error:', err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+};
+
+// Get All Saved Internships
+const getSavedInternships = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate({
+      path: 'savedInternships',
+      select: 'title company location deadline', // adjust as needed
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ status: 'fail', message: 'User not found' });
+    }
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        savedInternships: user.savedInternships,
+      },
+    });
+  } catch (err) {
+    console.error('Get Saved Internships Error:', err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
   }
 };
 
@@ -250,4 +319,6 @@ module.exports = {
   createAdmin,
   uploadProfileImage,
   uploadResumeFile,
+  toggleSavedInternship,
+  getSavedInternships,
 };

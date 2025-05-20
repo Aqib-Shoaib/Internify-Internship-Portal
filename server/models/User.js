@@ -2,7 +2,9 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema(
+const { Schema } = mongoose;
+
+const userSchema = new Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -29,7 +31,19 @@ const userSchema = new mongoose.Schema(
         year: String,
       },
     ],
-    resume: { type: String }, // Link or filename of uploaded/created PDF
+    resume: [
+      {
+        title: String,
+        link: String,
+        createdAt: { type: Date, default: Date.now() },
+      },
+    ],
+    savedInternships: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Internship',
+      },
+    ],
 
     // Company-specific fields
     industry: { type: String },

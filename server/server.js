@@ -15,7 +15,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use(express.json());
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/docs', express.static(path.join(__dirname, 'public/docs')));
 
 // Routes
 app.use('/api', apiRoutes);
