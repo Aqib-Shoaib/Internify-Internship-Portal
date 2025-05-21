@@ -25,3 +25,26 @@ exports.getResetPasswordHTML = (resetToken) => `
     <p>If you didn’t request this, you can ignore this email.</p>
   </div>
 `;
+
+exports.contactEmailTOUser = (name) => `
+  <div>
+    <p>Hi ${name},</p>
+    <p>Thanks for contacting us! We’ve received your message and will get back to you shortly.</p>
+    <p>If your message was urgent, feel free to reply to this email.</p>
+    <br>
+    <p>Best regards,</p>
+    <p>The Team</p>
+  </div>
+`;
+
+exports.contactEmailToAdmin = (name, email, subject, message) => `
+  <div>
+    <h2>New Contact Message Received</h2>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Subject:</strong> ${subject || 'N/A'}</p>
+    <p><strong>Message:</strong><br>${message.replace(/\n/g, '<br>')}</p>
+    <hr />
+    <p>This message was submitted via your website contact form.</p>
+  </div>
+`;

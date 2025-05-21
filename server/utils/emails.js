@@ -4,6 +4,8 @@ const {
   getWelcomeEmailHTML,
   getResetPasswordHTML,
   getOTPEmailHTML,
+  contactEmailTOUser,
+  contactEmailToAdmin,
 } = require('./emailTemplates');
 
 const sendWelcome = async (name, email) => {
@@ -30,8 +32,31 @@ const sendOtpEmail = async (userEmail, otp) => {
   });
 };
 
+const sendContactEmailTOUser = async (formName, formEmail) => {
+  await sendEmail({
+    to: formEmail,
+    subject: 'Your Contact Form Message was recieved',
+    html: contactEmailTOUser(formName),
+  });
+};
+
+const sendContactEmailToAdmin = async (
+  formName,
+  formEmail,
+  formSubject,
+  formMesage,
+) => {
+  await sendEmail({
+    to: process.env.ADMIN_EMAIL,
+    subject: 'Contact Form on Internify was submitted',
+    html: contactEmailToAdmin(formName, formEmail, formSubject, formMesage),
+  });
+};
+
 module.exports = {
   sendWelcome,
   sendForgotPasswordEmail,
   sendOtpEmail,
+  sendContactEmailTOUser,
+  sendContactEmailToAdmin,
 };

@@ -32,7 +32,7 @@ const SIDEBAR_NAV = {
     },
     {
       name: "Applications",
-      laebl: "Applications",
+      label: "Applications",
       icon: <BriefcaseBusinessIcon />,
     },
     {
