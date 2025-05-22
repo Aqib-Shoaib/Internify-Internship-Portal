@@ -13,7 +13,7 @@ const CompanyProfile = () => {
         {companyData.name}
       </h1>
       {companyData.name ? (
-        <Card className='w-full'>
+        <Card className='w-full' data-aos='zoom-in'>
           <CardContent className='flex flex-col md:flex-row gap-1.5 md:gap-0 items-start space-x-4'>
             <div
               className={`w-20 h-20 flex items-center justify-center rounded-full`}
@@ -56,7 +56,7 @@ const CompanyProfile = () => {
           </CardContent>
         </Card>
       ) : (
-        <Card className='w-full md:w-3/5 mx-auto'>
+        <Card className='w-full md:w-3/5 mx-auto' data-aos='zoom-in'>
           <CardContent className='pt-6 text-center'>
             <p className='text-muted-foreground'>No profile created.</p>
           </CardContent>

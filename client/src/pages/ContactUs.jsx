@@ -10,13 +10,19 @@ export default function ContactPage() {
       <div className='col-span-2'>
         <Header />
       </div>
-      <div className='mt-32 pl-5 pr-5 md:pr-0 md:pl-20 col-span-2 md:col-span-1'>
+      <div
+        className='mt-32 pl-5 pr-5 md:pr-0 md:pl-20 col-span-2 md:col-span-1'
+        data-aos='fade-right'
+      >
         <h2 className='text-2xl font-bold mb-6'>Contact Us</h2>
         <Form />
       </div>
 
       {/* Contact Info */}
-      <div className='mt-10 md:mt-32 pr-5 md:pr-20 pl-5 md:pl-0 col-span-2 md:col-span-1'>
+      <div
+        className='mt-10 md:mt-32 pr-5 md:pr-20 pl-5 md:pl-0 col-span-2 md:col-span-1'
+        data-aos='fade-left'
+      >
         <h2 className='text-2xl font-bold mb-6'>Get in Touch</h2>
         <ContactInfo />
       </div>

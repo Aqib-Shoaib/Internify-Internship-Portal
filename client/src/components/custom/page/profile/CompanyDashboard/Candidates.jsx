@@ -204,7 +204,7 @@ const CompanyCandidatesTab = () => {
         </div>
       </div>
       {sortedApplications.length > 0 ? (
-        <Card>
+        <Card data-aos='zoom-in'>
           <CardContent>
             <Table className='w-full md:w-3/5 mx-auto'>
               <TableHeader>

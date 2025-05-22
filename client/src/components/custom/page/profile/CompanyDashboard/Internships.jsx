@@ -113,7 +113,11 @@ const CompanyInternshipsTab = () => {
       <div className='flex items-center gap-1.5 flex-wrap justify-start'>
         {internships.length > 0 ? (
           internships.map((internship) => (
-            <Card key={internship._id} className='w-full md:w-fit'>
+            <Card
+              key={internship._id}
+              className='w-full md:w-fit'
+              data-aos='zoom-in'
+            >
               <CardHeader>
                 <CardTitle className='flex flex-col gap-1'>
                   <div className='flex items-center gap-1'>

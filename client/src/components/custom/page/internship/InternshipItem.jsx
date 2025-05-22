@@ -18,6 +18,7 @@ function InternshipItem({ data }) {
     <Card
       className='rounded-xl shadow-md hover:shadow-lg transition-all duration-300 relative mb-4 max-h-[20rem] md:max-h-[22rem] max-w-[20rem] min-h-[20rem] md:min-h-[22rem] min-w-[20rem]'
       onClick={() => navigate("/internships/software-engineer-intern")}
+      data-aos='zoom-in'
     >
       {/* Card Header with Date and Like Button */}
       <CardHeader className='flex justify-between items-center'>

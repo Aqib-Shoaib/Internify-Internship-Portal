@@ -8,7 +8,7 @@ function CreateAdmin() {
       <h1 className='text-2xl md:text-3xl font-medium mb-4 md:mb-6'>
         Create a new Admin
       </h1>
-      <Card>
+      <Card data-aos='zoom-in'>
         <CardHeader>
           <CardTitle>Create Credentails for new admin</CardTitle>
         </CardHeader>

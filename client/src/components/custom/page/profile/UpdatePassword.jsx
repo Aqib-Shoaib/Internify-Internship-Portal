@@ -9,7 +9,7 @@ function UpdatePassword() {
         Update Password
       </h1>
 
-      <Card>
+      <Card data-aos='zoom-in'>
         <CardHeader>
           <CardTitle>
             Do you know it is recommended to change passwords regularly!

@@ -99,7 +99,7 @@ const Applications = () => {
       </div>
 
       {/* Applications Table */}
-      <Card>
+      <Card data-aos='zoom-in'>
         <CardHeader>
           <CardTitle>Applications</CardTitle>
         </CardHeader>

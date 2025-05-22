@@ -2,7 +2,10 @@
 
 function SidebarNavigation({ navItems, selectedTab, setSelectedTab }) {
   return (
-    <aside className='flex flex-row md:flex-col items-center md:items-start justify-center md:justify-start gap-2'>
+    <aside
+      className='flex flex-row md:flex-col items-center md:items-start justify-center md:justify-start gap-2'
+      data-aos='fade-right'
+    >
       {navItems.map((item) => (
         <button
           key={item.name}

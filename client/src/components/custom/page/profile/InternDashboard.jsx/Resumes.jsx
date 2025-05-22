@@ -65,7 +65,10 @@ const Resumes = () => {
 
       {/* Resume Cards or No Resume Message */}
       {userData.resumes.length > 0 ? (
-        <div className='flex flex-col md:flex-row items-center gap-2 md:flex-wrap'>
+        <div
+          className='flex flex-col md:flex-row items-center gap-2 md:flex-wrap'
+          data-aos='zoom-in'
+        >
           {userData.resumes.map((resume, index) => (
             <Card key={index} className='w-fit'>
               <CardHeader>

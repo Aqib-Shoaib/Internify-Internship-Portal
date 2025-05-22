@@ -107,7 +107,7 @@ const Dashboard = () => {
     <div className='p-0 md:p-6'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         {/* System Overview Card */}
-        <Card>
+        <Card data-aos='zoom-in'>
           <CardHeader>
             <CardTitle>System Overview</CardTitle>
           </CardHeader>
@@ -134,7 +134,7 @@ const Dashboard = () => {
         </Card>
 
         {/* Activity Summary Card */}
-        <Card>
+        <Card data-aos='zoom-in'>
           <CardHeader>
             <CardTitle>Activity Summary</CardTitle>
           </CardHeader>

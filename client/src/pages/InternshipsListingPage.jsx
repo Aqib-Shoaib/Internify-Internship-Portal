@@ -12,14 +12,17 @@ function InternshipsListingPage() {
       <Header />
 
       <div className='pt-24 md:pt-32  px-5 md:px-10'>
-        <div className='py-3 flex flex-col gap-1.5'>
+        <div className='py-3 flex flex-col gap-1.5' data-aos='zoom-in'>
           <Title align='left'>Discover Quality Internships</Title>
           <Sub align='left'>
             We aim to connect talented & skillfull students with top-notch
             companies for a properly controlled industry experience
           </Sub>
         </div>
-        <div className='flex flex-col md:flex-row items-start md:items-center justify-center gap-2.5 md:gap-5 py-1'>
+        <div
+          className='flex flex-col md:flex-row items-start md:items-center justify-center gap-2.5 md:gap-5 py-1'
+          data-aos='zoom-in'
+        >
           <InternshipNav />
           <FilterSidebar />
         </div>

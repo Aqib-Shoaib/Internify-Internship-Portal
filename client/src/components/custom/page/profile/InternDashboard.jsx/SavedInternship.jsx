@@ -114,7 +114,7 @@ const InternSavedInternshipsTab = () => {
         </div>
       )}
       {filteredInternships.length > 0 ? (
-        <Card>
+        <Card data-aos='zoom-in'>
           <CardContent>
             <Table className='w-full'>
               <TableHeader>

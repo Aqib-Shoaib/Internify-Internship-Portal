@@ -63,7 +63,7 @@ const Dashboard = () => {
     <div className='p-0 md:p-6'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-6'>
         {/* Company Profile Card */}
-        <Card>
+        <Card data-aos='zoom-in'>
           <CardHeader>
             <CardTitle className='hidden md:block'>Company Profile</CardTitle>
           </CardHeader>
@@ -93,7 +93,7 @@ const Dashboard = () => {
         </Card>
 
         {/* Applications Overview Card */}
-        <Card>
+        <Card data-aos='zoom-in'>
           <CardHeader>
             <CardTitle>Applications Overview</CardTitle>
           </CardHeader>
@@ -121,7 +121,7 @@ const Dashboard = () => {
       </div>
 
       {/* Job Postings Table */}
-      <Card>
+      <Card data-aos='zoom-in'>
         <CardHeader>
           <CardTitle>Job Postings</CardTitle>
         </CardHeader>

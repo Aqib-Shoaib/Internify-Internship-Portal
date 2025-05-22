@@ -7,7 +7,7 @@ function Topbar({ user }) {
   const navigate = useNavigate();
   return (
     <div className='w-full bg-popover h-16 md:h-20 p-4'>
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-between items-center' data-aos='fade-up'>
         <div className='flex items-center gap-2 md:gap-4'>
           <img
             src={user?.profileImage}

@@ -6,6 +6,7 @@ function Googlebtn({ text }) {
     onSuccess: async (tokenResponse) => {
       try {
         //send this tokenResponse.access_token to backend
+        //might have to use jwtDecode library, if it is of no use, remove it from dependencies
 
         console.log(tokenResponse);
       } catch (err) {
