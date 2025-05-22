@@ -19,7 +19,7 @@ function DropdownMenuTrigger({ ...props }) {
     <DropdownMenuPrimitive.Trigger
       data-slot='dropdown-menu-trigger'
       {...props}
-      className='cursor-pointer border border-border text-base font-medium p-2 rounded-md'
+      className='cursor-pointer border border-border text-sm md:text-base font-medium p-1.5 md:p-2 rounded-md'
     />
   );
 }

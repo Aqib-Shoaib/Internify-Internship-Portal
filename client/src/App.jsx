@@ -14,6 +14,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ContactUs from "./pages/ContactUs";
 import ProtectedLayout from "./layout/ProtectedLayout";
 import InternshipDetail from "./pages/InternshipDetailPage";
+import OTPPage from "./pages/OTP";
 
 function App() {
   useEffect(() => {
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         <Route path='/login' element={<Loginpage />} />
         <Route path='/signup' element={<SignupPage />} />
+        <Route path='/otp' element={<OTPPage />} />
         <Route path='/' element={<AppLayout />}>
           <Route path='/' element={<HomePage />} />
           <Route path='/internship' element={<InternshipsListingPage />} />

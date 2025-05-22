@@ -9,11 +9,13 @@ import {
   BriefcaseBusinessIcon,
   FileUser,
   LucideHome,
+  RotateCcwKey,
   SaveIcon,
+  ShieldAlert,
   User2Icon,
+  UserCog2Icon,
   Users2,
   UserSearch,
-  Verified,
   VerifiedIcon,
 } from "lucide-react";
 import Admin from "@/components/custom/page/profile/Admin";
@@ -45,6 +47,11 @@ const SIDEBAR_NAV = {
       label: "Saved Internship",
       icon: <SaveIcon />,
     },
+    {
+      name: "UpdatePassword",
+      icon: <RotateCcwKey />,
+      label: "Update Password",
+    },
   ],
 
   COMPANY: [
@@ -68,6 +75,11 @@ const SIDEBAR_NAV = {
       label: "Candidates",
       icon: <Users2 />,
     },
+    {
+      name: "UpdatePassword",
+      icon: <RotateCcwKey />,
+      label: "Update Password",
+    },
   ],
   ADMIN: [
     {
@@ -88,7 +100,17 @@ const SIDEBAR_NAV = {
     {
       name: "CompaniesVerified",
       label: "Companies Verified",
-      icon: <Verified />,
+      icon: <ShieldAlert />,
+    },
+    {
+      name: "CreateAdmin",
+      icon: <UserCog2Icon />,
+      label: "Create Admin",
+    },
+    {
+      name: "UpdatePassword",
+      icon: <RotateCcwKey />,
+      label: "Update Password",
     },
   ],
 };

@@ -3,6 +3,7 @@ import Dashboard from "./InternDashboard.jsx/Dashboard";
 import InternProfile from "./InternDashboard.jsx/InternProfile";
 import Resumes from "./InternDashboard.jsx/Resumes";
 import InternSavedInternshipsTab from "./InternDashboard.jsx/SavedInternship";
+import UpdatePassword from "./UpdatePassword";
 
 /* eslint-disable react/prop-types */
 function Intern({ selectedTab }) {
@@ -13,6 +14,7 @@ function Intern({ selectedTab }) {
       {selectedTab === "Applications" && <Applications />}
       {selectedTab === "Resumes" && <Resumes />}
       {selectedTab === "SavedInternship" && <InternSavedInternshipsTab />}
+      {selectedTab === "UpdatePassword" && <UpdatePassword />}
     </div>
   );
 }

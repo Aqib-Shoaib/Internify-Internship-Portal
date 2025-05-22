@@ -1,7 +1,9 @@
 import AdminCompanyVerificationTab from "./Admin/CompanyVerification";
+import CreateAdmin from "./Admin/CreateAdmin";
 import Dashboard from "./Admin/Dashboard";
 import AdminInternshipVerificationTab from "./Admin/InternshipsVerification";
 import AdminUsersTab from "./Admin/Userrs";
+import UpdatePassword from "./UpdatePassword";
 
 /* eslint-disable react/prop-types */
 function Admin({ selectedTab }) {
@@ -13,6 +15,8 @@ function Admin({ selectedTab }) {
         <AdminInternshipVerificationTab />
       )}
       {selectedTab === "CompaniesVerified" && <AdminCompanyVerificationTab />}
+      {selectedTab === "CreateAdmin" && <CreateAdmin />}
+      {selectedTab === "UpdatePassword" && <UpdatePassword />}
     </div>
   );
 }

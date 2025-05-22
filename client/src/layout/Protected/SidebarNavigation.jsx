@@ -7,7 +7,7 @@ function SidebarNavigation({ navItems, selectedTab, setSelectedTab }) {
         <button
           key={item.name}
           onClick={() => setSelectedTab(item.name)}
-          className={`flex items-center gap-2 px-4 py-2 text-secondary-foreground rounded-md hover:bg-secondary ${
+          className={`flex items-center gap-2 px-4 py-2 text-secondary-foreground whitespace-nowrap rounded-md hover:bg-secondary ${
             selectedTab === item.name && "bg-secondary "
           }`}
         >
