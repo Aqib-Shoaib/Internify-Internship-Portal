@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const axios = require('axios');
+
 const User = require('../models/User');
 const { createSendToken } = require('../utils/jwtHelpers');
 const {
@@ -54,7 +56,92 @@ const register = async (req, res) => {
     });
   }
 };
+const registerWithGoogle = async (req, res) => {
+  try {
+    const { tokenResponse, name, email, role, website, phoneNumber } = req.body;
 
+    const response = await axios.get(
+      'https://www.googleapis.com/oauth2/v3/userinfo',
+      {
+        headers: {
+          Authorization: `Bearer ${tokenResponse.access_token}`,
+        },
+      },
+    );
+    const { sub } = response.data;
+    const user = await User.findOne({ googleSubId: sub });
+
+    if (user) {
+      return res
+        .status(400)
+        .json({ message: 'User with this Gmail already exists.' });
+    }
+    const otp = generateOTP();
+    const otpExpires = Date.now() + 5 * 60 * 1000;
+
+    if (role !== 'INTERN' && role !== 'COMPANY')
+      throw new Error('Role must be either INTERN or COMPANY.');
+    const userObj = {
+      name,
+      email,
+      role,
+      googleSubId: sub,
+      otp,
+      otpExpires,
+      website,
+      phoneNumber,
+    };
+    if (role === 'INTERN') {
+      userObj.skills = req.body.skills || [];
+      userObj.education = req.body.education || [];
+      userObj.resume = req.body.resume || '';
+    } else if (role === 'COMPANY') {
+      userObj.industry = req.body.industry || '';
+      userObj.location = req.body.location || '';
+    }
+
+    const newUser = await User.create(userObj);
+
+    await sendOtpEmail(email, otp);
+
+    res.status(201).json({
+      status: 'success',
+      message: 'OTP sent to email. Please verify to complete signup.',
+      userEmail: newUser.email,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
+};
+
+const loginWithGoogle = async (req, res) => {
+  try {
+    const { tokenResponse } = req.body;
+
+    const response = await axios.get(
+      'https://www.googleapis.com/oauth2/v3/userinfo',
+      {
+        headers: {
+          Authorization: `Bearer ${tokenResponse.access_token}`,
+        },
+      },
+    );
+    const { sub } = response.data;
+    const user = await User.findOne({ googleSubId: sub });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: 'No User with this Gmail Found.' });
+    }
+    createSendToken(user, 200, res);
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
+};
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -176,4 +263,6 @@ module.exports = {
   resetPassword,
   updatePassword,
   verifyOtp,
+  loginWithGoogle,
+  registerWithGoogle,
 };

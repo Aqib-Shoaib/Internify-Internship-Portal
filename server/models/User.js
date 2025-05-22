@@ -9,6 +9,7 @@ const userSchema = new Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, select: false }, // hashed
+    googleSubId: { type: String, select: false }, //google sub id for finding the user
 
     role: {
       type: String,
