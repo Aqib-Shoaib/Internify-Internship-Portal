@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 function Hero() {
   return (
-    <div className='w-full h-dvh py-8 px-4 md:grid md:grid-cols-[45%_45%] md:gap-[7%] md:place-items-center md:px-16 mt-32 md:mt-20 bg-gradient-to-b from-gray-100 to-blue-50 '>
+    <div className='w-full h-dvh py-8 px-4 md:grid md:grid-cols-[45%_45%] md:gap-[7%] md:place-items-center md:px-16 mt-20 bg-gradient-to-b from-gray-100 to-blue-50 '>
       <div
         data-aos='fade-right'
         className='flex flex-col gap-2 items-start justify-start'

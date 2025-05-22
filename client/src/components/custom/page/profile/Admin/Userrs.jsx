@@ -47,6 +47,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { user as adminData } from "@/dummy/user";
+import { Card, CardContent } from "@/components/ui/card";
 
 const AdminUsersTab = () => {
   const [users, setUsers] = useState([]);
@@ -196,13 +197,13 @@ const AdminUsersTab = () => {
   );
 
   if (loading) {
-    return <div className='p-6 max-w-4xl mx-auto'>Loading...</div>;
+    return <div className='p-0 md:p-6'>Loading...</div>;
   }
 
   return (
-    <div className='p-6 max-w-4xl mx-auto'>
-      <h1 className='text-2xl font-bold mb-6'>Users</h1>
-      <div className='flex flex-col md:flex-row gap-4 mb-6'>
+    <div className='p-0 md:p-6'>
+      <h1 className='text-xl md:text-2xl font-bold mb-4 md:mb-6'>Users</h1>
+      <div className='flex flex-col md:flex-row gap-2 md:gap-4 mb-6'>
         <Select
           value={filters.role}
           onValueChange={(value) => handleFilterChange("role", value)}
@@ -248,132 +249,138 @@ const AdminUsersTab = () => {
       )}
       {paginatedUsers.length > 0 ? (
         <>
-          <Table className='w-full md:w-3/5 mx-auto'>
-            <TableHeader>
-              <TableRow>
-                <TableHead
-                  className='cursor-pointer'
-                  onClick={() => handleSort("name")}
-                >
-                  Name{" "}
-                  {sort.column === "name" &&
-                    (sort.direction === "asc" ? "↑" : "↓")}
-                </TableHead>
-                <TableHead
-                  className='cursor-pointer'
-                  onClick={() => handleSort("email")}
-                >
-                  Email{" "}
-                  {sort.column === "email" &&
-                    (sort.direction === "asc" ? "↑" : "↓")}
-                </TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paginatedUsers.map((user) => (
-                <TableRow
-                  key={user._id}
-                  className='cursor-pointer'
-                  onClick={(e) => {
-                    if (e.target.closest(".actions")) return;
-                    setSelectedUser(user);
-                    setDrawerOpen(true);
-                  }}
-                >
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell>
-                    <Badge variant={user.verified ? "success" : "secondary"}>
-                      {user.verified ? "Verified" : "Unverified"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className='actions'>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger>Actions</DropdownMenuTrigger>
-                      <DropdownMenuContent>
-                        {user.active ? (
-                          <DropdownMenuItem
-                            onClick={(e) =>
-                              handleAction(e, user._id, "deactivate")
-                            }
-                            disabled={user._id === adminData._id}
-                          >
-                            <XCircle className='mr-2 h-4 w-4' />
-                            Deactivate
-                          </DropdownMenuItem>
-                        ) : (
-                          <DropdownMenuItem
-                            onClick={(e) =>
-                              handleAction(e, e, user._id, "activate")
-                            }
-                            disabled={user._id === adminData._id}
-                          >
-                            <CheckCircle2 className='mr-2 h-4 w-4' />
-                            Activate
-                          </DropdownMenuItem>
-                        )}
-                        {user.role === "COMPANY" && (
-                          <>
-                            {user.verified ? (
+          <Card>
+            <CardContent>
+              <Table className='w-full md:w-3/5 mx-auto'>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead
+                      className='cursor-pointer'
+                      onClick={() => handleSort("name")}
+                    >
+                      Name{" "}
+                      {sort.column === "name" &&
+                        (sort.direction === "asc" ? "↑" : "↓")}
+                    </TableHead>
+                    <TableHead
+                      className='cursor-pointer'
+                      onClick={() => handleSort("email")}
+                    >
+                      Email{" "}
+                      {sort.column === "email" &&
+                        (sort.direction === "asc" ? "↑" : "↓")}
+                    </TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {paginatedUsers.map((user) => (
+                    <TableRow
+                      key={user._id}
+                      className='cursor-pointer'
+                      onClick={(e) => {
+                        if (e.target.closest(".actions")) return;
+                        setSelectedUser(user);
+                        setDrawerOpen(true);
+                      }}
+                    >
+                      <TableCell>{user.name}</TableCell>
+                      <TableCell>{user.email}</TableCell>
+                      <TableCell>{user.role}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={user.verified ? "success" : "secondary"}
+                        >
+                          {user.verified ? "Verified" : "Unverified"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className='actions'>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger>Actions</DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            {user.active ? (
                               <DropdownMenuItem
                                 onClick={(e) =>
-                                  handleAction(e, user._id, "unverify")
+                                  handleAction(e, user._id, "deactivate")
                                 }
+                                disabled={user._id === adminData._id}
                               >
                                 <XCircle className='mr-2 h-4 w-4' />
-                                Unverify
+                                Deactivate
                               </DropdownMenuItem>
                             ) : (
                               <DropdownMenuItem
                                 onClick={(e) =>
-                                  handleAction(e, user._id, "verify")
+                                  handleAction(e, e, user._id, "activate")
                                 }
+                                disabled={user._id === adminData._id}
                               >
                                 <CheckCircle2 className='mr-2 h-4 w-4' />
-                                Verify
+                                Activate
+                              </DropdownMenuItem>
+                            )}
+                            {user.role === "COMPANY" && (
+                              <>
+                                {user.verified ? (
+                                  <DropdownMenuItem
+                                    onClick={(e) =>
+                                      handleAction(e, user._id, "unverify")
+                                    }
+                                  >
+                                    <XCircle className='mr-2 h-4 w-4' />
+                                    Unverify
+                                  </DropdownMenuItem>
+                                ) : (
+                                  <DropdownMenuItem
+                                    onClick={(e) =>
+                                      handleAction(e, user._id, "verify")
+                                    }
+                                  >
+                                    <CheckCircle2 className='mr-2 h-4 w-4' />
+                                    Verify
+                                  </DropdownMenuItem>
+                                )}
+                                <DropdownMenuItem
+                                  onClick={(e) =>
+                                    handleAction(e, user._id, "viewInternships")
+                                  }
+                                >
+                                  <Briefcase className='mr-2 h-4 w-4' />
+                                  View Internships
+                                </DropdownMenuItem>
+                              </>
+                            )}
+                            {user.role === "INTERN" && (
+                              <DropdownMenuItem
+                                onClick={(e) =>
+                                  handleAction(e, user._id, "viewApplications")
+                                }
+                              >
+                                <Eye className='mr-2 h-4 w-4' />
+                                View Applications
                               </DropdownMenuItem>
                             )}
                             <DropdownMenuItem
-                              onClick={(e) =>
-                                handleAction(e, user._id, "viewInternships")
-                              }
+                              onClick={() => {
+                                setUserToDelete(user);
+                                setShowDeleteConfirm(true);
+                              }}
+                              disabled={user._id === adminData._id}
                             >
-                              <Briefcase className='mr-2 h-4 w-4' />
-                              View Internships
+                              <Trash2 className='mr-2 h-4 w-4' />
+                              Delete
                             </DropdownMenuItem>
-                          </>
-                        )}
-                        {user.role === "INTERN" && (
-                          <DropdownMenuItem
-                            onClick={(e) =>
-                              handleAction(e, user._id, "viewApplications")
-                            }
-                          >
-                            <Eye className='mr-2 h-4 w-4' />
-                            View Applications
-                          </DropdownMenuItem>
-                        )}
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setUserToDelete(user);
-                            setShowDeleteConfirm(true);
-                          }}
-                          disabled={user._id === adminData._id}
-                        >
-                          <Trash2 className='mr-2 h-4 w-4' />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
           <Pagination className='mt-4'>
             <PaginationContent>
               <PaginationItem>

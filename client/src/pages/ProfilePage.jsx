@@ -98,14 +98,14 @@ function ProfilePage() {
   const [selectedTab, setSelectedTab] = useState(navItems[0].name);
 
   return (
-    <div className='flex'>
-      <aside className='w-64 bg-foreground text-background h-dvh max-h-dvh p-4'>
+    <div className='flex relative h-dvh'>
+      <aside className='w-full md:w-64 bg-foreground text-background h-20 md:h-dvh md:max-h-dvh p-4 absolute md:static bottom-0 left-0 right-0 z-10'>
         <div>
           <Link to='/'>
             <img
               src='/logo.svg'
               alt='logo'
-              className='h-14 mb-10 cursor-pointer'
+              className='hidden md:block h-14 md:mb-10 cursor-pointer'
             />
           </Link>
           <SidebarNavigation
@@ -117,7 +117,7 @@ function ProfilePage() {
       </aside>
       <div className='flex-1 flex flex-col'>
         <Topbar user={user} />
-        <main className='px-16 py-6 overflow-y-scroll h-[calc(100vh-80px)]'>
+        <main className='px-4 md:px-16 py-3 md:py-6 overflow-y-scroll md:h-[calc(100vh-80px)] h-[calc(100vh-160px)]'>
           {user.role === "INTERN" && (
             <Intern user={user} selectedTab={selectedTab} />
           )}

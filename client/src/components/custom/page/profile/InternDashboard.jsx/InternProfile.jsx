@@ -2,17 +2,8 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerFooter,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { user } from "@/dummy/user";
-import { Label } from "@/components/ui/label";
+import EditProfileDrawer from "./EditProfileDrawer";
 
 // const user = {
 //   name: "Aqib Shoaib",
@@ -37,33 +28,37 @@ const InternProfile = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
-    <div className='p-6'>
+    <div className='p-0 md:p-6'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         {/* Profile Card */}
         <Card>
           <CardHeader>
-            <CardTitle>Profile</CardTitle>
+            <CardTitle className='hidden md:block'>Profile</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className='flex items-center space-x-4 mb-4'>
+            <div className='flex items-center space-x-4 mb-2 md:mb-4'>
               <img
                 src={user.profileImage}
                 alt='Profile'
-                className='w-16 h-16 rounded-full object-cover'
+                className='w-10 md:w-16 h-10 md:h-16 rounded-full object-cover'
               />
               <div>
-                <h3 className='text-xl font-semibold'>{user.name}</h3>
-                <p className='text-sm text-muted-foreground'>{user.headline}</p>
+                <h3 className='text-lg md:text-xl font-semibold'>
+                  {user.name}
+                </h3>
+                <p className='text-xs md:text-sm text-muted-foreground'>
+                  {user.headline}
+                </p>
               </div>
             </div>
             <div className='space-y-2'>
-              <p className='text-sm'>
+              <p className='text-xs md:text-sm'>
                 <span className='font-medium'>Email:</span> {user.email}
               </p>
-              <p className='text-sm'>
+              <p className='text-xs md:text-sm'>
                 <span className='font-medium'>Phone:</span> {user.phoneNumber}
               </p>
-              <p className='text-sm'>
+              <p className='text-xs md:text-sm'>
                 <span className='font-medium'>Website:</span>{" "}
                 <a
                   href={user.website}
@@ -72,8 +67,11 @@ const InternProfile = () => {
                   {user.website}
                 </a>
               </p>
-              <p className='text-sm'>{user.bio}</p>
-              <Button className='mt-4' onClick={() => setIsDrawerOpen(true)}>
+              <p className='text-xs md:text-sm'>{user.bio}</p>
+              <Button
+                className='mt-2 md:mt-4'
+                onClick={() => setIsDrawerOpen(true)}
+              >
                 Edit Profile
               </Button>
             </div>
@@ -83,11 +81,13 @@ const InternProfile = () => {
         {/* Skills and Education Card */}
         <Card>
           <CardHeader>
-            <CardTitle>Skills & Education</CardTitle>
+            <CardTitle className='hidden md:block'>
+              Skills & Education
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className='mb-6'>
-              <h4 className='text-lg font-medium mb-2'>Skills</h4>
+            <div className='mb-3 md:mb-6'>
+              <h4 className='text-base md:text-lg font-medium mb-2'>Skills</h4>
               <div className='flex flex-wrap gap-2'>
                 {user.skills.map((skill, index) => (
                   <Badge key={index} variant='secondary'>
@@ -97,9 +97,11 @@ const InternProfile = () => {
               </div>
             </div>
             <div>
-              <h4 className='text-lg font-medium mb-2'>Education</h4>
+              <h4 className='text-base md:text-lg font-medium mb-2'>
+                Education
+              </h4>
               {user.education.map((edu, index) => (
-                <div key={index} className='text-sm'>
+                <div key={index} className='text-xs md:text-sm'>
                   <p className='font-medium'>{edu.degree}</p>
                   <p>{edu.school}</p>
                   <p className='text-muted-foreground'>{edu.year}</p>
@@ -111,55 +113,11 @@ const InternProfile = () => {
       </div>
 
       {/* Edit Profile Drawer */}
-      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle>Edit Profile</DrawerTitle>
-          </DrawerHeader>
-          <div className='p-6 space-y-4 overflow-y-auto max-h-[80vh]'>
-            <div>
-              <Label className='text-sm font-medium'>Name</Label>
-              <Input defaultValue={user.name} />
-            </div>
-            <div>
-              <Label className='text-sm font-medium'>Headline</Label>
-              <Input defaultValue={user.headline} />
-            </div>
-            <div>
-              <Label className='text-sm font-medium'>Bio</Label>
-              <Textarea defaultValue={user.bio} />
-            </div>
-            <div>
-              <Label className='text-sm font-medium'>Phone Number</Label>
-              <Input defaultValue={user.phoneNumber} />
-            </div>
-            <div>
-              <Label className='text-sm font-medium'>Website</Label>
-              <Input defaultValue={user.website} />
-            </div>
-            <div>
-              <Label className='text-sm font-medium'>
-                Skills (comma-separated)
-              </Label>
-              <Input defaultValue={user.skills.join(", ")} />
-            </div>
-            <div>
-              <Label className='text-sm font-medium'>Education</Label>
-              <p className='text-sm text-muted-foreground'>
-                Education editing not supported in this view.
-              </p>
-            </div>
-          </div>
-          <DrawerFooter>
-            <div className='flex items-center gap-2 justify-end'>
-              <Button variant='outline' onClick={() => setIsDrawerOpen(false)}>
-                Cancel
-              </Button>
-              <Button>Save</Button>
-            </div>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
+      <EditProfileDrawer
+        isDrawerOpen={isDrawerOpen}
+        setIsDrawerOpen={setIsDrawerOpen}
+        user={user}
+      />
     </div>
   );
 };

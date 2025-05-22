@@ -48,10 +48,10 @@ const Resumes = () => {
   const [uploadDrawerOpen, setUploadDrawerOpen] = useState(false);
 
   return (
-    <div className='p-6 max-w-4xl mx-auto'>
+    <div className='p-0 md:p-6'>
       {/* Heading */}
-      <div className='flex items-center justify-between w-full mb-6'>
-        <h1 className='text-2xl font-bold'>My Resumes</h1>
+      <div className='flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between gap-1.5 w-full mb-4 md:mb-6'>
+        <h1 className='text-xl md:text-2xl font-bold'>My Resumes</h1>
         {/* Create and Upload Resume Buttons */}
         <div className='flex justify-center gap-4'>
           <Button onClick={() => setCreateDrawerOpen(true)}>
@@ -65,7 +65,7 @@ const Resumes = () => {
 
       {/* Resume Cards or No Resume Message */}
       {userData.resumes.length > 0 ? (
-        <div className='flex items-center gap-2 flex-wrap'>
+        <div className='flex flex-col md:flex-row items-center gap-2 md:flex-wrap'>
           {userData.resumes.map((resume, index) => (
             <Card key={index} className='w-fit'>
               <CardHeader>

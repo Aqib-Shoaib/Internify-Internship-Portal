@@ -2,7 +2,7 @@
 
 function SidebarNavigation({ navItems, selectedTab, setSelectedTab }) {
   return (
-    <aside className='flex flex-col gap-2'>
+    <aside className='flex flex-row md:flex-col items-center md:items-start justify-center md:justify-start gap-2'>
       {navItems.map((item) => (
         <button
           key={item.name}
@@ -11,8 +11,8 @@ function SidebarNavigation({ navItems, selectedTab, setSelectedTab }) {
             selectedTab === item.name && "bg-secondary "
           }`}
         >
-          {item.icon}
-          {item.label}
+          <span>{item.icon}</span>
+          <span className='hidden md:block'>{item.label}</span>
         </button>
       ))}
     </aside>

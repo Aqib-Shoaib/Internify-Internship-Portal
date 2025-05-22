@@ -11,7 +11,7 @@ function InternshipsListingPage() {
     <div className=''>
       <Header />
 
-      <div className='pt-32  px-10 '>
+      <div className='pt-24 md:pt-32  px-5 md:px-10'>
         <div className='py-3 flex flex-col gap-1.5'>
           <Title align='left'>Discover Quality Internships</Title>
           <Sub align='left'>

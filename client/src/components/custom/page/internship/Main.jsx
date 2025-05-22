@@ -9,7 +9,7 @@ import { FAKE_DATA } from "@/dummy/Internships";
 
 function Main() {
   return (
-    <div className='px-4'>
+    <div className='px-2 md:px-4'>
       <div className='flex flex-col items-center justify-center gap-2 mb-6'>
         <div className='flex items-center gap-2'>
           <h3 className='text-xl font-semibold'>Recommended Jobs</h3>
@@ -28,7 +28,7 @@ function Main() {
         </DropdownMenu>
       </div>
 
-      <div className='flex flex-wrap gap-6 items-center'>
+      <div className='flex flex-col md:flex-row flex-wrap gap-6 items-start md:items-center'>
         {FAKE_DATA.map((data) => (
           <InternshipItem key={data.title} data={data} />
         ))}

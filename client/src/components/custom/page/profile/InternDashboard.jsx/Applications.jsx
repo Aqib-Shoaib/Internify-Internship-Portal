@@ -15,7 +15,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle } from "lucide-react";
 import { applications } from "@/dummy/applications";
 
@@ -68,22 +67,20 @@ const Applications = () => {
   };
 
   return (
-    <div className='p-6'>
+    <div className='p-0 md:p-6'>
       {/* Heading */}
-      <h1 className='text-2xl font-bold mb-2'>My Applications</h1>
+      <h1 className='text-xl md:text-2xl font-bold mb-2'>My Applications</h1>
 
       {/* Paragraph */}
-      <p className='text-sm text-muted-foreground mb-6'>
+      <p className='text-xs md:text-sm text-muted-foreground mb-6'>
         View all your internship applications and their current status. Click
         the internship link to learn more or track your progress.
       </p>
 
       {/* Sorting Options */}
-      <div className='flex justify-end mb-4'>
+      <div className='flex justify-center md:justify-end mb-4'>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='outline'>Sort By</Button>
-          </DropdownMenuTrigger>
+          <DropdownMenuTrigger>Sort By</DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => handleSort("appliedAt", "desc")}>
               Date Applied (Newest First)

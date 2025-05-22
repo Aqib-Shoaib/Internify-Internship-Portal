@@ -62,11 +62,13 @@ function Detail() {
   };
 
   return (
-    <div className='p-6 max-w-4xl mx-auto mt-28'>
+    <div className='p-3 md:p-6 max-w-4xl mx-auto mt-28'>
       {/* Header Section */}
       <div className='mb-6'>
-        <h1 className='text-3xl font-bold mb-2'>{internshipData.title}</h1>
-        <p className='text-lg text-muted-foreground mb-2'>
+        <h1 className='text-2xl md:text-3xl font-bold mb-2'>
+          {internshipData.title}
+        </h1>
+        <p className='text-base md:text-lg text-muted-foreground mb-2'>
           {internshipData.company.name} • {internshipData.location}
         </p>
         <div className='flex gap-2'>

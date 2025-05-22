@@ -89,7 +89,7 @@ const CompanyInternshipsTab = () => {
 
   if (!companyData.verified) {
     return (
-      <div className='p-6 max-w-4xl mx-auto'>
+      <div className='p-0 md:p-6'>
         <h1 className='text-2xl font-bold mb-6'>Your Internships</h1>
         <p className='text-muted-foreground'>
           Please verify your account to view or post internships.
@@ -99,13 +99,13 @@ const CompanyInternshipsTab = () => {
   }
 
   if (loading) {
-    return <div className='p-6 max-w-4xl mx-auto'>Loading...</div>;
+    return <div className='p-0 md:p-6'>Loading...</div>;
   }
 
   return (
-    <div className='p-6 max-w-4xl mx-auto'>
-      <div className='flex justify-between items-center mb-6'>
-        <h1 className='text-2xl font-bold'>Your Internships</h1>
+    <div className='p-0 md:p-6'>
+      <div className='flex flex-col md:flex-row gap-1.5 md:gap-0 justify-start md:justify-between items-start md:items-center mb-4 md:mb-6'>
+        <h1 className='text-xl md:text-2xl font-bold'>Your Internships</h1>
         <Button onClick={() => setCreateDrawerOpen(true)}>
           Create New Internship
         </Button>
@@ -113,7 +113,7 @@ const CompanyInternshipsTab = () => {
       <div className='flex items-center gap-1.5 flex-wrap justify-start'>
         {internships.length > 0 ? (
           internships.map((internship) => (
-            <Card key={internship._id} className='w-fit'>
+            <Card key={internship._id} className='w-full md:w-fit'>
               <CardHeader>
                 <CardTitle className='flex flex-col gap-1'>
                   <div className='flex items-center gap-1'>

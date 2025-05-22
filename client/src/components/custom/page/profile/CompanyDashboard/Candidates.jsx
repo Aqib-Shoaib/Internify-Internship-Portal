@@ -22,6 +22,7 @@ import {
 import { Star, Eye, CheckCircle2, Circle } from "lucide-react";
 import { user as companyData } from "@/dummy/user";
 import UpdateStatusDrawer from "./UpdateStatusDrawer";
+import { Card, CardContent } from "@/components/ui/card";
 
 const CompanyCandidatesTab = () => {
   const [applications, setApplications] = useState([]);
@@ -145,8 +146,8 @@ const CompanyCandidatesTab = () => {
 
   if (!companyData.verified) {
     return (
-      <div className='p-6 max-w-4xl mx-auto'>
-        <h1 className='text-2xl font-bold mb-6'>Candidates</h1>
+      <div className='p-0 md:p-6'>
+        <h1 className='text-xl md:text-2xl font-bold mb-6'>Candidates</h1>
         <p className='text-muted-foreground'>
           Please verify your account to view applications.
         </p>
@@ -155,13 +156,13 @@ const CompanyCandidatesTab = () => {
   }
 
   if (loading) {
-    return <div className='p-6 max-w-4xl mx-auto'>Loading...</div>;
+    return <div className='p-0 md:p-6'>Loading...</div>;
   }
 
   return (
-    <div className='p-6 max-w-4xl mx-auto'>
-      <h1 className='text-2xl font-bold mb-6'>Candidates</h1>
-      <div className='flex flex-col md:flex-row gap-4 mb-6'>
+    <div className='p-0 md:p-6'>
+      <h1 className='text-xl md:text-2xl font-bold mb-4 md:mb-6'>Candidates</h1>
+      <div className='flex flex-col md:flex-row gap-2 md:gap-4 mb-6'>
         <Select
           value={filters.status}
           onValueChange={(value) => handleFilterChange("status", value)}
@@ -203,110 +204,115 @@ const CompanyCandidatesTab = () => {
         </div>
       </div>
       {sortedApplications.length > 0 ? (
-        <Table className='w-full md:w-3/5 mx-auto'>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Avatar</TableHead>
-              <TableHead
-                className='cursor-pointer'
-                onClick={() => handleSort("name")}
-              >
-                Name{" "}
-                {sort.column === "name" &&
-                  (sort.direction === "asc" ? "↑" : "↓")}
-              </TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Internship</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead
-                className='cursor-pointer'
-                onClick={() => handleSort("appliedAt")}
-              >
-                Applied At{" "}
-                {sort.column === "appliedAt" &&
-                  (sort.direction === "asc" ? "↑" : "↓")}
-              </TableHead>
-              <TableHead>Reviewed</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedApplications.map((app) => (
-              <TableRow
-                key={app._id}
-                className='cursor-pointer'
-                onClick={(e) => {
-                  if (e.target.closest(".actions")) return;
-                  setSelectedApplication(app);
-                  setDrawerOpen(true);
-                }}
-              >
-                <TableCell>
-                  {app.intern.profileImage ? (
-                    <img
-                      src={app.intern.profileImage}
-                      alt={app.intern.name}
-                      className='w-10 h-10 rounded-full'
-                    />
-                  ) : (
-                    <div className='w-10 h-10 rounded-full bg-blue-500/50 flex items-center justify-center text-white'>
-                      {app.intern.name.charAt(0)}
-                    </div>
-                  )}
-                </TableCell>
-                <TableCell>{app.intern.name}</TableCell>
-                <TableCell>{app.intern.email}</TableCell>
-                <TableCell>{app.internship.title}</TableCell>
-                <TableCell>
-                  <Badge
-                    variant={
-                      app.status === "accepted"
-                        ? "success"
-                        : app.status === "shortlisted"
-                        ? "warning"
-                        : app.status === "rejected"
-                        ? "destructive"
-                        : "secondary"
-                    }
+        <Card>
+          <CardContent>
+            <Table className='w-full md:w-3/5 mx-auto'>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Avatar</TableHead>
+                  <TableHead
+                    className='cursor-pointer'
+                    onClick={() => handleSort("name")}
                   >
-                    {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  {new Date(app.appliedAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  {app.reviewed ? (
-                    <CheckCircle2 className='h-5 w-5 text-green-500' />
-                  ) : (
-                    <Circle className='h-5 w-5 text-gray-400' />
-                  )}
-                </TableCell>
-                <TableCell className='actions'>
-                  <div className='flex items-center space-x-2'>
-                    <Star
-                      className={`h-5 w-5 ${
-                        app.status === "shortlisted"
-                          ? "text-yellow-500 fill-yellow-500"
-                          : "text-gray-400"
-                      }`}
-                    />
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      onClick={() => {
-                        setSelectedApplication(app);
-                        setDrawerOpen(true);
-                      }}
-                    >
-                      <Eye className='h-4 w-4 mr-1' /> View
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                    Name{" "}
+                    {sort.column === "name" &&
+                      (sort.direction === "asc" ? "↑" : "↓")}
+                  </TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Internship</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead
+                    className='cursor-pointer'
+                    onClick={() => handleSort("appliedAt")}
+                  >
+                    Applied At{" "}
+                    {sort.column === "appliedAt" &&
+                      (sort.direction === "asc" ? "↑" : "↓")}
+                  </TableHead>
+                  <TableHead>Reviewed</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sortedApplications.map((app) => (
+                  <TableRow
+                    key={app._id}
+                    className='cursor-pointer'
+                    onClick={(e) => {
+                      if (e.target.closest(".actions")) return;
+                      setSelectedApplication(app);
+                      setDrawerOpen(true);
+                    }}
+                  >
+                    <TableCell>
+                      {app.intern.profileImage ? (
+                        <img
+                          src={app.intern.profileImage}
+                          alt={app.intern.name}
+                          className='w-10 h-10 rounded-full'
+                        />
+                      ) : (
+                        <div className='w-10 h-10 rounded-full bg-blue-500/50 flex items-center justify-center text-white'>
+                          {app.intern.name.charAt(0)}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>{app.intern.name}</TableCell>
+                    <TableCell>{app.intern.email}</TableCell>
+                    <TableCell>{app.internship.title}</TableCell>
+                    <TableCell>
+                      <Badge
+                        variant={
+                          app.status === "accepted"
+                            ? "success"
+                            : app.status === "shortlisted"
+                            ? "warning"
+                            : app.status === "rejected"
+                            ? "destructive"
+                            : "secondary"
+                        }
+                      >
+                        {app.status.charAt(0).toUpperCase() +
+                          app.status.slice(1)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {new Date(app.appliedAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      {app.reviewed ? (
+                        <CheckCircle2 className='h-5 w-5 text-green-500' />
+                      ) : (
+                        <Circle className='h-5 w-5 text-gray-400' />
+                      )}
+                    </TableCell>
+                    <TableCell className='actions'>
+                      <div className='flex items-center space-x-2'>
+                        <Star
+                          className={`h-5 w-5 ${
+                            app.status === "shortlisted"
+                              ? "text-yellow-500 fill-yellow-500"
+                              : "text-gray-400"
+                          }`}
+                        />
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={() => {
+                            setSelectedApplication(app);
+                            setDrawerOpen(true);
+                          }}
+                        >
+                          <Eye className='h-4 w-4 mr-1' /> View
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       ) : (
         <p className='text-muted-foreground'>No applications found.</p>
       )}
