@@ -15,6 +15,7 @@ import ContactUs from "./pages/ContactUs";
 import ProtectedLayout from "./layout/ProtectedLayout";
 import InternshipDetail from "./pages/InternshipDetailPage";
 import OTPPage from "./pages/OTP";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   useEffect(() => {
@@ -28,25 +29,43 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/login' element={<Loginpage />} />
-        <Route path='/signup' element={<SignupPage />} />
-        <Route path='/otp' element={<OTPPage />} />
-        <Route path='/' element={<AppLayout />}>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/internship' element={<InternshipsListingPage />} />
-          <Route path='/contact' element={<ContactUs />} />
-          <Route
-            path='/internships/:internship'
-            element={<InternshipDetail />}
-          />
-        </Route>
-        <Route path='/dashboard' element={<ProtectedLayout />}>
-          <Route path='profile' element={<ProfilePage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/login' element={<Loginpage />} />
+          <Route path='/signup' element={<SignupPage />} />
+          <Route path='/otp' element={<OTPPage />} />
+          <Route path='/' element={<AppLayout />}>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/internship' element={<InternshipsListingPage />} />
+            <Route path='/contact' element={<ContactUs />} />
+            <Route
+              path='/internships/:internship'
+              element={<InternshipDetail />}
+            />
+          </Route>
+          <Route path='/dashboard' element={<ProtectedLayout />}>
+            <Route path='profile' element={<ProfilePage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "#14213d50",
+              color: "#ffffff",
+            },
+          },
+          error: {
+            style: {
+              background: "#ce131340",
+              color: "#ffffff",
+            },
+          },
+        }}
+      />
+    </div>
   );
 }
 
