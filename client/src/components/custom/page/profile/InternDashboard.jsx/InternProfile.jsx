@@ -29,7 +29,7 @@ const InternProfile = () => {
 
   return (
     <div className='p-0 md:p-6'>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+      <div className='flex flex-col gap-6'>
         {/* Profile Card */}
         <Card data-aos='zoom-in'>
           <CardHeader>

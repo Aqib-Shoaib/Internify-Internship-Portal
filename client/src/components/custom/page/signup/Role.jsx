@@ -4,17 +4,15 @@ import { cn } from "@/lib/utils"; // ShadCN utility for conditional classNames
 const INTERN = "INTERN";
 const COMPANY = "COMPANY";
 
-function Role({ role, setUserRole }) {
+function Role({ role, setUserRole, roleErr }) {
   return (
-    <div className='flex flex-col xl:flex-row justify-between w-full border border-border/75 rounded-xl p-2 mb-3'>
-      <div className='flex flex-col justify-center'>
+    <div className='flex justify-between items-center w-full border border-border/75 rounded-xl p-2 mb-3'>
+      <div>
         <label className='text-base font-medium'>Choose Your Role</label>
-        <span className='text-sm text-destructive font-light mt-1'>
-          This can&apos;t be changed later!
-        </span>
+        <p className='text-xs text-destructive font-light mt-0.5'>{roleErr}</p>
       </div>
 
-      <div className='flex flex-col gap-2 mt-2 xl:mt-0 xl:flex-row xl:justify-center xl:items-center'>
+      <div className='flex flex-col sm:flex-row gap-2 mt-2 xl:mt-0'>
         <div
           onClick={() => setUserRole(INTERN)}
           className={cn(
@@ -25,7 +23,7 @@ function Role({ role, setUserRole }) {
           <img
             src='/student_vector.svg'
             alt='student vector image'
-            className='w-[30px]'
+            className='w-[30px] hidden lg:block'
           />
           <span>Intern</span>
         </div>
@@ -40,7 +38,7 @@ function Role({ role, setUserRole }) {
           <img
             src='/hr_vector.svg'
             alt='human resource hiring image'
-            className='w-[30px]'
+            className='w-[30px] hidden lg:block'
           />
           <span>HR / Company</span>
         </div>

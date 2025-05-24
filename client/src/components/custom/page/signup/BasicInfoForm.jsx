@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 
@@ -9,18 +8,11 @@ import { Button } from "@/components/ui/button";
 
 import Googlebtn from "../../utils/Googlebtn";
 
-function BasicInfoForm({ role, incrementFormNumber }) {
-  const [value, setValue] = useState();
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    incrementFormNumber();
-  }
-
+function BasicInfoForm({ role, handleFormSubmit, setbasicData, basicData }) {
   return (
     <div className='w-full'>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         className='grid grid-cols-1 md:grid-cols-2 gap-2'
       >
         {/* Full Name / Company Name */}
@@ -28,24 +20,35 @@ function BasicInfoForm({ role, incrementFormNumber }) {
           <Label>{role === "COMPANY" ? "Company Name" : "Full Name"}</Label>
           <Input
             type='text'
-            placeholder={role === "COMPANY" ? "Company Name" : "Full Name"}
             required
+            onChange={(e) =>
+              setbasicData((prev) => ({ ...prev, name: e.target.value }))
+            }
           />
         </div>
 
         {/* Email */}
         <div className='flex flex-col gap-1'>
           <Label>Email</Label>
-          <Input type='email' placeholder='example@gmail.com' required />
+          <Input
+            type='email'
+            name='email'
+            required
+            value={basicData.email}
+            onChange={(e) =>
+              setbasicData((prev) => ({ ...prev, email: e.target.value }))
+            }
+          />
         </div>
 
         {/* Phone Number */}
         <div className='flex flex-col gap-1'>
           <Label>Phone Number</Label>
           <PhoneInput
-            placeholder='Enter phone number'
-            value={value}
-            onChange={setValue}
+            value={basicData.phoneNumber}
+            onChange={(e) =>
+              setbasicData((prev) => ({ ...prev, phoneNumber: e }))
+            }
             defaultCountry='PK'
             required
             className='border border-border bg-background rounded-md p-2 text-sm'
@@ -55,22 +58,16 @@ function BasicInfoForm({ role, incrementFormNumber }) {
         {/* Password */}
         <div className='flex flex-col gap-1'>
           <Label>Password</Label>
-          <Input type='password' required />
-        </div>
-
-        {/* Confirm Password */}
-        <div className='flex flex-col gap-1'>
-          <Label>Password Confirm</Label>
-          <Input type='password' required />
-        </div>
-
-        {/* Portfolio/Website */}
-        <div className='flex flex-col gap-1'>
-          <Label>
-            {role === "COMPANY" ? "Website URL" : "Portfolio URL"}
-            <span className='text-xs text-muted-foreground ml-1'>(if any)</span>
-          </Label>
-          <Input type='url' placeholder='www.example.com' />
+          <Input
+            type='password'
+            name='password'
+            required
+            minLength={8}
+            value={basicData.password}
+            onChange={(e) =>
+              setbasicData((prev) => ({ ...prev, password: e.target.value }))
+            }
+          />
         </div>
 
         {/* Google Button with divider */}

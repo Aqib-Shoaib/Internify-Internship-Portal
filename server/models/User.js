@@ -26,9 +26,11 @@ const userSchema = new Schema(
     // Intern-specific fields
     skills: [String],
     education: {
-      school: String,
+      university: String,
       degree: String,
       year: String,
+      major: String,
+      currentYear: String,
     },
 
     resume: [

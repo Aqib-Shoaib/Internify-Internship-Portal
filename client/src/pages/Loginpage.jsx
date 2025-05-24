@@ -2,9 +2,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Googlebtn from "../components/custom/utils/Googlebtn";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 function Loginpage() {
   const navigate = useNavigate();
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setLoginData((prev) => ({ ...prev, [name]: value }));
+  }
+
+  function handleLogin(e) {
+    e.preventDefault();
+    console.log(loginData);
+
+    toast.success("Login Successfull");
+    navigate("/");
+  }
 
   return (
     <div className='flex items-center justify-center gap-20 w-full h-screen'>
@@ -39,26 +55,32 @@ function Loginpage() {
         <h1 className='text-3xl font-semibold text-gray-800'>Welcome Back!</h1>
 
         {/* Form */}
-        <form className='flex flex-col gap-4 items-center justify-center w-full'>
+        <form
+          className='flex flex-col gap-4 items-center justify-center w-full'
+          onSubmit={handleLogin}
+        >
           <Input
             type='email'
             className='w-80'
+            name='email'
+            value={loginData.email}
+            onChange={(e) => handleInputChange(e)}
             placeholder='Your Email...'
-            variant='outline'
-            size='lg'
-            label='Email'
+            required
           />
           <Input
             type='password'
             className='w-80'
+            name='password'
+            value={loginData.password}
+            onChange={(e) => handleInputChange(e)}
             placeholder='Password'
-            variant='outline'
-            size='lg'
-            label='Password'
+            minLength={8}
+            required
           />
           <Button
-            onClick={() => navigate("/")}
             variant='outline'
+            type='submit'
             className='btn bg-gradient-to-tl from-dark to-medium-dark rounded-full py-3 px-6 text-xl mt-4 transition-transform hover:scale-105'
           >
             Login

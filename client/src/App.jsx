@@ -50,16 +50,18 @@ function App() {
         </Routes>
       </BrowserRouter>
       <Toaster
+        position='bottom-right'
+        reverseOrder={false}
         toastOptions={{
           success: {
             style: {
-              background: "#14213d50",
+              background: "#14213d",
               color: "#ffffff",
             },
           },
           error: {
             style: {
-              background: "#ce131340",
+              background: "#ce1313",
               color: "#ffffff",
             },
           },
