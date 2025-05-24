@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
-function KeywordsInput({ onKeywordsChange, placeholder }) {
+function KeywordsInput({ onKeywordsChange, placeholder, oldKeywords = [] }) {
   const [inputValue, setInputValue] = useState("");
-  const [keywords, setKeywords] = useState([]);
+  const [keywords, setKeywords] = useState(oldKeywords);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);

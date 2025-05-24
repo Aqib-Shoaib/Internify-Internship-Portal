@@ -1,18 +1,17 @@
-import { BACKEND_URL } from "@/constants";
+import { BACKEND_URL, manageError } from "@/constants";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-function manageError(error) {
-  return (
-    error?.response?.data?.message || error?.message || "Something went wrong"
-  );
-}
+const authToken = localStorage.getItem("authToken");
 
 const fetchUser = createAsyncThunk("users/fetchStatus", async (_, thunkAPI) => {
   try {
-    const res = await axios.get(`${BACKEND_URL}/api/users/me`);
-    // console.log(res);
-    return res.data;
+    const res = await axios.get(`${BACKEND_URL}/api/users/me`, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    return res.data.data;
   } catch (err) {
     const message = manageError(err);
     return thunkAPI.rejectWithValue(message);
@@ -62,4 +61,22 @@ const verifyOtp = createAsyncThunk("users/otp", async (data, thunkAPI) => {
   }
 });
 
-export { fetchUser, loginUser, registerUser, verifyOtp };
+const updateUserData = createAsyncThunk(
+  "users/updateUserData",
+  async (data, thunkAPI) => {
+    try {
+      const response = await axios.patch(`${BACKEND_URL}/api/users/me`, data, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      return response.data.data;
+    } catch (err) {
+      const msg = manageError(err);
+      return thunkAPI.rejectWithValue(msg);
+    }
+  }
+);
+
+export { fetchUser, loginUser, registerUser, verifyOtp, updateUserData };

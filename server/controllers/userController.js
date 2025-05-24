@@ -307,6 +307,160 @@ const getSavedInternships = async (req, res) => {
   }
 };
 
+// Helper function to check if a string field is filled
+const isFilled = (value) => typeof value === 'string' && value.trim() !== '';
+
+const getInternProfileCompletion = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    if (user.role !== 'INTERN') {
+      return res.status(403).json({ error: 'User is not an intern' });
+    }
+
+    // Define relevant fields for interns
+    const fields = [
+      { name: 'name', check: () => isFilled(user.name) },
+      { name: 'email', check: () => isFilled(user.email) },
+      { name: 'profileImage', check: () => isFilled(user.profileImage) },
+      { name: 'bio', check: () => isFilled(user.bio) },
+      { name: 'headline', check: () => isFilled(user.headline) },
+      { name: 'website', check: () => isFilled(user.website) },
+      { name: 'phoneNumber', check: () => isFilled(user.phoneNumber) },
+      {
+        name: 'skills',
+        check: () => Array.isArray(user.skills) && user.skills.length > 0,
+      },
+      {
+        name: 'education',
+        check: () =>
+          user.education &&
+          isFilled(user.education.university) &&
+          isFilled(user.education.degree) &&
+          isFilled(user.education.year) &&
+          isFilled(user.education.major) &&
+          isFilled(user.education.currentYear),
+      },
+      {
+        name: 'resume',
+        check: () =>
+          Array.isArray(user.resume) &&
+          user.resume.some(
+            (entry) => isFilled(entry.title) && isFilled(entry.link),
+          ),
+      },
+      {
+        name: 'savedInternships',
+        check: () =>
+          Array.isArray(user.savedInternships) &&
+          user.savedInternships.length > 0,
+      },
+    ];
+
+    // Calculate filled fields
+    let filledFields = 0;
+    fields.forEach((field) => {
+      // eslint-disable-next-line no-plusplus
+      if (field.check()) filledFields++;
+    });
+
+    // Calculate completion percentage
+    const totalFields = fields.length;
+    const completionPercentage = Math.round((filledFields / totalFields) * 100);
+
+    // Generate tip
+    let tip = '';
+    if (completionPercentage < 100) {
+      const missingField = fields.find((field) => !field.check());
+      if (missingField.name === 'education') {
+        const educationFields = [
+          'university',
+          'degree',
+          'year',
+          'major',
+          'currentYear',
+        ];
+        const missingSubfield = educationFields.find(
+          (subfield) => !isFilled(user.education[subfield]),
+        );
+        tip = `Please add your ${missingSubfield || 'education details'} to complete your profile.`;
+      } else if (missingField.name === 'resume') {
+        tip = 'Please add a resume to complete your profile.';
+      } else if (missingField.name === 'savedInternships') {
+        tip = 'Save at least one internship.';
+      } else if (missingField.name === 'skills') {
+        tip = 'Add at least one skill to complete your profile.';
+      } else if (missingField.name === 'profileImage') {
+        tip = 'Upload a Profile Image';
+      } else {
+        tip = `Please add your ${missingField.name} to complete your profile.`;
+      }
+    } else {
+      tip = 'Great job! Your intern profile is fully complete!';
+    }
+
+    res.json({ completionPercentage, tip });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const getCompanyProfileCompletion = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    if (user.role !== 'COMPANY') {
+      return res.status(403).json({ error: 'User is not a company' });
+    }
+
+    // Define relevant fields for companies
+    const fields = [
+      { name: 'name', check: () => isFilled(user.name) },
+      { name: 'email', check: () => isFilled(user.email) },
+      { name: 'profileImage', check: () => isFilled(user.profileImage) },
+      { name: 'bio', check: () => isFilled(user.bio) },
+      { name: 'headline', check: () => isFilled(user.headline) },
+      { name: 'website', check: () => isFilled(user.website) },
+      { name: 'phoneNumber', check: () => isFilled(user.phoneNumber) },
+      { name: 'industry', check: () => isFilled(user.industry) },
+      { name: 'location', check: () => isFilled(user.location) },
+      { name: 'verified', check: () => user.verified === true },
+    ];
+
+    // Calculate filled fields
+    let filledFields = 0;
+    fields.forEach((field) => {
+      // eslint-disable-next-line no-plusplus
+      if (field.check()) filledFields++;
+    });
+
+    // Calculate completion percentage
+    const totalFields = fields.length;
+    const completionPercentage = Math.round((filledFields / totalFields) * 100);
+
+    // Generate tip
+    let tip = '';
+    if (completionPercentage < 100) {
+      const missingField = fields.find((field) => !field.check());
+      if (missingField.name === 'verified') {
+        tip = 'Please get your company verified to complete your profile.';
+      } else {
+        tip = `Please add your ${missingField.name} to complete your profile.`;
+      }
+    } else {
+      tip = 'Great job! Your company profile is fully complete!';
+    }
+
+    res.json({ completionPercentage, tip });
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
@@ -321,4 +475,6 @@ module.exports = {
   uploadResumeFile,
   toggleSavedInternship,
   getSavedInternships,
+  getInternProfileCompletion,
+  getCompanyProfileCompletion,
 };

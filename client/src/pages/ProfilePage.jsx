@@ -141,13 +141,13 @@ function ProfilePage() {
       <div className='flex-1 flex flex-col'>
         <Topbar user={user} />
         <main className='px-4 md:px-16 py-3 md:py-6 overflow-y-scroll md:h-[calc(100vh-80px)] h-[calc(100vh-160px)]'>
-          {user.role === "INTERN" && (
+          {user?.role === "INTERN" && (
             <Intern user={user} selectedTab={selectedTab} />
           )}
-          {user.role === "COMPANY" && (
+          {user?.role === "COMPANY" && (
             <CompanyHr user={user} selectedTab={selectedTab} />
           )}
-          {user.role === "ADMIN" && (
+          {user?.role === "ADMIN" && (
             <Admin user={user} selectedTab={selectedTab} />
           )}
         </main>

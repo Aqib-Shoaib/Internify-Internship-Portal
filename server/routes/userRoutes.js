@@ -22,6 +22,8 @@ const {
   uploadResumeFile,
   toggleSavedInternship,
   getSavedInternships,
+  getInternProfileCompletion,
+  getCompanyProfileCompletion,
 } = require('../controllers/userController');
 const upload = require('../utils/multer');
 const { uploadResume } = require('../utils/pdfMulter');
@@ -37,6 +39,8 @@ userRouter.patch('/resetPassword', resetPassword);
 userRouter.use(authMiddleware);
 
 userRouter.get('/me', getMe);
+userRouter.get('/completion/intern/:userId', getInternProfileCompletion);
+userRouter.get('/completion/company/:userId', getCompanyProfileCompletion);
 userRouter.delete('/me', deleteMe); //self delete for now
 userRouter.patch('/password', updatePassword);
 userRouter.patch(

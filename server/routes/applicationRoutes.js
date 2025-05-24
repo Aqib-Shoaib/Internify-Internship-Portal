@@ -9,6 +9,7 @@ const {
   getAllApplications,
   getApplicationByAdmin,
   deleteApplicationByAdmin,
+  getInternApplicationStats,
 } = require('../controllers/applicationController');
 
 const applicationRouter = express.Router();
@@ -19,6 +20,11 @@ applicationRouter.use(authMiddleware);
 applicationRouter.post('/', roleMiddleware(['INTERN']), createApplication);
 applicationRouter.get('/my', roleMiddleware(['INTERN']), getMyApplications);
 applicationRouter.get('/my/:id', roleMiddleware(['INTERN']), getApplication);
+applicationRouter.get(
+  '/stats/:internId',
+  roleMiddleware(['INTERN']),
+  getInternApplicationStats,
+);
 
 // Company-only
 applicationRouter.get(

@@ -2,6 +2,7 @@ import {
   fetchUser,
   loginUser,
   registerUser,
+  updateUserData,
   verifyOtp,
 } from "@/stateActions/userActions";
 import { createSlice } from "@reduxjs/toolkit";
@@ -68,6 +69,17 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateUserData.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      })
+      .addCase(updateUserData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

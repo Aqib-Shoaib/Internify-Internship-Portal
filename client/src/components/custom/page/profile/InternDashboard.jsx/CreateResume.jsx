@@ -271,9 +271,9 @@ const CreateResumeDrawer = ({ open, onOpenChange, userData }) => {
               <label className='text-sm font-medium'>Education</label>
               <Textarea
                 name='education'
-                defaultValue={userData.education
-                  .map((e) => `${e.degree}, ${e.school}, ${e.year}`)
-                  .join("\n")}
+                // defaultValue={userData.education
+                //   .map((e) => `${e.degree}, ${e.school}, ${e.year}`)
+                //   .join("\n")}
               />
             </div>
             <div>

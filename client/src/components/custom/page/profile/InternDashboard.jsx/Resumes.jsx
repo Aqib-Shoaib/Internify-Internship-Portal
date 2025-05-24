@@ -4,35 +4,7 @@ import { Button } from "@/components/ui/button";
 import { FileText } from "lucide-react";
 import CreateResumeDrawer from "./CreateResume";
 import UploadResumeDrawer from "./UploadResume";
-
-const userData = {
-  name: "Aqib Shoaib",
-  email: "aqib@example.com",
-  phoneNumber: "+923046164841",
-  bio: "Aspiring Software Engineer with a passion for building scalable web applications.",
-  headline: "Software Engineering Intern",
-  website: "http://localhost:5173/",
-  skills: ["React.js", "Node.js", "Express.js", "MongoDB", "Tailwind CSS"],
-  education: [
-    {
-      school: "UET Taxila",
-      degree: "BS Software Engineering",
-      year: "Senior (4th year)",
-    },
-  ],
-  resumes: [
-    {
-      title: "My Tech Resume",
-      link: "/resumes/intern_123_tech_resume.pdf",
-      createdAt: "2025-05-01T09:00:00.000Z",
-    },
-    {
-      title: "AI Internship Resume",
-      link: "/resumes/intern_123_ai_resume.pdf",
-      createdAt: "2025-05-10T12:00:00.000Z",
-    },
-  ],
-};
+import { useSelector } from "react-redux";
 
 // Random background colors with opacity
 const colors = [
@@ -46,6 +18,7 @@ const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 const Resumes = () => {
   const [createDrawerOpen, setCreateDrawerOpen] = useState(false);
   const [uploadDrawerOpen, setUploadDrawerOpen] = useState(false);
+  const { user } = useSelector((state) => state.user);
 
   return (
     <div className='p-0 md:p-6'>
@@ -64,12 +37,12 @@ const Resumes = () => {
       </div>
 
       {/* Resume Cards or No Resume Message */}
-      {userData.resumes.length > 0 ? (
+      {user.resume.length > 0 ? (
         <div
           className='flex flex-col md:flex-row items-center gap-2 md:flex-wrap'
           data-aos='zoom-in'
         >
-          {userData.resumes.map((resume, index) => (
+          {user.resume.map((resume, index) => (
             <Card key={index} className='w-fit'>
               <CardHeader>
                 <CardTitle>{resume.title}</CardTitle>
@@ -109,14 +82,13 @@ const Resumes = () => {
       <CreateResumeDrawer
         open={createDrawerOpen}
         onOpenChange={setCreateDrawerOpen}
-        userData={userData}
+        userData={user}
       />
 
       {/* Upload Resume Drawer */}
       <UploadResumeDrawer
         open={uploadDrawerOpen}
         onOpenChange={setUploadDrawerOpen}
-        userData={userData}
       />
     </div>
   );

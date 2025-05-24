@@ -13,7 +13,7 @@ function ProfileBtn({ userObject }) {
     >
       <div className='w-8 h-8 rounded-full overflow-hidden'>
         <img
-          src={userObject.profileImage}
+          src={userObject.profileImage || "/user.png"}
           alt='user photo or logo'
           className='w-full h-full object-cover'
         />

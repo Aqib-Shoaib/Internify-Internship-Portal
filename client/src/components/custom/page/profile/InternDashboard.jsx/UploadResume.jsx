@@ -146,27 +146,29 @@ const UploadResumeDrawer = ({ open, onOpenChange }) => {
           </div>
         )}
         <DrawerFooter>
-          <Button
-            variant='outline'
-            onClick={() => {
-              if (uploadPreviewUrl) {
-                URL.revokeObjectURL(uploadPreviewUrl);
-                setUploadPreviewUrl(null);
-              }
-              setIsUploading(false);
-              setProgress(0);
-              setUploadError("");
-              setSelectedFile(null);
-              onOpenChange(false);
-            }}
-          >
-            Cancel
-          </Button>
-          {!isUploading && (
-            <Button type='submit' form='upload-resume-form'>
-              Upload
+          <div className='flex items-center gap-1 justify-end'>
+            <Button
+              variant='outline'
+              onClick={() => {
+                if (uploadPreviewUrl) {
+                  URL.revokeObjectURL(uploadPreviewUrl);
+                  setUploadPreviewUrl(null);
+                }
+                setIsUploading(false);
+                setProgress(0);
+                setUploadError("");
+                setSelectedFile(null);
+                onOpenChange(false);
+              }}
+            >
+              Cancel
             </Button>
-          )}
+            {!isUploading && (
+              <Button type='submit' form='upload-resume-form'>
+                Upload
+              </Button>
+            )}
+          </div>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
