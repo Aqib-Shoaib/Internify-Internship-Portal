@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
 const connectToMongodb = require('./config/database');
@@ -9,6 +10,17 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+const originUrl =
+  process.env.NODE_ENV === 'production'
+    ? process.env.FRONTEND_PROD_URL
+    : process.env.FRONTEND_DEV_URL;
+
+app.use(
+  cors({
+    origin: originUrl,
+  }),
+);
+
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }

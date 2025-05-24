@@ -16,6 +16,7 @@ import ProtectedLayout from "./layout/ProtectedLayout";
 import InternshipDetail from "./pages/InternshipDetailPage";
 import OTPPage from "./pages/OTP";
 import { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 function App() {
   useEffect(() => {
@@ -26,6 +27,22 @@ function App() {
       easing: "ease", // Easing function for animations
       once: false,
     });
+  }, []);
+
+  useEffect(function () {
+    // {
+    //       "source": "/api/:path*",
+    //       "destination": "https://your-backend.onrender.com/:path*"
+    //     }
+    const con = async () => {
+      try {
+        const res = await axios.get("/api/");
+        console.log(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    con();
   }, []);
 
   return (
