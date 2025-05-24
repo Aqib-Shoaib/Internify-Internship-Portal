@@ -1,6 +1,5 @@
 import CompanyHr from "../components/custom/page/profile/CompanyHr";
 import Intern from "../components/custom/page/profile/Intern";
-import { user } from "../dummy/user";
 import Topbar from "@/layout/Protected/Topbar";
 import { Link } from "react-router-dom";
 import SidebarNavigation from "@/layout/Protected/SidebarNavigation";
@@ -19,6 +18,7 @@ import {
   VerifiedIcon,
 } from "lucide-react";
 import Admin from "@/components/custom/page/profile/Admin";
+import { useSelector } from "react-redux";
 
 const SIDEBAR_NAV = {
   INTERN: [
@@ -116,6 +116,7 @@ const SIDEBAR_NAV = {
 };
 
 function ProfilePage() {
+  const { user } = useSelector((state) => state.user);
   const navItems = SIDEBAR_NAV[user?.role || "INTERN"];
   const [selectedTab, setSelectedTab] = useState(navItems[0].name);
 

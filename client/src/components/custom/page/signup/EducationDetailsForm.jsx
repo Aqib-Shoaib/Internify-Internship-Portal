@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/select";
 import KeywordsInput from "../../utils/KeywordsInput";
 import toast from "react-hot-toast";
+import { registerUser } from "@/stateActions/userActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function EducationDetailsForm({ basicData }) {
   const [skills, setSkills] = useState([]);
@@ -25,16 +28,27 @@ function EducationDetailsForm({ basicData }) {
     year: "",
     currentYear: "",
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.user);
 
   const handleSkillsKeywordsChange = (keywords) => {
     setSkills(keywords);
   };
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log({ skills, website, education, ...basicData });
+    const data = { skills, website, education, ...basicData };
 
-    toast.success("You Have Successfully Signed Up With Internify");
+    try {
+      await dispatch(registerUser(data)).unwrap();
+      toast.success("You Have Successfully Signed Up With Internify");
+      localStorage.setItem("userobj", JSON.stringify(data));
+      navigate("/otp");
+    } catch (err) {
+      toast.error(err || "Registeration Failed");
+      navigate("/signup");
+    }
   }
 
   return (
@@ -152,7 +166,9 @@ function EducationDetailsForm({ basicData }) {
 
         {/* Submit button */}
         <div className='md:col-span-2 flex justify-end'>
-          <Button type='submit'>Signup</Button>
+          <Button type='submit' disabled={loading}>
+            {loading ? "Signing up..." : "Sign Up"}
+          </Button>
         </div>
       </form>
     </div>

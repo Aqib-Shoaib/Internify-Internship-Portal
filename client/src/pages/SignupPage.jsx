@@ -34,7 +34,6 @@ function SignupPage() {
   function handleBasicFormSubmit(e) {
     e.preventDefault();
     if (roleErr === FINAL_ROLE_ERROR) {
-      console.log(basicData);
       setFormNumber(2);
     } else {
       toast.error("Role not selected", {

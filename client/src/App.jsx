@@ -16,7 +16,8 @@ import ProtectedLayout from "./layout/ProtectedLayout";
 import InternshipDetail from "./pages/InternshipDetailPage";
 import OTPPage from "./pages/OTP";
 import { Toaster } from "react-hot-toast";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "./stateActions/userActions";
 
 function App() {
   useEffect(() => {
@@ -29,21 +30,14 @@ function App() {
     });
   }, []);
 
-  useEffect(function () {
-    // {
-    //       "source": "/api/:path*",
-    //       "destination": "https://your-backend.onrender.com/:path*"
-    //     }
-    const con = async () => {
-      try {
-        const res = await axios.get("/api/");
-        console.log(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    con();
-  }, []);
+  const dispatch = useDispatch();
+
+  useEffect(
+    function () {
+      dispatch(fetchUser());
+    },
+    [dispatch]
+  );
 
   return (
     <div>

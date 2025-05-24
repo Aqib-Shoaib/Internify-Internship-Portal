@@ -10,13 +10,4 @@ export default defineConfig({
       "@": "/src", // This assumes you want to map '@' to the 'src' directory.
     },
   },
-  server: {
-    proxy: {
-      "/api": {
-        target: "http://localhost:3000", // Your backend server
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""), // Optional: Remove /api prefix
-      },
-    },
-  },
 });

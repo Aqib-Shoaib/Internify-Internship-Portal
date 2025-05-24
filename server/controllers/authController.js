@@ -34,7 +34,6 @@ const register = async (req, res) => {
     if (role === 'INTERN') {
       userObj.skills = req.body.skills || [];
       userObj.education = req.body.education || [];
-      userObj.resume = req.body.resume || '';
     } else if (role === 'COMPANY') {
       userObj.industry = req.body.industry || '';
       userObj.location = req.body.location || '';

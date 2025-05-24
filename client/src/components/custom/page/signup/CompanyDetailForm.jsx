@@ -5,6 +5,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "@/stateActions/userActions";
+import { useNavigate } from "react-router-dom";
 
 function CompanyDetailForm({ basicData }) {
   const [companyData, setCompanyData] = useState({
@@ -13,15 +16,26 @@ function CompanyDetailForm({ basicData }) {
     location: "",
     bio: "",
   });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.user);
 
   function handleInputChange(e) {
     const { name, value } = e.target;
     setCompanyData((prev) => ({ ...prev, [name]: value }));
   }
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log({ ...companyData, ...basicData });
-    toast.success("You Have Successfully Signed Up With Internify");
+    const data = { ...companyData, ...basicData };
+    try {
+      await dispatch(registerUser(data)).unwrap();
+      toast.success("You Have Successfully Signed Up With Internify");
+      localStorage.setItem("userobj", JSON.stringify(data));
+      navigate("/otp");
+    } catch (err) {
+      toast.error(err || "Registeration Failed");
+      navigate("/signup");
+    }
   }
 
   return (
@@ -90,7 +104,9 @@ function CompanyDetailForm({ basicData }) {
 
         {/* Submit Button */}
         <div className='md:col-span-2 flex justify-end'>
-          <Button type='submit'>Signup</Button>
+          <Button type='submit' disabled={loading}>
+            {loading ? "Signing up..." : "Signup"}
+          </Button>
         </div>
       </form>
     </div>

@@ -4,22 +4,29 @@ import { Input } from "@/components/ui/input";
 import Googlebtn from "../components/custom/utils/Googlebtn";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "@/stateActions/userActions";
 
 function Loginpage() {
   const navigate = useNavigate();
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const { loading } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   function handleInputChange(e) {
     const { name, value } = e.target;
     setLoginData((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
-    console.log(loginData);
-
-    toast.success("Login Successfull");
-    navigate("/");
+    try {
+      await dispatch(loginUser(loginData)).unwrap();
+      toast.success("Login Successfull");
+      navigate("/dashboard/profile");
+    } catch (err) {
+      toast.error(err || "Login Failure");
+    }
   }
 
   return (
@@ -80,10 +87,11 @@ function Loginpage() {
           />
           <Button
             variant='outline'
+            disabled={loading}
             type='submit'
             className='btn bg-gradient-to-tl from-dark to-medium-dark rounded-full py-3 px-6 text-xl mt-4 transition-transform hover:scale-105'
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </Button>
         </form>
 

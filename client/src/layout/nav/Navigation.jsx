@@ -1,10 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { user } from "../../dummy/user";
 import ProfileBtn from "../../components/custom/page/profile/ProfileBtn";
 import { Button } from "@/components/ui/button";
+import { useSelector } from "react-redux";
 
 function Navigation() {
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
   return (
     <nav className='flex flex-col md:flex-row justify-start md:justify-center items-start md:items-center gap-6 text-lg tracking-wide font-medium text-sidebar-foreground'>
@@ -27,13 +28,13 @@ function Navigation() {
         Contact Us
       </NavLink>
 
-      {user ? (
+      {isAuthenticated && user ? (
         <ProfileBtn userObject={user} />
       ) : (
         <Button
           variant='outline'
           onClick={() => navigate("/login")}
-          className='ml-4 text-gray-900 border-white hover:bg-gray-200 transition-all duration-200'
+          className='ml-4 border-white hover:bg-gray-200 transition-all duration-200'
         >
           Login
         </Button>
