@@ -33,7 +33,7 @@ function OTPPage() {
     try {
       await dispatch(verifyOtp(data)).unwrap();
       toast.success("Welcome to Internify");
-      navigate("/dashboard/profile");
+      navigate("/");
     } catch (err) {
       toast.error(err || "Sign Up Failed");
     }

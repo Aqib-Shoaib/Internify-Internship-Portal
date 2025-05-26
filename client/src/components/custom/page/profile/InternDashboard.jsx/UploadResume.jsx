@@ -10,8 +10,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { uploadResumeFile } from "@/services/intern";
 
-const UploadResumeDrawer = ({ open, onOpenChange }) => {
+const UploadResumeDrawer = ({ open, onOpenChange, setRefetchUser }) => {
   const [uploadError, setUploadError] = useState("");
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
@@ -54,10 +55,18 @@ const UploadResumeDrawer = ({ open, onOpenChange }) => {
           if (uploadPreviewUrl) URL.revokeObjectURL(uploadPreviewUrl);
           console.log("Upload Resume:", {
             title,
-            file: { name: file.name, size: file.size },
+            file,
           });
+
+          const formData = new FormData();
+          formData.append("resume", file);
+          formData.append("title", title);
+
+          uploadResumeFile(formData);
+
           e.target.reset();
           onOpenChange(false);
+          setRefetchUser(true);
           return 0;
         }
         return prev + 10;

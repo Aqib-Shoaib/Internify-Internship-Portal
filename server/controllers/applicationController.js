@@ -145,23 +145,44 @@ const getInternshipApplications = async (req, res) => {
 
 const updateApplicationStatus = async (req, res) => {
   try {
+    // Step 1: Find the application and check authorization
     const application = await Application.findById(req.params.id).populate(
       'internship',
     );
-    if (
-      !application ||
-      !application.internship.company.equals(req.user.companyId)
-    )
+    if (!application || !application.internship.company.equals(req.user._id)) {
       return res.status(403).json({ message: 'Unauthorized' });
+    }
 
+    // Step 2: Validate the new status
     const updates = req.body;
-    updates.reviewed = true; // auto mark reviewed
+    const validStatuses = ['pending', 'shortlisted', 'accepted', 'rejected'];
+    if (!updates.status || !validStatuses.includes(updates.status)) {
+      return res.status(400).json({
+        status: 'fail',
+        message:
+          'Invalid status. Must be one of: pending, shortlisted, accepted, rejected',
+      });
+    }
+
+    // Step 3: Check if the current status is 'accepted' or 'rejected'
+    if (['accepted', 'rejected'].includes(application.status)) {
+      return res.status(400).json({
+        status: 'fail',
+        message:
+          'Cannot update status. Application is already accepted or rejected',
+      });
+    }
+
+    // Step 4: Apply updates and auto-mark as reviewed
+    updates.reviewed = true; // auto mark reviewed (already present)
 
     const updated = await Application.findByIdAndUpdate(
       req.params.id,
       updates,
       { new: true },
     );
+
+    // Step 5: Return the updated application
     res.status(200).json({ status: 'success', data: updated });
   } catch (err) {
     res.status(400).json({ status: 'fail', message: err.message });
@@ -252,12 +273,46 @@ const getInternApplicationStats = async (req, res) => {
   }
 };
 
+const getCompanyCandidates = async (req, res) => {
+  try {
+    const companyId = req.user.id; // Assuming company ID is in req.user from authentication
+
+    // Step 1: Find all internships posted by the company
+    const internships = await Internship.find({ company: companyId }).select(
+      '_id',
+    );
+    const internshipIds = internships.map((internship) => internship._id);
+
+    // Step 2: Find all applications for those internships
+    const applications = await Application.find({
+      internship: { $in: internshipIds },
+    })
+      .populate('intern', 'name email profileImage')
+      .populate('internship', 'title'); // Get internship title
+
+    // Step 4: Return the results
+    res.status(200).json({
+      status: 'success',
+      data: {
+        applications,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch candidates',
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   createApplication,
+  updateApplicationStatus,
+  getCompanyCandidates,
   getMyApplications,
   getApplication,
   getInternshipApplications,
-  updateApplicationStatus,
   getAllApplications,
   getApplicationByAdmin,
   deleteApplicationByAdmin,

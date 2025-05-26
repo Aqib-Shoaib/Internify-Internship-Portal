@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
+import { FileText, Loader2, Trash2 } from "lucide-react";
 import CreateResumeDrawer from "./CreateResume";
 import UploadResumeDrawer from "./UploadResume";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "@/stateActions/userActions";
+import { deleteResumeFile } from "@/services/intern";
 
 // Random background colors with opacity
 const colors = [
@@ -18,12 +20,37 @@ const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 const Resumes = () => {
   const [createDrawerOpen, setCreateDrawerOpen] = useState(false);
   const [uploadDrawerOpen, setUploadDrawerOpen] = useState(false);
+  const [refetchUser, setRefetchUser] = useState(false);
   const { user } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  useEffect(
+    function () {
+      if (refetchUser) {
+        dispatch(fetchUser(true));
+        setRefetchUser(false);
+      }
+    },
+    [dispatch, refetchUser]
+  );
+
+  function deleteResume(id) {
+    deleteResumeFile(id);
+    setRefetchUser();
+  }
+
+  if (refetchUser)
+    return (
+      <div className='h-full w-full flex items-center justify-center'>
+        <Loader2 />
+      </div>
+    );
 
   return (
     <div className='p-0 md:p-6'>
       {/* Heading */}
-      <div className='flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between gap-1.5 w-full mb-4 md:mb-6'>
+      <div className='flex flex-col md:flex-row items-start md:items-center justify-start md:justify-between gap-1.5 w-full'>
         <h1 className='text-xl md:text-2xl font-bold'>My Resumes</h1>
         {/* Create and Upload Resume Buttons */}
         <div className='flex justify-center gap-4'>
@@ -35,6 +62,11 @@ const Resumes = () => {
           </Button>
         </div>
       </div>
+      <div className=' mb-4 md:mb-6 mt-2'>
+        <p className='text-xs text-muted-foreground'>
+          It is recommended to reload page after uploading or creating a resume!
+        </p>
+      </div>
 
       {/* Resume Cards or No Resume Message */}
       {user.resume.length > 0 ? (
@@ -45,7 +77,14 @@ const Resumes = () => {
           {user.resume.map((resume, index) => (
             <Card key={index} className='w-fit'>
               <CardHeader>
-                <CardTitle>{resume.title}</CardTitle>
+                <CardTitle>
+                  <div className='flex items-center justify-between'>
+                    <span>{resume.title}</span>
+                    <span onClick={() => deleteResume(resume._id)}>
+                      <Trash2 className='text-muted-foreground hover:text-destructive cursor-pointer' />
+                    </span>
+                  </div>
+                </CardTitle>
               </CardHeader>
               <CardContent className='flex items-end gap-1'>
                 <div
@@ -83,12 +122,14 @@ const Resumes = () => {
         open={createDrawerOpen}
         onOpenChange={setCreateDrawerOpen}
         userData={user}
+        setRefetchUser={setRefetchUser}
       />
 
       {/* Upload Resume Drawer */}
       <UploadResumeDrawer
         open={uploadDrawerOpen}
         onOpenChange={setUploadDrawerOpen}
+        setRefetchUser={setRefetchUser}
       />
     </div>
   );

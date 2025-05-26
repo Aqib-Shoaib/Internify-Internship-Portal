@@ -23,7 +23,7 @@ function Loginpage() {
     try {
       await dispatch(loginUser(loginData)).unwrap();
       toast.success("Login Successfull");
-      navigate("/dashboard/profile");
+      navigate("/");
     } catch (err) {
       toast.error(err || "Login Failure");
     }

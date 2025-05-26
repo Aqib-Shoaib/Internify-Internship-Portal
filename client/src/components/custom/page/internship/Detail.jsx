@@ -1,48 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Bookmark } from "lucide-react";
 import InternshipApplication from "./InternshipApplication";
-
-const internshipData = {
-  _id: "internship_001",
-  title: "Software Engineer Intern",
-  slug: "software-engineer-intern",
-  description:
-    "Join our team to build scalable web applications using React and Node.js...",
-  company: {
-    _id: "company_123",
-    name: "Tech Corp",
-  },
-  location: "Islamabad",
-  salary: 500,
-  live: true,
-  expiryDate: "2025-06-30T23:59:59.000Z",
-  sponsored: false,
-  verified: true,
-  term: "FULL-TIME",
-  duration: 6,
-  createdAt: "2025-05-01T09:00:00.000Z",
-  isLoggedIn: true,
-  user: {
-    resumes: [
-      {
-        title: "My Tech Resume",
-        link: "/resumes/intern_123_tech_resume.pdf",
-        createdAt: "2025-05-01T09:00:00.000Z",
-      },
-      {
-        title: "AI Internship Resume",
-        link: "/resumes/intern_123_ai_resume.pdf",
-        createdAt: "2025-05-10T12:00:00.000Z",
-      },
-    ],
-  },
-};
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { BACKEND_URL, manageError } from "@/constants";
+import { useSelector } from "react-redux";
 
 function Detail() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { internship } = useParams();
+  const [internshipDetail, setInternshipDetails] = useState({});
+  const [error, setError] = useState("");
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+
+  useEffect(
+    function () {
+      const fetchInternshipBySlug = async () => {
+        try {
+          const res = await axios.get(
+            `${BACKEND_URL}/api/internships/all/${internship}`
+          );
+          if (res.status === 200 || res.status === 304) {
+            setInternshipDetails(res.data.internship);
+          } else {
+            throw new Error("Internship Not Found");
+          }
+        } catch (err) {
+          const msg = manageError(err);
+          setError(msg);
+        }
+      };
+      fetchInternshipBySlug();
+    },
+    [internship]
+  );
 
   // Format date
   const formatDate = (dateString) => {
@@ -55,8 +49,8 @@ function Detail() {
 
   // Status logic
   const getStatus = () => {
-    return internshipData.live &&
-      new Date(internshipData.expiryDate) > new Date()
+    return internshipDetail?.live &&
+      new Date(internshipDetail?.expiryDate) > new Date()
       ? "Open"
       : "Closed";
   };
@@ -66,17 +60,14 @@ function Detail() {
       {/* Header Section */}
       <div className='mb-6'>
         <h1 className='text-2xl md:text-3xl font-bold mb-2'>
-          {internshipData.title}
+          {internshipDetail?.title}
         </h1>
         <p className='text-base md:text-lg text-muted-foreground mb-2'>
-          {internshipData.company.name} • {internshipData.location}
+          {internshipDetail?.company?.name} • {internshipDetail?.location}
         </p>
         <div className='flex gap-2'>
-          <Badge variant={internshipData.verified ? "success" : "secondary"}>
-            {internshipData.verified ? "Verified" : "Not Verified"}
-          </Badge>
-          {internshipData.sponsored && <Badge>Sponsored</Badge>}
-          <Badge>{internshipData.term.replace("-", " ")}</Badge>
+          {internshipDetail?.sponsored && <Badge>Sponsored</Badge>}
+          <Badge>{internshipDetail?.term?.replace("-", " ")}</Badge>
           <Badge>{getStatus()}</Badge>
         </div>
       </div>
@@ -86,59 +77,68 @@ function Detail() {
         <CardHeader>
           <CardTitle>Internship Details</CardTitle>
         </CardHeader>
-        <CardContent className='space-y-4'>
-          <div>
-            <h3 className='text-lg font-medium'>Description</h3>
-            <p className='text-muted-foreground'>
-              {internshipData.description}
-            </p>
-          </div>
-          <div>
-            <h3 className='text-lg font-medium'>Salary</h3>
-            <p className='text-muted-foreground'>
-              ${internshipData.salary}/month
-            </p>
-          </div>
-          <div>
-            <h3 className='text-lg font-medium'>Duration</h3>
-            <p className='text-muted-foreground'>
-              {internshipData.duration} months
-            </p>
-          </div>
-          <div>
-            <h3 className='text-lg font-medium'>Posted Date</h3>
-            <p className='text-muted-foreground'>
-              {formatDate(internshipData.createdAt)}
-            </p>
-          </div>
-          <div>
-            <h3 className='text-lg font-medium'>Expiry Date</h3>
-            <p className='text-muted-foreground'>
-              {formatDate(internshipData.expiryDate)}
-            </p>
-          </div>
-        </CardContent>
+        {error ? (
+          <CardContent>
+            <p>{error}</p>
+          </CardContent>
+        ) : (
+          <CardContent className='space-y-4'>
+            <div>
+              <h3 className='text-lg font-medium'>Description</h3>
+              <p className='text-muted-foreground'>
+                {internshipDetail?.description}
+              </p>
+            </div>
+            <div>
+              <h3 className='text-lg font-medium'>Salary</h3>
+              <p className='text-muted-foreground'>
+                ${internshipDetail?.salary}/month
+              </p>
+            </div>
+            <div>
+              <h3 className='text-lg font-medium'>Duration</h3>
+              <p className='text-muted-foreground'>
+                {internshipDetail?.duration} months
+              </p>
+            </div>
+            <div>
+              <h3 className='text-lg font-medium'>Posted Date</h3>
+              <p className='text-muted-foreground'>
+                {formatDate(internshipDetail?.createdAt)}
+              </p>
+            </div>
+            <div>
+              <h3 className='text-lg font-medium'>Expiry Date</h3>
+              <p className='text-muted-foreground'>
+                {formatDate(internshipDetail?.expiryDate)}
+              </p>
+            </div>
+          </CardContent>
+        )}
       </Card>
 
       {/* Apply Button Section */}
-      <div className='flex justify-between items-center'>
-        {internshipData.isLoggedIn ? (
-          <Button onClick={() => setIsDrawerOpen(true)}>Apply Now</Button>
-        ) : (
-          <Button asChild>
-            <a href='/login'>Login to Apply</a>
+      {user?.role === "INTERN" && (
+        <div className='flex justify-between items-center'>
+          {isAuthenticated ? (
+            <Button onClick={() => setIsDrawerOpen(true)}>Apply Now</Button>
+          ) : (
+            <Button asChild>
+              <a href='/login'>Login to Apply</a>
+            </Button>
+          )}
+          <Button variant='outline' size='icon' title='Save Internship'>
+            <Bookmark className='h-5 w-5' />
           </Button>
-        )}
-        <Button variant='outline' size='icon' title='Save Internship'>
-          <Bookmark className='h-5 w-5' />
-        </Button>
-      </div>
+        </div>
+      )}
 
       {/* Apply Form Drawer */}
       <InternshipApplication
         isDrawerOpen={isDrawerOpen}
         setIsDrawerOpen={setIsDrawerOpen}
-        internshipData={internshipData}
+        title={internshipDetail?.title}
+        id={internshipDetail?._id}
       />
     </div>
   );

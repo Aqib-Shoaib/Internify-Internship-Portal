@@ -15,32 +15,43 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { applyForInternship } from "@/services/intern";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
-function InternshipApplication({
-  setIsDrawerOpen,
-  isDrawerOpen,
-  internshipData,
-}) {
+function InternshipApplication({ setIsDrawerOpen, isDrawerOpen, title, id }) {
+  const { user } = useSelector((state) => state.user);
   const [selectedResume, setSelectedResume] = useState(
-    internshipData.user.resumes[0]?.link || ""
+    user?.resume[0]?.link || ""
   );
+  const [loading, setLoading] = useState(false);
 
-  const handleApply = (e) => {
+  // { internship: internshipId, coverLetter, resumeLink }
+  const handleApply = async (e) => {
     e.preventDefault();
-    console.log("Application submitted:", {
+    setLoading(true);
+    const data = {
       coverLetter: e.target.coverLetter.value,
       resumeLink: selectedResume,
-    });
+      internship: id,
+    };
+    const res = await applyForInternship(data);
+    if (res.status === 201) {
+      toast.success("Application Submitted");
+    } else {
+      toast.error("Application Submission Failed");
+    }
     setIsDrawerOpen(false);
+    setLoading(false);
   };
   return (
     <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Apply for {internshipData.title}</DrawerTitle>
+          <DrawerTitle>Apply for {title}</DrawerTitle>
         </DrawerHeader>
-        {internshipData.user.resumes.length > 0 ? (
+        {user?.resume?.length > 0 ? (
           <form
             id='apply-form'
             onSubmit={handleApply}
@@ -57,15 +68,14 @@ function InternshipApplication({
             <div>
               <label className='text-sm font-medium'>Select Resume</label>
               <Select
-                value={selectedResume}
+                defaultValue={selectedResume}
                 onValueChange={setSelectedResume}
-                required
               >
                 <SelectTrigger>
                   <SelectValue placeholder='Select a resume' />
                 </SelectTrigger>
                 <SelectContent>
-                  {internshipData.user.resumes.map((resume, index) => (
+                  {user?.resume?.map((resume, index) => (
                     <SelectItem key={index} value={resume.link}>
                       {resume.title}
                     </SelectItem>
@@ -89,7 +99,7 @@ function InternshipApplication({
             <Button
               type='submit'
               form='apply-form'
-              disabled={internshipData.user.resumes.length === 0}
+              disabled={user?.resumes?.length === 0 || loading}
             >
               Submit Application
             </Button>

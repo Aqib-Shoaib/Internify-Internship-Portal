@@ -27,7 +27,7 @@ const getInternships = async (req, res) => {
     if (maxSalary) filter.salary = { $lte: maxSalary };
 
     const internships = await Internship.find(filter)
-      .populate('company', 'name') // populating company name only
+      .populate('company', 'name profileImage') // populating company name only
       .sort({ [sort]: -1 }) // sort by provided field, default to descending order
       .skip((page - 1) * limit)
       .limit(parseInt(limit, 10));
@@ -269,7 +269,8 @@ const getAllInternshipsForAdmin = async (req, res) => {
     const internships = await Internship.find(queryObj)
       .sort(sortBy)
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .populate('company');
 
     res.status(200).json({ total: internships.length, data: internships });
   } catch (err) {

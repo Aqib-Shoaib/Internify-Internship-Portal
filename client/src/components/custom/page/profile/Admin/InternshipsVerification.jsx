@@ -12,6 +12,10 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  internshipsPendingVerification,
+  verifyInternship,
+} from "@/services/admin";
 
 const AdminInternshipVerificationTab = () => {
   const [internships, setInternships] = useState([]);
@@ -23,33 +27,10 @@ const AdminInternshipVerificationTab = () => {
 
   useEffect(() => {
     const fetchInternships = async () => {
-      const mockData = [
-        {
-          _id: "internship1",
-          company: {
-            _id: "company1",
-            name: "Tech Corp",
-          },
-          title: "Software Engineer Intern",
-          location: "Remote",
-          term: "FULL-TIME",
-          verified: false,
-          createdAt: "2025-05-01T09:00:00.000Z",
-        },
-        {
-          _id: "internship2",
-          company: {
-            _id: "company2",
-            name: "Marketing Inc",
-          },
-          title: "Marketing Intern",
-          location: "New York",
-          term: "PART-TIME",
-          verified: false,
-          createdAt: "2025-05-10T14:00:00.000Z",
-        },
-      ];
-      setInternships(mockData.filter((internship) => !internship.verified));
+      const res = await internshipsPendingVerification();
+      if (res.status === 200 || res.status === 304) {
+        setInternships(res.data);
+      }
       setLoading(false);
     };
     fetchInternships();
@@ -65,14 +46,15 @@ const AdminInternshipVerificationTab = () => {
           clearInterval(interval);
           setIsUpdating(false);
           setInternships((prev) => prev.filter((i) => i._id !== internshipId));
-          console.log("Verify Internship:", { _id: internshipId });
+
+          verifyInternship(internshipId);
           setShowConfirm(false);
           setInternshipToVerify(null);
           return 0;
         }
         return prev + 10;
       });
-    }, 200);
+    }, 0);
   };
 
   if (loading) {
@@ -109,12 +91,12 @@ const AdminInternshipVerificationTab = () => {
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((internship) => (
                     <TableRow key={internship._id}>
-                      <TableCell>{internship.company.name}</TableCell>
-                      <TableCell>{internship.title}</TableCell>
-                      <TableCell>{internship.location}</TableCell>
-                      <TableCell>{internship.term}</TableCell>
+                      <TableCell>{internship?.company?.name}</TableCell>
+                      <TableCell>{internship?.title}</TableCell>
+                      <TableCell>{internship?.location}</TableCell>
+                      <TableCell>{internship?.term}</TableCell>
                       <TableCell>
-                        {new Date(internship.createdAt).toLocaleDateString()}
+                        {new Date(internship?.createdAt).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
                         <Button
@@ -146,7 +128,7 @@ const AdminInternshipVerificationTab = () => {
           <AlertTitle>Confirm Verification</AlertTitle>
           <AlertDescription>
             Verify internship &quot;{internshipToVerify?.title}&quot; by{" "}
-            {internshipToVerify?.company.name}? This action is irreversible.
+            {internshipToVerify?.company.name}?
             <div className='flex gap-2 mt-2'>
               <Button
                 variant='outline'

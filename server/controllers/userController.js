@@ -1,4 +1,9 @@
+// controllers/userController.js
+const fs = require('fs').promises;
+const path = require('path');
 const User = require('../models/User');
+const Internship = require('../models/Internship');
+const Application = require('../models/InternshipApplication');
 
 const getAllUsers = async (req, res) => {
   try {
@@ -91,7 +96,7 @@ const verifyCompany = async (req, res) => {
     if (!user || user.role !== 'COMPANY')
       return res.status(404).json({ message: 'Company not found.' });
 
-    user.company.isVerified = true;
+    user.verified = true;
     await user.save();
 
     res.status(200).json({
@@ -213,13 +218,17 @@ const uploadResumeFile = async (req, res) => {
         .json({ status: 'fail', message: 'No PDF uploaded' });
     }
 
-    const resumeUrl = `/docs/resumes/${req.file.filename}`;
+    const resumeUrl = `${req.protocol}://${req.get('host')}/docs/resumes/${req.file.filename}`;
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
       {
-        resume: {
-          title: req.body.title,
-          link: resumeUrl,
+        $push: {
+          resume: {
+            title: req.body.title,
+            link: resumeUrl,
+            filename: req.file.filename,
+          },
         },
       },
       {
@@ -236,6 +245,49 @@ const uploadResumeFile = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ status: 'error', message: err.message });
+  }
+};
+
+const deleteResume = async (req, res) => {
+  try {
+    const userId = req.user.id; // Authenticated user's ID
+    const { resumeId } = req.params; // Resume item _id from frontend
+
+    // 1. Find the user
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    // 2. Find the resume entry in the array
+    const resumeEntry = user.resume.id(resumeId);
+    if (!resumeEntry) {
+      return res.status(404).json({ message: 'Resume not found' });
+    }
+
+    // 3. Build the full file path
+    const filePath = path.join(
+      __dirname,
+      '../public/docs/resumes',
+      resumeEntry.filename,
+    );
+
+    // 4. Delete the file from the file system
+    try {
+      await fs.unlink(filePath);
+    } catch (fileErr) {
+      console.warn('File not found or already deleted:', fileErr.message);
+      // You can choose to proceed or fail here. In most cases, it's safe to proceed.
+    }
+
+    // 5. Remove the resume entry from the array
+    resumeEntry.deleteOne(); // or user.resume.pull(resumeId);
+
+    // 6. Save the updated user document
+    await user.save();
+
+    res.status(200).json({ message: 'Resume deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting resume:', err);
+    res.status(500).json({ message: 'Server error while deleting resume' });
   }
 };
 
@@ -286,7 +338,11 @@ const getSavedInternships = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).populate({
       path: 'savedInternships',
-      select: 'title company location deadline', // adjust as needed
+      select: 'title company location term',
+      populate: {
+        path: 'company',
+        select: 'name industry',
+      },
     });
 
     if (!user) {
@@ -460,9 +516,146 @@ const getCompanyProfileCompletion = async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 };
+const getApplicationsOverview = async (req, res) => {
+  try {
+    const companyId = req.user.id; // Assuming company ID is in req.user from authentication
+
+    // Step 1: Fetch Total Job Postings
+    const totalJobPostings = await Internship.countDocuments({
+      company: companyId,
+    });
+
+    // Step 2: Fetch Applications Received
+    const internships = await Internship.find({ company: companyId }).select(
+      '_id',
+    );
+    const internshipIds = internships.map((internship) => internship._id);
+    const applicationsReceived = await Application.countDocuments({
+      internship: { $in: internshipIds },
+    });
+
+    // Step 3: Fetch Open Positions
+    const currentDate = new Date(); // Current date and time: May 25, 2025, 06:43 PM PKT
+    const openPositions = await Internship.countDocuments({
+      company: companyId,
+      live: true,
+      expiryDate: { $gt: currentDate },
+    });
+
+    // Step 4: Return the results
+    res.status(200).json({
+      status: 'success',
+      data: {
+        totalJobPostings,
+        applicationsReceived,
+        openPositions,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch applications overview',
+      error: error.message,
+    });
+  }
+};
+
+const getSystemOverview = async (req, res) => {
+  try {
+    // Total Users
+    const totalUsers = await User.countDocuments();
+
+    // Active Users
+    const activeUsers = await User.countDocuments({ isActive: true });
+
+    // Companies Pending Verification
+    const companiesPendingVerification = await User.countDocuments({
+      role: 'COMPANY',
+      verified: false,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        totalUsers,
+        activeUsers,
+        companiesPendingVerification,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch system overview',
+      error: error.message,
+    });
+  }
+};
+
+const getActivitySummary = async (req, res) => {
+  try {
+    // Internships Pending Verification
+    const internshipsPendingVerification = await Internship.countDocuments({
+      verified: false,
+    });
+
+    // Verified Internships
+    const verifiedInternships = await Internship.countDocuments({
+      verified: true,
+    });
+
+    // Verified Companies
+    const verifiedCompanies = await User.countDocuments({
+      role: 'COMPANY',
+      verified: true,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        internshipsPendingVerification,
+        verifiedInternships,
+        verifiedCompanies,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch activity summary',
+      error: error.message,
+    });
+  }
+};
+
+const getCompaniesPendingVerification = async (req, res) => {
+  try {
+    // Find all companies that are not verified
+    const companies = await User.find({
+      role: 'COMPANY',
+      verified: false,
+    }).select('name email location industry createdAt');
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        companies,
+        total: companies.length,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch companies pending verification',
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
+  getCompaniesPendingVerification,
+  getActivitySummary,
+  getSystemOverview,
   getAllUsers,
+  getApplicationsOverview,
   getUser,
   updateUser,
   deleteUser,
@@ -477,4 +670,5 @@ module.exports = {
   getSavedInternships,
   getInternProfileCompletion,
   getCompanyProfileCompletion,
+  deleteResume,
 };

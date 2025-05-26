@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
@@ -14,6 +14,7 @@ import {
 import { AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { updateApplicationStatus } from "@/services/company";
 
 function UpdateStatusDrawer({
   drawerOpen,
@@ -25,7 +26,6 @@ function UpdateStatusDrawer({
 }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [pendingStatus, setPendingStatus] = useState(null);
-  const formRef = useRef(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -44,16 +44,17 @@ function UpdateStatusDrawer({
           clearInterval(interval);
           setIsUpdating(false);
           console.log("Update Application Status:", {
-            _id: updatedApplication._id,
+            _id: updatedApplication?._id,
             status: newStatus,
           });
-          setApplications(
-            applications.map((app) =>
-              app._id === updatedApplication._id ? updatedApplication : app
+          updateApplicationStatus(updatedApplication._id, newStatus);
+          setApplications?.(
+            (applications ?? []).map((app) =>
+              app?._id === updatedApplication?._id ? updatedApplication : app
             )
           );
-          setSelectedApplication(updatedApplication);
-          setDrawerOpen(false);
+          setSelectedApplication?.(updatedApplication);
+          setDrawerOpen?.(false);
           setShowConfirm(false);
           setPendingStatus(null);
           return 0;
@@ -67,6 +68,14 @@ function UpdateStatusDrawer({
     if (pendingStatus) {
       handleStatusChange(pendingStatus);
     }
+  };
+
+  const handleCancel = () => {
+    setDrawerOpen?.(false);
+    setIsUpdating(false);
+    setProgress(0);
+    setShowConfirm(false);
+    setPendingStatus(null);
   };
 
   return (
@@ -83,37 +92,34 @@ function UpdateStatusDrawer({
         ) : (
           selectedApplication && (
             <>
-              <form
-                ref={formRef}
-                className='p-6 space-y-6 overflow-y-auto max-h-[80vh]'
-              >
+              <div className='p-6 space-y-6 overflow-y-auto max-h-[80vh]'>
                 <div>
                   <h3 className='text-lg font-semibold'>Intern</h3>
                   <div className='flex items-center space-x-4 mt-2'>
-                    {selectedApplication.intern.profileImage ? (
+                    {selectedApplication?.intern?.profileImage ? (
                       <img
-                        src={selectedApplication.intern.profileImage}
-                        alt={selectedApplication.intern.name}
+                        src={selectedApplication?.intern?.profileImage}
+                        alt={selectedApplication?.intern?.name}
                         className='w-12 h-12 rounded-full'
                       />
                     ) : (
                       <div className='w-12 h-12 rounded-full bg-blue-500/50 flex items-center justify-center text-white'>
-                        {selectedApplication.intern.name.charAt(0)}
+                        {selectedApplication?.intern?.name?.charAt?.(0)}
                       </div>
                     )}
                     <div>
-                      <p>{selectedApplication.intern.name}</p>
+                      <p>{selectedApplication?.intern?.name}</p>
                       <p className='text-muted-foreground'>
-                        {selectedApplication.intern.email}
+                        {selectedApplication?.intern?.email}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div>
                   <h3 className='text-lg font-semibold'>Internship</h3>
-                  <p>Title: {selectedApplication.internship.title}</p>
-                  <p>Location: {selectedApplication.internship.location}</p>
-                  <p>Term: {selectedApplication.internship.term}</p>
+                  <p>Title: {selectedApplication?.internship?.title}</p>
+                  <p>Location: {selectedApplication?.internship?.location}</p>
+                  <p>Term: {selectedApplication?.internship?.term}</p>
                 </div>
                 <div>
                   <h3 className='text-lg font-semibold'>Application</h3>
@@ -124,7 +130,7 @@ function UpdateStatusDrawer({
                       </label>
                       <Textarea
                         value={
-                          selectedApplication.coverLetter ||
+                          selectedApplication?.coverLetter ||
                           "No cover letter provided."
                         }
                         readOnly
@@ -135,25 +141,27 @@ function UpdateStatusDrawer({
                       <label className='text-sm font-medium'>Status</label>
                       <Badge
                         variant={
-                          selectedApplication.status === "accepted"
+                          selectedApplication?.status === "accepted"
                             ? "success"
-                            : selectedApplication.status === "shortlisted"
+                            : selectedApplication?.status === "shortlisted"
                             ? "warning"
-                            : selectedApplication.status === "rejected"
+                            : selectedApplication?.status === "rejected"
                             ? "destructive"
                             : "secondary"
                         }
                         className='mt-1'
                       >
-                        {selectedApplication.status.charAt(0).toUpperCase() +
-                          selectedApplication.status.slice(1)}
+                        {selectedApplication?.status
+                          ?.charAt?.(0)
+                          ?.toUpperCase?.() +
+                          selectedApplication?.status?.slice?.(1)}
                       </Badge>
                     </div>
                     <div className='flex items-center space-x-2'>
                       <Checkbox
                         id='reviewed'
                         name='reviewed'
-                        checked={selectedApplication.reviewed}
+                        checked={selectedApplication?.reviewed}
                         disabled
                       />
                       <label htmlFor='reviewed' className='text-sm font-medium'>
@@ -164,8 +172,8 @@ function UpdateStatusDrawer({
                       <label className='text-sm font-medium'>Applied At</label>
                       <p className='mt-1'>
                         {new Date(
-                          selectedApplication.appliedAt
-                        ).toLocaleString()}
+                          selectedApplication?.appliedAt
+                        )?.toLocaleString?.()}
                       </p>
                     </div>
                     <div>
@@ -173,7 +181,7 @@ function UpdateStatusDrawer({
                       <div className='mt-1'>
                         <Button variant='outline' asChild>
                           <a
-                            href={selectedApplication.resumeLink}
+                            href={selectedApplication?.resumeLink}
                             target='_blank'
                             rel='noopener noreferrer'
                           >
@@ -184,7 +192,7 @@ function UpdateStatusDrawer({
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
               {showConfirm && (
                 <Alert variant='warning' className='mx-6 mb-4'>
                   <AlertCircle className='h-4 w-4' />
@@ -218,17 +226,7 @@ function UpdateStatusDrawer({
         )}
         <DrawerFooter>
           <div className='flex gap-1 items-center justify-end'>
-            <Button
-              variant='outline'
-              onClick={() => {
-                setDrawerOpen(false);
-                setIsUpdating(false);
-                setProgress(0);
-                setShowConfirm(false);
-                setPendingStatus(null);
-                if (formRef.current) formRef.current.reset();
-              }}
-            >
+            <Button variant='outline' onClick={handleCancel}>
               Cancel
             </Button>
             {!isUpdating && (
@@ -237,7 +235,7 @@ function UpdateStatusDrawer({
                   variant='outline'
                   onClick={() => {
                     const newStatus =
-                      selectedApplication.status === "shortlisted"
+                      selectedApplication?.status === "shortlisted"
                         ? "pending"
                         : "shortlisted";
                     handleStatusChange(newStatus);

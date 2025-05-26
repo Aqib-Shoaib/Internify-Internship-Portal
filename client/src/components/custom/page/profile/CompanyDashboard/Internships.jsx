@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase } from "lucide-react";
 import { useMemo } from "react";
-import { user as companyData } from "@/dummy/user";
 import PostInternshipDrawer from "./PostInternshipDrawer";
 import EditInternshipDrawer from "./EditInternshipDrawer";
 import ToggleLiveInternshipDrawer from "./ToggleLiveInternshipDrawer";
+import { getAllInternships } from "@/services/company";
+import { useSelector } from "react-redux";
 
 const CompanyInternshipsTab = () => {
   const [internships, setInternships] = useState([]);
@@ -16,54 +17,24 @@ const CompanyInternshipsTab = () => {
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [toggleLiveDrawerOpen, setToggleLiveDrawerOpen] = useState(false);
   const [selectedInternship, setSelectedInternship] = useState(null);
+  const { user: companyData } = useSelector((state) => state.user);
 
   const currentDate = useMemo(() => new Date("2025-05-18T00:00:00.000Z"), []);
+
   useEffect(() => {
     const fetchInternships = async () => {
-      const mockData = [
-        {
-          _id: "1",
-          title: "Software Engineer Intern",
-          description: "Develop cutting-edge software solutions.",
-          location: "Remote",
-          salary: 2000,
-          term: "FULL-TIME",
-          duration: 3,
-          live: true,
-          verified: true,
-          expiryDate: "2025-06-30T23:59:59.999Z",
-          company: companyData._id,
-          applications: 5,
-        },
-        {
-          _id: "2",
-          title: "Marketing Intern",
-          description: "Assist in marketing campaigns.",
-          location: "New York",
-          salary: 1500,
-          term: "PART-TIME",
-          duration: 6,
-          live: true,
-          verified: false,
-          expiryDate: "2025-10-10T23:59:59.999Z",
-          company: companyData._id,
-          applications: 2,
-        },
-      ];
-      // Filter by companyId and check expiryDate
-      const filteredData = mockData
-        .filter((internship) => internship.company === companyData._id)
-        .map((internship) => ({
-          ...internship,
-          live:
-            internship.live && new Date(internship.expiryDate) > currentDate,
-        }));
-      setInternships(filteredData);
+      const res = await getAllInternships();
+
+      if (res.status === 200 || res.status === 304) {
+        setInternships(res.data);
+      }
+
       setLoading(false);
     };
     fetchInternships();
-  }, [currentDate]);
+  }, [companyData._id, currentDate]);
 
+  console.log(internships);
   const handleUpdateInternship = (updatedInternship) => {
     setInternships(
       internships.map((internship) =>
@@ -110,50 +81,43 @@ const CompanyInternshipsTab = () => {
           Create New Internship
         </Button>
       </div>
-      <div className='flex items-center gap-1.5 flex-wrap justify-start'>
-        {internships.length > 0 ? (
-          internships.map((internship) => (
-            <Card
-              key={internship._id}
-              className='w-full md:w-fit'
-              data-aos='zoom-in'
-            >
+      <div className='flex items-center gap-1 flex-wrap justify-start'>
+        {internships?.length > 0 ? (
+          internships?.map((internship) => (
+            <Card key={internship._id} className='w-full md:w-fit'>
               <CardHeader>
                 <CardTitle className='flex flex-col gap-1'>
                   <div className='flex items-center gap-1'>
                     <Briefcase className='h-5 w-5' />
                     <span className='whitespace-nowrap'>
-                      {internship.title}
+                      {internship?.title}
                     </span>
                   </div>
                   <div className='flex gap-1 items-center'>
-                    <Badge variant={internship.live ? "success" : "secondary"}>
-                      {internship.live ? "Live" : "Inactive"}
+                    <Badge variant={internship?.live ? "success" : "secondary"}>
+                      {internship?.live ? "Live" : "Inactive"}
                     </Badge>
                     <Badge
-                      variant={internship.verified ? "success" : "secondary"}
+                      variant={internship?.verified ? "success" : "secondary"}
                     >
-                      {internship.verified ? "Verified" : "Not Verified"}
+                      {internship?.verified ? "Verified" : "Not Verified"}
                     </Badge>
                   </div>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className='text-muted-foreground text-sm'>
-                  {internship.description}
-                </p>
-                <p className='text-sm'>Location: {internship.location}</p>
-                <p className='text-sm'>Salary: ${internship.salary}/month</p>
-                <p className='text-sm'>Term: {internship.term}</p>
+                <p className='text-sm'>Location: {internship?.location}</p>
+                <p className='text-sm'>Salary: ${internship?.salary}/month</p>
+                <p className='text-sm'>Term: {internship?.term}</p>
                 <p className='text-sm'>
-                  Duration: {internship.duration} months
+                  Duration: {internship?.duration} months
                 </p>
                 <p className='text-sm'>
-                  Applications: {internship.applications}
+                  Applications: {internship?.applications}
                 </p>
                 <p className='text-sm'>
                   Expiry Date:{" "}
-                  {new Date(internship.expiryDate).toLocaleDateString()}
+                  {new Date(internship?.expiryDate).toLocaleDateString()}
                 </p>
                 <div className='mt-4 space-x-2'>
                   <Button

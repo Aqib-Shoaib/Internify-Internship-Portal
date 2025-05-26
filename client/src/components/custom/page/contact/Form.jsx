@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { BACKEND_URL } from "@/constants";
+import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -13,22 +15,28 @@ const initialData = {
 
 function Form() {
   const [contactData, setContactData] = useState(initialData);
+  const [loading, setLoading] = useState(false);
   function handleInputChange(e) {
     const { name, value } = e.target;
     setContactData((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    console.log(contactData);
+    setLoading(true);
 
-    //reset
-    setContactData(initialData);
-    toast.success("Your Message has been forwarded to Internify Admins");
+    const res = await axios.post(`${BACKEND_URL}/api/contact`, contactData);
+    if (res.status == 200) {
+      setContactData(initialData);
+      toast.success("Your Message has been forwarded to Internify Admins");
+    } else {
+      toast.error("Your Message can not be sent right now!");
+    }
+    setLoading(false);
   }
 
   return (
-    <form className='space-y-4' onSubmit={handleSubmit}>
+    <form className='space-y-4' onSubmit={handleSubmit} disabled={loading}>
       <div>
         <label htmlFor='name' className='block text-sm font-medium mb-1'>
           Name
@@ -80,8 +88,8 @@ function Form() {
         />
       </div>
 
-      <Button type='submit' className='w-full mt-4'>
-        Submit
+      <Button type='submit' disabled={loading} className='w-full mt-4'>
+        {loading ? "Submitting..." : "Submit"}
       </Button>
     </form>
   );

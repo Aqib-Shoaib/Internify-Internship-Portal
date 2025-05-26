@@ -225,7 +225,7 @@ const updatePassword = async (req, res) => {
 
     if (!(await bcrypt.compare(req.body.currentPassword, user.password)))
       return res
-        .status(401)
+        .status(400)
         .json({ message: 'Your current password is incorrect.' });
 
     user.password = req.body.newPassword;

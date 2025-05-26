@@ -18,7 +18,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useRef, useState } from "react";
+import { createInternship } from "@/services/company";
+import { useState } from "react";
 
 function PostInternshipDrawer({
   setCreateDrawerOpen,
@@ -30,6 +31,17 @@ function PostInternshipDrawer({
 }) {
   const [isCreating, setIsCreating] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    location: "",
+    salary: "",
+    expiryDate: "",
+    term: "FULL-TIME",
+    duration: "",
+    live: true,
+    sponsored: false,
+  });
   const [errors, setErrors] = useState({
     title: "",
     description: "",
@@ -38,34 +50,31 @@ function PostInternshipDrawer({
     expiryDate: "",
     duration: "",
   });
-  const formRef = useRef(null);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e?.target ?? {};
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleTermChange = (value) => {
+    setFormData((prev) => ({ ...prev, term: value }));
+  };
+
   const handleCreate = () => {
-    if (!formRef.current) return;
-
-    const formData = {
-      title: formRef.current.title.value,
-      description: formRef.current.description.value,
-      location: formRef.current.location.value,
-      salary: parseFloat(formRef.current.salary.value),
-      expiryDate: formRef.current.expiryDate.value,
-      term: formRef.current.term.value,
-      duration: parseInt(formRef.current.duration.value, 10),
-      live: formRef.current.live.checked,
-      sponsored: formRef.current.sponsored.checked,
-      company: companyData._id,
-    };
-
     const newErrors = {
-      title: formData.title ? "" : "Title is required.",
-      description: formData.description ? "" : "Description is required.",
-      location: formData.location ? "" : "Location is required.",
+      title: formData?.title ? "" : "Title is required.",
+      description: formData?.description ? "" : "Description is required.",
+      location: formData?.location ? "" : "Location is required.",
       salary:
-        formData.salary && formData.salary > 0
+        formData?.salary && parseFloat(formData?.salary) > 0
           ? ""
           : "Valid salary is required.",
-      expiryDate: formData.expiryDate ? "" : "Expiry date is required.",
+      expiryDate: formData?.expiryDate ? "" : "Expiry date is required.",
       duration:
-        formData.duration && formData.duration > 0
+        formData?.duration && parseInt(formData?.duration, 10) > 0
           ? ""
           : "Valid duration is required.",
     };
@@ -76,16 +85,14 @@ function PostInternshipDrawer({
     setIsCreating(true);
     setProgress(0);
 
-    const interval = setInterval(() => {
+    const interval = setInterval(() =>
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           setIsCreating(false);
-          console.log("Create Internship:", {
-            ...formData,
-            slug: formData.title.toLowerCase().replace(/\s+/g, "-"),
-          });
-          setCreateDrawerOpen(false);
+
+          createInternship(formData);
+          setCreateDrawerOpen?.(false);
           setErrors({
             title: "",
             description: "",
@@ -94,24 +101,62 @@ function PostInternshipDrawer({
             expiryDate: "",
             duration: "",
           });
-          // Simulate adding to list
-          setInternships([
-            ...internships,
+          setFormData({
+            title: "",
+            description: "",
+            location: "",
+            salary: "",
+            expiryDate: "",
+            term: "FULL-TIME",
+            duration: "",
+            live: true,
+            sponsored: false,
+          });
+          setInternships?.([
+            ...(internships ?? []),
             {
               ...formData,
               _id: String(Date.now()),
               verified: false,
               applications: 0,
               live:
-                formData.live && new Date(formData.expiryDate) > currentDate,
+                formData?.live &&
+                new Date(formData?.expiryDate) > (currentDate ?? new Date()),
+              company: companyData?._id,
             },
           ]);
           return 0;
         }
         return prev + 10;
-      });
-    }, 200);
+      }, 0)
+    );
   };
+
+  const handleCancel = () => {
+    setCreateDrawerOpen?.(false);
+    setErrors({
+      title: "",
+      description: "",
+      location: "",
+      salary: "",
+      expiryDate: "",
+      duration: "",
+    });
+    setIsCreating(false);
+    setProgress(0);
+    setFormData({
+      title: "",
+      description: "",
+      location: "",
+      salary: "",
+      expiryDate: "",
+      term: "FULL-TIME",
+      duration: "",
+      live: true,
+      sponsored: false,
+    });
+  };
+
   return (
     <Drawer open={createDrawerOpen} onOpenChange={setCreateDrawerOpen}>
       <DrawerContent>
@@ -124,18 +169,17 @@ function PostInternshipDrawer({
             <Progress value={progress} />
           </div>
         ) : (
-          <form
-            ref={formRef}
-            className='p-6 space-y-4 overflow-y-auto max-h-[80vh]'
-          >
+          <form className='p-6 space-y-4 overflow-y-auto max-h-[80vh]'>
             <div>
               <label className='text-sm font-medium'>Title</label>
               <Input
                 name='title'
+                value={formData?.title}
+                onChange={handleInputChange}
                 placeholder='e.g., Software Engineer Intern'
-                className={errors.title ? "border-red-500" : ""}
+                className={errors?.title ? "border-red-500" : ""}
               />
-              {errors.title && (
+              {errors?.title && (
                 <p className='text-sm text-red-500 mt-1'>{errors.title}</p>
               )}
             </div>
@@ -143,10 +187,12 @@ function PostInternshipDrawer({
               <label className='text-sm font-medium'>Description</label>
               <Textarea
                 name='description'
+                value={formData?.description}
+                onChange={handleInputChange}
                 placeholder='e.g., Develop cutting-edge software...'
-                className={errors.description ? "border-red-500" : ""}
+                className={errors?.description ? "border-red-500" : ""}
               />
-              {errors.description && (
+              {errors?.description && (
                 <p className='text-sm text-red-500 mt-1'>
                   {errors.description}
                 </p>
@@ -156,10 +202,12 @@ function PostInternshipDrawer({
               <label className='text-sm font-medium'>Location</label>
               <Input
                 name='location'
+                value={formData?.location}
+                onChange={handleInputChange}
                 placeholder='e.g., Remote'
-                className={errors.location ? "border-red-500" : ""}
+                className={errors?.location ? "border-red-500" : ""}
               />
-              {errors.location && (
+              {errors?.location && (
                 <p className='text-sm text-red-500 mt-1'>{errors.location}</p>
               )}
             </div>
@@ -168,10 +216,12 @@ function PostInternshipDrawer({
               <Input
                 name='salary'
                 type='number'
+                value={formData?.salary}
+                onChange={handleInputChange}
                 placeholder='e.g., 2000'
-                className={errors.salary ? "border-red-500" : ""}
+                className={errors?.salary ? "border-red-500" : ""}
               />
-              {errors.salary && (
+              {errors?.salary && (
                 <p className='text-sm text-red-500 mt-1'>{errors.salary}</p>
               )}
             </div>
@@ -180,16 +230,22 @@ function PostInternshipDrawer({
               <Input
                 name='expiryDate'
                 type='date'
+                value={formData?.expiryDate}
+                onChange={handleInputChange}
                 min='2025-05-19'
-                className={errors.expiryDate ? "border-red-500" : ""}
+                className={errors?.expiryDate ? "border-red-500" : ""}
               />
-              {errors.expiryDate && (
+              {errors?.expiryDate && (
                 <p className='text-sm text-red-500 mt-1'>{errors.expiryDate}</p>
               )}
             </div>
             <div>
               <label className='text-sm font-medium'>Term</label>
-              <Select name='term' defaultValue='FULL-TIME'>
+              <Select
+                name='term'
+                value={formData?.term}
+                onValueChange={handleTermChange}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder='Select term' />
                 </SelectTrigger>
@@ -204,21 +260,37 @@ function PostInternshipDrawer({
               <Input
                 name='duration'
                 type='number'
+                value={formData?.duration}
+                onChange={handleInputChange}
                 placeholder='e.g., 3'
-                className={errors.duration ? "border-red-500" : ""}
+                className={errors?.duration ? "border-red-500" : ""}
               />
-              {errors.duration && (
+              {errors?.duration && (
                 <p className='text-sm text-red-500 mt-1'>{errors.duration}</p>
               )}
             </div>
             <div className='flex items-center space-x-2'>
-              <Checkbox id='live' name='live' defaultChecked />
+              <Checkbox
+                id='live'
+                name='live'
+                checked={formData?.live}
+                onCheckedChange={(checked) =>
+                  setFormData((prev) => ({ ...prev, live: checked }))
+                }
+              />
               <label htmlFor='live' className='text-sm font-medium'>
                 Live
               </label>
             </div>
             <div className='flex items-center space-x-2'>
-              <Checkbox id='sponsored' name='sponsored' />
+              <Checkbox
+                id='sponsored'
+                name='sponsored'
+                checked={formData?.sponsored}
+                onCheckedChange={(checked) =>
+                  setFormData((prev) => ({ ...prev, sponsored: checked }))
+                }
+              />
               <label htmlFor='sponsored' className='text-sm font-medium'>
                 Sponsored
               </label>
@@ -227,26 +299,10 @@ function PostInternshipDrawer({
         )}
         <DrawerFooter>
           <div className='flex gap-1 items-center justify-end'>
-            <Button
-              variant='outline'
-              onClick={() => {
-                setCreateDrawerOpen(false);
-                setErrors({
-                  title: "",
-                  description: "",
-                  location: "",
-                  salary: "",
-                  expiryDate: "",
-                  duration: "",
-                });
-                setIsCreating(false);
-                setProgress(0);
-                if (formRef.current) formRef.current.reset();
-              }}
-            >
+            <Button variant='outline' onClick={handleCancel}>
               Cancel
             </Button>
-            {!isCreating && <Button onClick={handleCreate}>Create</Button>}{" "}
+            {!isCreating && <Button onClick={handleCreate}>Create</Button>}
           </div>
         </DrawerFooter>
       </DrawerContent>

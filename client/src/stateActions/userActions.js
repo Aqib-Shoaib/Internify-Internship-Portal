@@ -5,8 +5,9 @@ import axios from "axios";
 const authToken = localStorage.getItem("authToken");
 
 const fetchUser = createAsyncThunk("users/fetchStatus", async (_, thunkAPI) => {
+  const url = `${BACKEND_URL}/api/users/me`;
   try {
-    const res = await axios.get(`${BACKEND_URL}/api/users/me`, {
+    const res = await axios.get(url, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },

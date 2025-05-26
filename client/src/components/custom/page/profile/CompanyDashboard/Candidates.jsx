@@ -18,11 +18,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 import { Star, Eye, CheckCircle2, Circle } from "lucide-react";
-import { user as companyData } from "@/dummy/user";
 import UpdateStatusDrawer from "./UpdateStatusDrawer";
 import { Card, CardContent } from "@/components/ui/card";
+import { getAllCandidates } from "@/services/company";
+import { useSelector } from "react-redux";
 
 const CompanyCandidatesTab = () => {
   const [applications, setApplications] = useState([]);
@@ -35,67 +35,25 @@ const CompanyCandidatesTab = () => {
     dateEnd: "",
   });
   const [sort, setSort] = useState({ column: "appliedAt", direction: "desc" });
+  const { user: companyData } = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchApplications = async () => {
-      const mockData = [
-        {
-          _id: "app1",
-          intern: {
-            _id: "intern1",
-            name: "Aqib Shoaib",
-            email: "aqib@example.com",
-            profileImage: null,
-          },
-          internship: {
-            _id: "internship1",
-            title: "Software Engineer Intern",
-            location: "Remote",
-            term: "FULL-TIME",
-            company: companyData._id,
-          },
-          coverLetter:
-            "Excited to apply for the Software Engineer Intern position...",
-          status: "pending",
-          appliedAt: "2025-05-01T09:00:00.000Z",
-          reviewed: false,
-          resumeLink: "/resumes/aqib_app1.pdf",
-        },
-        {
-          _id: "app2",
-          intern: {
-            _id: "intern2",
-            name: "Sara Khan",
-            email: "sara@example.com",
-            profileImage: "/avatars/sara.jpg",
-          },
-          internship: {
-            _id: "internship2",
-            title: "Marketing Intern",
-            location: "New York",
-            term: "PART-TIME",
-            company: companyData._id,
-          },
-          coverLetter: "Passionate about marketing...",
-          status: "shortlisted",
-          appliedAt: "2025-05-10T14:00:00.000Z",
-          reviewed: true,
-          resumeLink: "/resumes/sara_app2.pdf",
-        },
-      ];
-      setApplications(
-        mockData.filter((app) => app.internship.company === companyData._id)
-      );
+      const res = await getAllCandidates();
+      if (res.status === 200 || res.status === 304) {
+        setApplications(res.data.applications);
+      }
       setLoading(false);
     };
     fetchApplications();
   }, []);
+  console.log(applications);
 
   useEffect(() => {
     if (drawerOpen && selectedApplication && !selectedApplication.reviewed) {
       const updatedApplication = { ...selectedApplication, reviewed: true };
       setApplications(
-        applications.map((app) =>
+        applications?.map((app) =>
           app._id === selectedApplication._id ? updatedApplication : app
         )
       );
@@ -146,12 +104,14 @@ const CompanyCandidatesTab = () => {
 
   if (!companyData.verified) {
     return (
-      <div className='p-0 md:p-6'>
-        <h1 className='text-xl md:text-2xl font-bold mb-6'>Candidates</h1>
-        <p className='text-muted-foreground'>
-          Please verify your account to view applications.
-        </p>
-      </div>
+      <Card data-aos='zoom-in'>
+        <CardContent className='p-0 md:p-6'>
+          <h1 className='text-xl md:text-2xl font-bold mb-6'>Candidates</h1>
+          <p className='text-muted-foreground'>
+            Please verify your account to view applications.
+          </p>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -203,8 +163,8 @@ const CompanyCandidatesTab = () => {
           </Button>
         </div>
       </div>
-      {sortedApplications.length > 0 ? (
-        <Card data-aos='zoom-in'>
+      <Card data-aos='zoom-in'>
+        {sortedApplications.length > 0 ? (
           <CardContent>
             <Table className='w-full md:w-3/5 mx-auto'>
               <TableHeader>
@@ -245,42 +205,42 @@ const CompanyCandidatesTab = () => {
                     }}
                   >
                     <TableCell>
-                      {app.intern.profileImage ? (
+                      {app?.intern?.profileImage ? (
                         <img
-                          src={app.intern.profileImage}
-                          alt={app.intern.name}
+                          src={app?.intern?.profileImage || "/user.png"}
+                          alt={app?.intern?.name}
                           className='w-10 h-10 rounded-full'
                         />
                       ) : (
                         <div className='w-10 h-10 rounded-full bg-blue-500/50 flex items-center justify-center text-white'>
-                          {app.intern.name.charAt(0)}
+                          {app?.intern?.name?.charAt(0)}
                         </div>
                       )}
                     </TableCell>
-                    <TableCell>{app.intern.name}</TableCell>
-                    <TableCell>{app.intern.email}</TableCell>
-                    <TableCell>{app.internship.title}</TableCell>
+                    <TableCell>{app?.intern?.name}</TableCell>
+                    <TableCell>{app?.intern?.mail}</TableCell>
+                    <TableCell>{app?.internship?.title}</TableCell>
                     <TableCell>
                       <Badge
                         variant={
-                          app.status === "accepted"
+                          app?.status === "accepted"
                             ? "success"
-                            : app.status === "shortlisted"
+                            : app?.status === "shortlisted"
                             ? "warning"
-                            : app.status === "rejected"
+                            : app?.status === "rejected"
                             ? "destructive"
                             : "secondary"
                         }
                       >
-                        {app.status.charAt(0).toUpperCase() +
-                          app.status.slice(1)}
+                        {app?.status.charAt(0).toUpperCase() +
+                          app?.status.slice(1)}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {new Date(app.appliedAt).toLocaleDateString()}
+                      {new Date(app?.appliedAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      {app.reviewed ? (
+                      {app?.reviewed ? (
                         <CheckCircle2 className='h-5 w-5 text-green-500' />
                       ) : (
                         <Circle className='h-5 w-5 text-gray-400' />
@@ -312,10 +272,12 @@ const CompanyCandidatesTab = () => {
               </TableBody>
             </Table>
           </CardContent>
-        </Card>
-      ) : (
-        <p className='text-muted-foreground'>No applications found.</p>
-      )}
+        ) : (
+          <CardContent>
+            <p className='text-muted-foreground'>No applications found.</p>
+          </CardContent>
+        )}
+      </Card>
 
       {/* update status drawer */}
       <UpdateStatusDrawer

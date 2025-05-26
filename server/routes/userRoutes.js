@@ -24,6 +24,11 @@ const {
   getSavedInternships,
   getInternProfileCompletion,
   getCompanyProfileCompletion,
+  deleteResume,
+  getApplicationsOverview,
+  getSystemOverview,
+  getActivitySummary,
+  getCompaniesPendingVerification,
 } = require('../controllers/userController');
 const upload = require('../utils/multer');
 const { uploadResume } = require('../utils/pdfMulter');
@@ -50,6 +55,11 @@ userRouter.patch(
   uploadResumeFile,
 );
 userRouter.patch(
+  '/deleteResume/:resumeId',
+  roleMiddleware(['INTERN']),
+  deleteResume,
+);
+userRouter.patch(
   '/uploadProfile',
   upload.single('profileImage'),
   uploadProfileImage,
@@ -64,6 +74,11 @@ userRouter.get(
   roleMiddleware(['INTERN']),
   getSavedInternships,
 );
+userRouter.get(
+  '/companystats',
+  roleMiddleware(['COMPANY']),
+  getApplicationsOverview,
+);
 userRouter.patch(
   '/me',
   roleMiddleware(['INTERN', 'COMPANY']), //admin can not update his/her profile as there is not much other than role yet
@@ -72,8 +87,11 @@ userRouter.patch(
 
 userRouter.use(roleMiddleware(['ADMIN']));
 userRouter.post('/createAdmin', createAdmin);
+userRouter.get('/systemStats', getSystemOverview);
+userRouter.get('/activitySummary', getActivitySummary);
 userRouter.get('/', getAllUsers);
+userRouter.get('/companiesVerification', getCompaniesPendingVerification);
 userRouter.route('/:id').get(getUser).patch(updateUser).delete(deleteUser);
-userRouter.post('/verify/:id', verifyCompany);
+userRouter.patch('/verify/:id', verifyCompany);
 
 module.exports = userRouter;

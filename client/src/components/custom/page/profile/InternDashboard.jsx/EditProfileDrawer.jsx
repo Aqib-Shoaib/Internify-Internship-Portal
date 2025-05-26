@@ -40,14 +40,22 @@ function EditProfileDrawer({ isDrawerOpen, setIsDrawerOpen, user }) {
     setEducationData((prev) => ({ ...prev, [name]: value }));
   }
   const handleSkillsKeywordsChange = (keywords) => {
-    setUpdateData((prev) => ({ ...prev, skills: [...user.skills, keywords] }));
+    setUpdateData((prev) => ({
+      ...prev,
+      skills: [...user.skills, ...keywords],
+    }));
   };
 
   async function saveUser() {
     const data = {
       ...updateData,
-      education: { ...educationData },
     };
+    if (Object.keys(educationData).length !== 0) {
+      data["education"] = {
+        ...educationData,
+      };
+    }
+
     try {
       await dispatch(updateUserData(data)).unwrap();
       toast.success("Successfully Updated");
@@ -116,13 +124,13 @@ function EditProfileDrawer({ isDrawerOpen, setIsDrawerOpen, user }) {
             <Label className='text-sm font-medium'>Education</Label>
             <div className='grid grid-cols-3 gap-1'>
               <Input
-                defaultValue={user.education.degree}
-                placeholder='BS, MS etc'
+                defaultValue={user?.education?.degree}
+                placeholder='Software Enginner...'
                 name='degree'
                 onChange={(e) => handleEducationInputChange(e)}
               />
               <Select
-                defaultValue={user.education.major}
+                defaultValue={user?.education?.major}
                 onValueChange={(e) =>
                   setEducationData((prev) => ({ ...prev, major: e }))
                 }
@@ -140,7 +148,7 @@ function EditProfileDrawer({ isDrawerOpen, setIsDrawerOpen, user }) {
                 </SelectContent>
               </Select>
               <Select
-                defaultValue={user.education.currentYear}
+                defaultValue={user?.education?.currentYear}
                 onValueChange={(e) =>
                   setEducationData((prev) => ({ ...prev, currentYear: e }))
                 }
@@ -159,14 +167,14 @@ function EditProfileDrawer({ isDrawerOpen, setIsDrawerOpen, user }) {
                 </SelectContent>
               </Select>
               <Input
-                defaultValue={user.education.year}
+                defaultValue={user?.education?.year}
                 placeholder='Last Year'
                 name='year'
                 onChange={(e) => handleEducationInputChange(e)}
               />
 
               <Input
-                defaultValue={user.education.university}
+                defaultValue={user?.education?.university}
                 placeholder='Your Uni...'
                 className='col-span-2'
                 name='university'

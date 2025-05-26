@@ -12,6 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { CompaniesPendingVerification, verifyCompany } from "@/services/admin";
 
 const AdminCompanyVerificationTab = () => {
   const [companies, setCompanies] = useState([]);
@@ -23,32 +24,13 @@ const AdminCompanyVerificationTab = () => {
 
   useEffect(() => {
     const fetchCompanies = async () => {
-      const mockData = [
-        {
-          _id: "company1",
-          name: "Tech Corp",
-          email: "techcorp@example.com",
-          role: "COMPANY",
-          verified: false,
-          createdAt: "2025-05-01T09:00:00.000Z",
-        },
-        {
-          _id: "company2",
-          name: "Marketing Inc",
-          email: "marketing@example.com",
-          role: "COMPANY",
-          verified: false,
-          createdAt: "2025-05-10T14:00:00.000Z",
-        },
-      ];
-      setCompanies(
-        mockData.filter(
-          (company) => company.role === "COMPANY" && !company.verified
-        )
-      );
-      setLoading(false);
+      const data = await CompaniesPendingVerification();
+      if (data.status === 200 || data.status === 304) {
+        setCompanies(data.data.companies);
+      }
     };
     fetchCompanies();
+    setLoading(false);
   }, []);
 
   const handleVerify = (companyId) => {
@@ -61,14 +43,15 @@ const AdminCompanyVerificationTab = () => {
           clearInterval(interval);
           setIsUpdating(false);
           setCompanies((prev) => prev.filter((c) => c._id !== companyId));
-          console.log("Verify Company:", { _id: companyId });
+
+          verifyCompany(companyId);
           setShowConfirm(false);
           setCompanyToVerify(null);
           return 0;
         }
         return prev + 10;
       });
-    }, 200);
+    }, 0);
   };
 
   if (loading) {
@@ -86,8 +69,8 @@ const AdminCompanyVerificationTab = () => {
           <Progress value={progress} />
         </div>
       )}
-      {companies.length > 0 ? (
-        <Card data-aos='zoom-in'>
+      {companies?.length > 0 ? (
+        <Card>
           <CardContent>
             <Table className='w-full md:w-3/5 mx-auto'>
               <TableHeader>
@@ -102,11 +85,11 @@ const AdminCompanyVerificationTab = () => {
                 {companies
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((company) => (
-                    <TableRow key={company._id}>
-                      <TableCell>{company.name}</TableCell>
-                      <TableCell>{company.email}</TableCell>
+                    <TableRow key={company?._id}>
+                      <TableCell>{company?.name}</TableCell>
+                      <TableCell>{company?.email}</TableCell>
                       <TableCell>
-                        {new Date(company.createdAt).toLocaleDateString()}
+                        {new Date(company?.createdAt).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
                         <Button
@@ -128,17 +111,20 @@ const AdminCompanyVerificationTab = () => {
           </CardContent>
         </Card>
       ) : (
-        <p className='text-muted-foreground'>
-          No companies awaiting verification.
-        </p>
+        <Card>
+          <CardContent>
+            <p className='text-muted-foreground'>
+              No companies awaiting verification.
+            </p>
+          </CardContent>
+        </Card>
       )}
       {showConfirm && (
         <Alert variant='warning' className='mt-4'>
           <AlertCircle className='h-4 w-4' />
           <AlertTitle>Confirm Verification</AlertTitle>
           <AlertDescription>
-            Verify company &quot;{companyToVerify?.name}&quot;? This action is
-            irreversible.
+            Verify company &quot;{companyToVerify?.name}&quot;?
             <div className='flex gap-2 mt-2'>
               <Button
                 variant='outline'

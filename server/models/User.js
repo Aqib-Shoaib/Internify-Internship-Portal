@@ -36,6 +36,7 @@ const userSchema = new Schema(
     resume: [
       {
         title: String,
+        filename: String,
         link: String,
         createdAt: { type: Date, default: Date.now() },
       },

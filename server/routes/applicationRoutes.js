@@ -10,6 +10,7 @@ const {
   getApplicationByAdmin,
   deleteApplicationByAdmin,
   getInternApplicationStats,
+  getCompanyCandidates,
 } = require('../controllers/applicationController');
 
 const applicationRouter = express.Router();
@@ -31,6 +32,12 @@ applicationRouter.get(
   '/company/:internshipId',
   roleMiddleware(['COMPANY']),
   getInternshipApplications,
+);
+
+applicationRouter.get(
+  '/candidates',
+  roleMiddleware(['COMPANY']),
+  getCompanyCandidates,
 );
 applicationRouter.patch(
   '/company/status/:id',
