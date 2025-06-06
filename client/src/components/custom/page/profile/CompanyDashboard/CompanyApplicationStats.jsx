@@ -23,17 +23,23 @@ function CompanyApplicationStats() {
       <CardContent>
         <div className='grid grid-cols-1 gap-0.5'>
           <div className='flex items-center gap-1'>
-            <p className='text-2xl font-bold'>{stats.totalJobPostings}</p>
+            <p className='text-lg md:text-2xl font-bold'>
+              {stats?.totalJobPostings}
+            </p>
             <p className='text-sm text-muted-foreground'>Total Job Postings</p>
           </div>
           <div className='flex items-center gap-1'>
-            <p className='text-2xl font-bold'>{stats.applicationsReceived}</p>
+            <p className='text-lg md:text-2xl font-bold'>
+              {stats?.applicationsReceived}
+            </p>
             <p className='text-sm text-muted-foreground'>
               Applications Received
             </p>
           </div>
           <div className='flex items-center gap-1'>
-            <p className='text-2xl font-bold'>{stats.openPositions}</p>
+            <p className='text-lg md:text-2xl font-bold'>
+              {stats?.openPositions}
+            </p>
             <p className='text-sm text-muted-foreground'>Open Positions</p>
           </div>
         </div>

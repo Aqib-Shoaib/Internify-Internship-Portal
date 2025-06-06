@@ -22,12 +22,12 @@ function InternshipItem({ data }) {
   useEffect(
     function () {
       function isSaved() {
-        return user.savedInternships.includes(data._id);
+        return user.savedInternships?.includes(data._id);
       }
       const ff = isSaved();
       setsaved(ff);
     },
-    [data._id, user.savedInternships]
+    [data._id, user?.savedInternships]
   );
 
   async function toggleSave(e) {
